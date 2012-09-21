@@ -10,6 +10,8 @@ import java.util.Map;
 import net.minecraft.src.*;
 
 public class denLib {
+    
+    public static int buildnumber = 4;
 
     public static boolean detect(String mod) {
         return LOADER.FML.isModLoaded(mod);
@@ -33,6 +35,10 @@ public class denLib {
 
     public static ItemStack getItemStack(String mod, String name) {
         return ReflectionHelper.getItemStack(mod, name);
+    }
+
+    public static String getItemDisplayName(ItemStack item) {
+        return item.getItem().getItemNameIS(item);
     }
 
     public static String removeDotItemFromName(String name) {
@@ -118,6 +124,13 @@ public class denLib {
 
     public static class ReflectionHelper {
 
+        // DO NOT USE THIS. IT CRASHES NEI!
+        public static void killBlock(String theClass, String theBlock) {
+            Block b = getBlock(theClass,theBlock);
+            int id = b.blockID;
+            Block.blocksList[id] = null;
+        }
+
         public static void setIntFromTileEntity(String theClass, String theField, TileEntity t, int set) {
             try {
                 Class c = Class.forName(theClass);
@@ -185,7 +198,7 @@ public class denLib {
         // This stuff got moved from the base denLib class.
         // There are still shell functions up there so shit doesn't break.
         public static Item getItem(String mod, String name) {
-            return (Item)getWithReflection(mod,name);
+            return (Item) getWithReflection(mod, name);
         }
 
         public static ItemStack getNewItemStack(String mod, String name) {
@@ -195,23 +208,23 @@ public class denLib {
         public static ItemStack getNewItemStackBlock(String mod, String name) {
             return new ItemStack(getBlock(mod, name));
         }
-        
-        public static Object getWithReflection(String mod, String name){
+
+        public static Object getWithReflection(String mod, String name) {
             Object o = null;
-            try{
+            try {
                 o = Class.forName(mod).getField(name).get(null);
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 return null;
             }
             return o;
         }
 
         public static ItemStack getItemStack(String mod, String name) {
-            return (ItemStack)getWithReflection(mod,name);
+            return (ItemStack) getWithReflection(mod, name);
         }
 
         public static Block getBlock(String mod, String name) {
-            return (Block)getWithReflection(mod,name);
+            return (Block) getWithReflection(mod, name);
         }
 
         public static void classSnoop(String param1) {
