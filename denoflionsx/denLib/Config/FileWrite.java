@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 public class FileWrite {
 
+    public static final boolean shutup = true;
+
     public static void write(String file, ArrayList<String> w) {
         try {
             FileWriter outFile = new FileWriter(file);
@@ -16,7 +18,9 @@ public class FileWrite {
             }
             out.close();
         } catch (IOException e) {
-            //write(file,w);
+            if (!shutup) {
+                e.printStackTrace();
+            }
         }
     }
 }

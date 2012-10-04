@@ -4,9 +4,7 @@ import cpw.mods.fml.common.Loader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import net.minecraft.src.*;
 
 public class denLib {
@@ -66,6 +64,34 @@ public class denLib {
 
     public static String toLowerCaseNoSpaces(String s) {
         return toNoSpaces(s).toLowerCase();
+    }
+    
+    public static ArrayList<String> dumpPropertiesKeys(Properties p){
+        Iterator i = p.entrySet().iterator();
+        ArrayList<String> values = new ArrayList();
+        while (i.hasNext()) {
+            Map.Entry pairs = (Map.Entry) i.next();
+            values.add(pairs.getKey().toString());
+        }
+        return values;
+    }
+    
+    public static ArrayList<String> dumpMapKeys(Map map){
+        Iterator i = map.entrySet().iterator();
+        ArrayList<String> keys = new ArrayList();
+        while (i.hasNext()){
+            Map.Entry pairs = (Map.Entry) i.next();
+            keys.add(pairs.getKey().toString());
+        }
+        return keys;
+    }
+    
+    public static ArrayList<Object> dumpMapValues(Map map){
+        ArrayList<Object> values = new ArrayList();
+        for (Object o : map.values()){
+            values.add(o);
+        }
+        return values;
     }
 
     public static String Hash(String tag) {
