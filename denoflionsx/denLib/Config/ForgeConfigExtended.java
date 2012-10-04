@@ -12,6 +12,7 @@ public class ForgeConfigExtended extends Configuration {
     // Adds a fuel section to the Forge Configuration.
     public static final String CATEGORY_FUEL = "fuel";
     public static final String CATEGORY_PLUGIN = "plugin";
+    public static final String CATEGORY_MODULE = "module";
 
     public ForgeConfigExtended(File file) {
         super(file);
@@ -31,6 +32,8 @@ public class ForgeConfigExtended extends Configuration {
             cat = CATEGORY_FUEL;
         }else if (d.toLowerCase().contains("plugin")){
             cat = CATEGORY_PLUGIN;
+        }else if (d.toLowerCase().contains("module")){
+            cat = CATEGORY_MODULE;
         }
         String[] split = d.split("=");
         Property p = this.getOrCreateProperty(split[0], cat, split[1]);
