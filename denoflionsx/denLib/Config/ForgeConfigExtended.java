@@ -28,7 +28,7 @@ public class ForgeConfigExtended extends Configuration {
             cat = Configuration.CATEGORY_ITEM;
         } else if (d.contains("BlockID")) {
             cat = Configuration.CATEGORY_BLOCK;
-        } else if (d.contains("MJt") || d.contains("BurnTime")) {
+        } else if (d.contains("MJt") || d.toLowerCase().contains("burntime")) {
             cat = CATEGORY_FUEL;
         }else if (d.toLowerCase().contains("plugin")){
             cat = CATEGORY_PLUGIN;
