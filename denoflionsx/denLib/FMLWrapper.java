@@ -1,6 +1,10 @@
 package denoflionsx.denLib;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.IFuelHandler;
+import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.src.Block;
@@ -35,7 +39,7 @@ public class FMLWrapper {
         public void addShapelessRecipe(ItemStack output, Object[] grid) {
             if (!isFML) {
                 ModLoader.addShapelessRecipe(output, grid);
-            }else {
+            } else {
                 GameRegistry.addShapelessRecipe(output, grid);
             }
         }
@@ -79,11 +83,11 @@ public class FMLWrapper {
                 LanguageRegistry.instance().addStringLocalization("item." + denLib.toLowerCaseNoSpaces(name) + ".name", name);
             }
         }
-        
-        public void addName(String i, String d){
-            if (!isFML){
+
+        public void addName(String i, String d) {
+            if (!isFML) {
                 ModLoader.addLocalization(i, d);
-            }else{
+            } else {
                 LanguageRegistry.instance().addStringLocalization(i, d);
             }
         }
@@ -97,18 +101,47 @@ public class FMLWrapper {
         }
 
         public void addAchievementPage(AchievementPage page) {
-            if (!isFML){
+            if (!isFML) {
                 denLib.print("addAchievementPage not implemented for mode ModLoader");
-            }else{
+            } else {
                 AchievementPage.registerAchievementPage(page);
             }
         }
-        
-        public void registerEvent(Object event){
-            if (!isFML){
+
+        public void registerEvent(Object event) {
+            if (!isFML) {
                 denLib.print("registerEvent not implemented for mode ModLoader.");
-            }else{
+            } else {
                 MinecraftForge.EVENT_BUS.register(event);
+            }
+        }
+
+        public void registerRender(ISimpleBlockRenderingHandler render) {
+            if (!isFML) {
+                denLib.print("registerRender not implemented for mode ModLoader!");
+            } else {
+                RenderingRegistry.registerBlockHandler(render);
+            }
+        }
+
+        public int getRenderingID() {
+            if (isFML) {
+                return RenderingRegistry.getNextAvailableRenderId();
+            }
+            return 0;
+        }
+
+        public void registerGUIHandler(Object instance, IGuiHandler handler) {
+            if (isFML) {
+                NetworkRegistry.instance().registerGuiHandler(this, handler);
+            }
+        }
+
+        public void registerBlockName(Block block, String name) {
+            if (!isFML){
+                ModLoader.addName(block, name);
+            }else{
+                LanguageRegistry.addName(block, name);
             }
         }
     }
