@@ -40,7 +40,13 @@ public class denLib {
     }
 
     public static String removeDotItemFromName(String name) {
-        return name.substring(5);
+        String t;
+        try{
+            t = name.substring(5);
+        }catch(Exception ex){
+            return name;
+        }
+        return t;
     }
 
     public static Block getBlock(String mod, String name) {
