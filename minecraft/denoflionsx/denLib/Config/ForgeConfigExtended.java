@@ -36,7 +36,7 @@ public class ForgeConfigExtended extends Configuration {
             cat = CATEGORY_MODULE;
         }
         String[] split = d.split("=");
-        Property p = this.getOrCreateProperty(split[0], cat, split[1]);
+        Property p = this.get(cat,split[0],split[1]);
     }
 
     public String getOption(String key) {

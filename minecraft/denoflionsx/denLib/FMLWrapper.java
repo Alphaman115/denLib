@@ -8,6 +8,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.src.Block;
+import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.AchievementPage;
@@ -40,7 +41,7 @@ public class FMLWrapper {
         }
 
         public void addSmelt(ItemStack input, ItemStack output) {
-            GameRegistry.addSmelting(input.itemID, output.copy(), 1);
+            FurnaceRecipes.smelting().addSmelting(input.itemID, input.getItemDamage(), output.copy());
         }
 
         public void addName(String name) {
