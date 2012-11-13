@@ -6,11 +6,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-import denoflionsx.denLib.Mod.API.denLibManagers;
 import denoflionsx.denLib.Mod.Core.denLibCore;
 import denoflionsx.denLib.Mod.Proxy.Proxy;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
@@ -40,22 +37,18 @@ public class denLibMod {
     
     @Mod.Init
     public void load(FMLInitializationEvent event) {
-        denLibManagers.LeavesDropManager.registerDrop(new ItemStack(Item.beefCooked), 10);
     }
     
     @Mod.PostInit
     public void modsLoaded(FMLPostInitializationEvent evt) {
-        
     }
     
     @ForgeSubscribe
-    public void onWorldLoaded(WorldEvent.Load event) {
-        
+    public void onWorldLoaded(WorldEvent.Load event) { 
     }
 
     @ForgeSubscribe
-    public void onWorldEnded(WorldEvent.Unload event) {
-        
+    public void onWorldEnded(WorldEvent.Unload event) {  
     }
     
 }
