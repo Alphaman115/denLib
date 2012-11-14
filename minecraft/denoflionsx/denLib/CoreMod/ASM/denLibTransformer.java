@@ -1,23 +1,24 @@
 package denoflionsx.denLib.CoreMod.ASM;
 
 import cpw.mods.fml.relauncher.IClassTransformer;
-import denoflionsx.denLib.CoreMod.Interfaces.IObfName;
-import denoflionsx.denLib.CoreMod.denLibCoreMod;
+import denoflionsx.denLib.CoreMod.Interfaces.IdenLibTransformer;
+import java.io.File;
 
-public class denLibTransformer implements IClassTransformer, IObfName {
+public class denLibTransformer implements IClassTransformer, IdenLibTransformer {
 
     private String obf;
+    private File location;
 
     public denLibTransformer() {
         this.setObfName("");
     }
 
     @Override
-    public byte[] transform(String name, byte[] bytes) {
+    public final byte[] transform(String name, byte[] bytes) {
         if (!name.equals(this.getObfName())) {
             return bytes;
         }
-        bytes = OverrideClass.Override(name, bytes, this.getObfName(), denLibCoreMod.location);
+        bytes = OverrideClass.Override(name, bytes, this.getObfName(), this.getLocation());
         return bytes;
     }
 
@@ -27,7 +28,17 @@ public class denLibTransformer implements IClassTransformer, IObfName {
     }
 
     @Override
-    public void setObfName(String name) {
+    public final void setObfName(String name) {
         this.obf = name;
-    }   
+    }
+
+    @Override
+    public final void setLocation(File location) {
+        this.location = location;
+    }
+
+    @Override
+    public File getLocation() {
+        return this.location;
+    }
 }

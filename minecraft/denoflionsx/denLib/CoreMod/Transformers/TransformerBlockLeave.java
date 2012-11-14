@@ -1,11 +1,8 @@
 package denoflionsx.denLib.CoreMod.Transformers;
 
-import denoflionsx.denLib.CoreMod.ASM.denLibTransformer;
-
-public class TransformerBlockLeave extends denLibTransformer{
+public class TransformerBlockLeave extends TransformerBase{
 
     public TransformerBlockLeave() {
         this.setObfName("aji");
     }
-
 }
