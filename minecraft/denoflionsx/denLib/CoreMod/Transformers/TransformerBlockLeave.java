@@ -1,22 +1,11 @@
 package denoflionsx.denLib.CoreMod.Transformers;
 
-import codechicken.core.asm.ClassOverrider;
-import codechicken.core.asm.ObfuscationManager;
-import cpw.mods.fml.relauncher.IClassTransformer;
-import denoflionsx.denLib.CoreMod.Interfaces.IObfName;
-import denoflionsx.denLib.CoreMod.denLibCoreMod;
+import denoflionsx.denLib.CoreMod.ASM.denLibTransformer;
 
-public class TransformerBlockLeave implements IClassTransformer, IObfName{
+public class TransformerBlockLeave extends denLibTransformer{
 
-    @Override
-    public byte[] transform(String name, byte[] bytes) {
-        bytes = ClassOverrider.overrideBytes(name, bytes, new ObfuscationManager.ClassMapping(this.getObfName()), denLibCoreMod.location);
-        return bytes;
-    }
-
-    @Override
-    public String getObfName() {
-        return "aji";
+    public TransformerBlockLeave() {
+        this.setObfName("aji");
     }
 
 }
