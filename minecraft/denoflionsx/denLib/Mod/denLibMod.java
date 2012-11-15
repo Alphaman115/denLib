@@ -24,7 +24,7 @@ public class denLibMod {
     @SidedProxy(clientSide = "denoflionsx.denLib.Mod.Proxy.ProxyClient", serverSide = "denoflionsx.denLib.Mod.Proxy.ProxyServer")
     public static Proxy proxy;
     public static denLibCore core;
-    public static final boolean debug = true;
+    public static final boolean debug = false;
 
     public denLibMod() {
         instance = this;
