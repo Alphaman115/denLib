@@ -9,10 +9,6 @@ public class denLibTransformer implements IClassTransformer, IdenLibTransformer 
     private String obf;
     private File location;
 
-    public denLibTransformer() {
-        this.setObfName("");
-    }
-
     @Override
     public final byte[] transform(String name, byte[] bytes) {
         if (!name.equals(this.getObfName())) {
