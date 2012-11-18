@@ -18,6 +18,11 @@ public class ForgeConfigExtended extends Configuration {
         super(file);
     }
 
+    @Override
+    public void save() {
+        super.save();
+    }
+
     public void addDefault(String d) {
         String cat = Configuration.CATEGORY_GENERAL;
         // This if statement is for old config files.
