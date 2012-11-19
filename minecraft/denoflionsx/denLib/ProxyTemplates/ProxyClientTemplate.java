@@ -1,10 +1,10 @@
-package denoflionsx.denLib.Mod.Proxy;
+package denoflionsx.denLib.ProxyTemplates;
 
 import java.io.File;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-public class ProxyClient extends Proxy{
+public class ProxyClientTemplate extends ProxyTemplate{
 
     @Override
     public String preloadTextures(String texture) {
@@ -21,5 +21,4 @@ public class ProxyClient extends Proxy{
     public String getConfigDir() {
         return Minecraft.getMinecraftDir() + File.separator + "config" + File.separator + "denoflionsx" + File.separator;
     }
-
 }

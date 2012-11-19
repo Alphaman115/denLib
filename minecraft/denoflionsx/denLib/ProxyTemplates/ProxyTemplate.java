@@ -1,10 +1,13 @@
-package denoflionsx.denLib.Mod.Proxy;
+package denoflionsx.denLib.ProxyTemplates;
 
 import denoflionsx.denLib.Interfaces.IDenProxy;
 import denoflionsx.denLib.denLib;
 import java.io.File;
 
-public class Proxy implements IDenProxy{
+public class ProxyTemplate implements IDenProxy{
+    
+    // DON'T ACTUALLY EXTEND THESE.
+    // THESE TEMPLATES ARE FOR REFERENCE ONLY!
 
     @Override
     public String preloadTextures(String texture) {
@@ -24,5 +27,4 @@ public class Proxy implements IDenProxy{
     public String getConfigDir() {
         return "./" + File.separator + "config" + File.separator + "denoflionsx" + File.separator;
     }
-
 }
