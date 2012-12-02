@@ -15,7 +15,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
 
-@Mod(modid = "denLib", name = "denLib", version = "2.0")
+@Mod(modid = "denLib", name = "denLib", version = "2.1")
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
 public class denLibMod {
 
@@ -27,7 +27,6 @@ public class denLibMod {
     public static final boolean debug = false;
 
     public denLibMod() {
-        instance = this;
         MinecraftForge.EVENT_BUS.register(this);
     }
 

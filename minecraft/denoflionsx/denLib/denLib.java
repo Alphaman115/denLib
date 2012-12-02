@@ -8,7 +8,7 @@ import java.util.*;
 import net.minecraft.src.*;
 
 public class denLib {
-    
+
     public static int buildnumber = 4;
 
     public static boolean detect(String mod) {
@@ -41,9 +41,9 @@ public class denLib {
 
     public static String removeDotItemFromName(String name) {
         String t;
-        try{
+        try {
             t = name.substring(5);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return name;
         }
         return t;
@@ -71,8 +71,8 @@ public class denLib {
     public static String toLowerCaseNoSpaces(String s) {
         return toNoSpaces(s).toLowerCase();
     }
-    
-    public static ArrayList<String> dumpPropertiesKeys(Properties p){
+
+    public static ArrayList<String> dumpPropertiesKeys(Properties p) {
         Iterator i = p.entrySet().iterator();
         ArrayList<String> values = new ArrayList();
         while (i.hasNext()) {
@@ -81,20 +81,20 @@ public class denLib {
         }
         return values;
     }
-    
-    public static ArrayList<String> dumpMapKeys(Map map){
+
+    public static ArrayList<String> dumpMapKeys(Map map) {
         Iterator i = map.entrySet().iterator();
         ArrayList<String> keys = new ArrayList();
-        while (i.hasNext()){
+        while (i.hasNext()) {
             Map.Entry pairs = (Map.Entry) i.next();
             keys.add(pairs.getKey().toString());
         }
         return keys;
     }
-    
-    public static ArrayList<Object> dumpMapValues(Map map){
+
+    public static ArrayList<Object> dumpMapValues(Map map) {
         ArrayList<Object> values = new ArrayList();
-        for (Object o : map.values()){
+        for (Object o : map.values()) {
             values.add(o);
         }
         return values;
@@ -158,7 +158,7 @@ public class denLib {
 
         // DO NOT USE THIS. IT CRASHES NEI!
         public static void killBlock(String theClass, String theBlock) {
-            Block b = getBlock(theClass,theBlock);
+            Block b = getBlock(theClass, theBlock);
             int id = b.blockID;
             Block.blocksList[id] = null;
         }
@@ -187,10 +187,20 @@ public class denLib {
             Field f = null;
             try {
                 f = c.getDeclaredField(field);
+                f.setAccessible(true);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
             return f;
+        }
+
+        public static Object getObjectFromFieldNull(Field f) {
+            try {
+                return f.get(null);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return null;
         }
 
         public static int getStaticInt(String theClass, String theField) {

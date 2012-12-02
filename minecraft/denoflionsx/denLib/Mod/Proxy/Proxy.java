@@ -10,10 +10,10 @@ public class Proxy implements IDenProxy{
     public String preloadTextures(String texture) {
         return texture;
     }
-
+    
     @Override
     public void print(String msg) {
-        denLib.print(msg);
+        denLib.print("[denLib]: " + msg);
     }
 
     @Override

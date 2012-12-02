@@ -9,8 +9,11 @@ public class denLibCoreMod implements IFMLLoadingPlugin {
     public static final String clazzpath = "denoflionsx.denLib.CoreMod.Transformers.";
     public static final String Leaves = clazzpath + "TransformerBlockLeave";
     public static final String[] ASM = new String[]{Leaves};
+    public static final String[] Libs = new String[]{"denoflionsx.denLib.CoreMod.Library.zip4j"};
     public static boolean ASMReg = false;
+    public static boolean LibReg = false;
     public static File location;
+    public static final String LeavesMapping = "akm";
 
     @Override
     public String[] getASMTransformerClass() {
@@ -33,7 +36,21 @@ public class denLibCoreMod implements IFMLLoadingPlugin {
 
     @Override
     public String[] getLibraryRequestClass() {
-        return null;
+        if (!LibReg){
+            for (String s : Libs){
+                try{
+                    Class c = Class.forName(s);
+                    if (c != null){
+                        System.out.println("[denLib]: " + "Library registered succesfully!");
+                    }
+                }catch(Exception ex){
+                    System.out.println("[denLib]: " + "Library failed!");
+                    return null;
+                }
+            }
+            LibReg = true;
+        }
+        return Libs;
     }
 
     @Override
