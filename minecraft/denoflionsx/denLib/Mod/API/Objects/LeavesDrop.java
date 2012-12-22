@@ -1,6 +1,6 @@
 package denoflionsx.denLib.Mod.API.Objects;
 
-import net.minecraft.src.ItemStack;
+import net.minecraft.item.ItemStack;
 
 public class LeavesDrop {
     

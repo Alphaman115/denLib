@@ -2,9 +2,9 @@ package denoflionsx.denLib.Mod.API.Interfaces;
 
 import denoflionsx.denLib.Mod.API.Objects.LeavesDrop;
 import java.util.ArrayList;
-import net.minecraft.src.BlockLeaves;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.World;
+import net.minecraft.block.BlockLeaves;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public interface ILeavesDropManager {
     

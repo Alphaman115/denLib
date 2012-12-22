@@ -5,9 +5,9 @@ import denoflionsx.denLib.denLib;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class ItemBase extends Item {
 
@@ -51,10 +51,15 @@ public class ItemBase extends Item {
 
     @Override
     public String getItemNameIS(ItemStack par1ItemStack) {
-        if (names.get(par1ItemStack.getItemDamage()) != null) {
-            return names.get(par1ItemStack.getItemDamage());
-        } else {
-            return "Unknown Item";
+        try {
+            if (names.get(par1ItemStack.getItemDamage()) != null) {
+                return names.get(par1ItemStack.getItemDamage());
+            } else {
+                return "Unknown Item";
+            }
+        } catch (Exception ex) {
+            //ex.printStackTrace();
+            return "Allan please add meta aware tooltip";
         }
     }
 }

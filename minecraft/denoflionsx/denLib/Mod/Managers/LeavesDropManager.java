@@ -5,9 +5,9 @@ import denoflionsx.denLib.Mod.API.Interfaces.ILeavesDropManager;
 import denoflionsx.denLib.Mod.API.Objects.LeavesDrop;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import net.minecraft.src.BlockLeaves;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.World;
+import net.minecraft.block.BlockLeaves;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class LeavesDropManager implements ILeavesDropManager {
 
@@ -39,7 +39,7 @@ public class LeavesDropManager implements ILeavesDropManager {
                 // punch me when I try to compile.
                 if (dropItems == null) {
                     try {
-                        Class c = Class.forName("net.minecraft.src." + denLibCoreMod.LeavesMapping);
+                        Class c = Class.forName("net.minecraft.block." + denLibCoreMod.LeavesMapping);
                         dropItems = c.getDeclaredMethod("dropItems", new Class[]{World.class, int.class, int.class, int.class, ItemStack.class});
                     } catch (Exception ex) {
                         ex.printStackTrace();

@@ -5,7 +5,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.util.*;
-import net.minecraft.src.*;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.src.ModLoader;
+import net.minecraft.tileentity.TileEntity;
 
 public class denLib {
 

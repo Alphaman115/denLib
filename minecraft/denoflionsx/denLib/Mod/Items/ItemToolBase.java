@@ -1,6 +1,6 @@
 package denoflionsx.denLib.Mod.Items;
 
-import net.minecraft.src.Item;
+import net.minecraft.item.Item;
 
 public class ItemToolBase extends Item{
 

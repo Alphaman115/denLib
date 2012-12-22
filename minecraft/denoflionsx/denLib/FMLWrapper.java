@@ -3,14 +3,14 @@ package denoflionsx.denLib;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.IFuelHandler;
+import cpw.mods.fml.common.Mod.Item;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import net.minecraft.src.Block;
-import net.minecraft.src.FurnaceRecipes;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -41,7 +41,7 @@ public class FMLWrapper {
         }
 
         public void addSmelt(ItemStack input, ItemStack output) {
-            FurnaceRecipes.smelting().addSmelting(input.itemID, input.getItemDamage(), output.copy());
+            FurnaceRecipes.smelting().addSmelting(input.itemID, input.getItemDamage(), output.copy(),0.0f);
         }
 
         public void addName(String name) {

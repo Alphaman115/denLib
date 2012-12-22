@@ -1,12 +1,12 @@
 package denoflionsx.denLib.Config;
 
+import denoflionsx.denLib.denLib;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import denoflionsx.denLib.denLib;
 
 public class Config_OLD {
 

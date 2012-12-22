@@ -1,8 +1,8 @@
 package denoflionsx.denLib.Config;
 
+import denoflionsx.denLib.denLib;
 import java.io.File;
 import java.util.ArrayList;
-import denoflionsx.denLib.denLib;
 
 public class Config {
 
