@@ -1,8 +1,14 @@
 package denoflionsx.denLib.Lib;
 
+import com.google.common.collect.BiMap;
+import com.google.common.io.ByteStreams;
 import denoflionsx.denLib.Mod.denLibMod;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.liquids.LiquidStack;
 
@@ -101,7 +107,7 @@ public class denLib {
     public static class StringUtils {
 
         public static final String readError = "Error";
-        
+
         public static String removeSpaces(String s) {
             return s.replaceAll("\\s", "");
         }
@@ -117,27 +123,94 @@ public class denLib {
 
         public static String[] readFileContentsAutomated(File configDir, String name, Object instance) {
             InputStream i = null;
-            File f1 = new File(configDir.getAbsolutePath() + "/" + name);
-            if (f1.exists()) {
-                try {
-                    i = new FileInputStream(f1);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            } else {
-                try {
-                    i = instance.getClass().getResourceAsStream(name);
-                } catch (Exception ex) {
-                    denLibMod.Proxy.warning("Error reading file " + name + " from instance of " + instance.getClass().getName() + "!");
+            if (configDir != null) {
+                File f1 = new File(configDir.getAbsolutePath() + "/" + name);
+                if (f1.exists()) {
+                    try {
+                        i = new FileInputStream(f1);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    try {
+                        i = instance.getClass().getResourceAsStream(name);
+                    } catch (Exception ex) {
+                        denLibMod.Proxy.warning("Error reading file " + name + " from instance of " + instance.getClass().getName() + "!");
+                    }
                 }
             }
             if (i != null) {
                 String f = denLib.StringUtils.scanFileContents(i);
                 String[] p = denLib.StringUtils.splitByNewLine(f);
                 return p;
-            }else{
+            } else {
                 return new String[]{readError};
             }
+        }
+    }
+
+    public static class NetUtils {
+
+        public static String[] readFileFromURL(String URL) {
+            ArrayList<String> l = new ArrayList();
+            try {
+                // Create a URL for the desired page
+                URL url = new URL(URL);
+                BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+                String str;
+                while ((str = in.readLine()) != null) {
+                    l.add(str);
+                }
+                in.close();
+            } catch (MalformedURLException e) {
+            } catch (IOException e) {
+            }
+            return l.toArray(new String[l.size()]);
+        }
+
+        public static URL newUrlFromString(String s) {
+            try {
+                return new URL(s);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return null;
+        }
+
+        public static File readBinaryFromNet(URL u, File saveTo) {
+            try {
+                URLConnection uc = u.openConnection();
+                String contentType = uc.getContentType();
+                int contentLength = uc.getContentLength();
+                if (contentType.startsWith("text/") || contentLength == -1) {
+                    throw new IOException("This is not a binary file.");
+                }
+                InputStream raw = uc.getInputStream();
+                InputStream in = new BufferedInputStream(raw);
+                byte[] data = new byte[contentLength];
+                int bytesRead = 0;
+                int offset = 0;
+                while (offset < contentLength) {
+                    bytesRead = in.read(data, offset, data.length - offset);
+                    if (bytesRead == -1) {
+                        break;
+                    }
+                    offset += bytesRead;
+                }
+                in.close();
+
+                if (offset != contentLength) {
+                    throw new IOException("Only read " + offset + " bytes; Expected " + contentLength + " bytes");
+                }
+                FileOutputStream out = new FileOutputStream(saveTo.getAbsolutePath());
+                out.write(data);
+                out.flush();
+                out.close();
+                return saveTo;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return null;
         }
     }
 
@@ -147,6 +220,46 @@ public class denLib {
             LiquidStack t = stack.copy();
             t.amount = capacity;
             return t;
+        }
+    }
+
+    public static class FileUtils {
+
+        public static void saveBiMapToFile(BiMap map, File f) {
+            saveObjectToFile(map, f);
+        }
+
+        public static BiMap readBiMapFromFile(File f) {
+            return (BiMap) readObjectFromFile(f);
+        }
+
+        private static void saveObjectToFile(Object o, File f) {
+            try {
+                ByteArrayOutputStream b = new ByteArrayOutputStream();
+                ObjectOutputStream b1 = new ObjectOutputStream(b);
+                b1.writeObject(o);
+                byte[] array = b.toByteArray();
+                FileOutputStream fos = new FileOutputStream(f);
+                fos.write(array);
+                fos.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        private static Object readObjectFromFile(File f) {
+            try {
+                FileInputStream fis = new FileInputStream(f.getAbsolutePath());
+                byte[] b = ByteStreams.toByteArray(fis);
+                ByteArrayInputStream b2 = new ByteArrayInputStream(b);
+                ObjectInputStream ois = new ObjectInputStream(b2);
+                Object o = ois.readObject();
+                ois.close();
+                return o;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return null;
         }
     }
 }
