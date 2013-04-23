@@ -1,5 +1,6 @@
 package denoflionsx.denLib.Config.Manager;
 
+import denoflionsx.denLib.Config.Annotations.Comment;
 import denoflionsx.denLib.Config.Annotations.Config;
 import denoflionsx.denLib.Config.Annotations.Tunable;
 import denoflionsx.denLib.Mod.denLibMod;
@@ -48,6 +49,13 @@ public class TunableManager implements ITunableManager {
                             ConfigCategory a123 = config1.getCategory(cat);
                             if (!t.comment().equals("Tunable Values")) {
                                 a123.setComment(t.comment());
+                            }
+                            Annotation[] fAnno = h.getDeclaredAnnotations();
+                            for (Annotation q : fAnno){
+                                if (q instanceof Comment){
+                                    Comment comment = (Comment) q;
+                                    p.comment = comment.comment();
+                                }
                             }
                         }
                     }
