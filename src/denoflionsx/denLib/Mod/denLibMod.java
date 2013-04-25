@@ -54,6 +54,9 @@ public class denLibMod {
         for (IdenWorldEventHandler handler : WorldEventHandler.getHandlers()) {
             handler.onWorldLoaded();
         }
+        WorldEventHandler.getHandlers().removeAll(WorldEventHandler.getRemoveQueue());
+        WorldEventHandler.getHandlers().trimToSize();
+        WorldEventHandler.getRemoveQueue().clear();
     }
 
     @ForgeSubscribe
@@ -61,5 +64,8 @@ public class denLibMod {
         for (IdenWorldEventHandler handler : WorldEventHandler.getHandlers()) {
             handler.onWorldEnded();
         }
+        WorldEventHandler.getHandlers().removeAll(WorldEventHandler.getRemoveQueue());
+        WorldEventHandler.getHandlers().trimToSize();
+        WorldEventHandler.getRemoveQueue().clear();
     }
 }

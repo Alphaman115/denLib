@@ -23,9 +23,10 @@ public class ItemMeta extends Item {
         this.textures = textures;
     }
 
-    public void createItemEntry(int meta) {
+    public ItemStack createItemEntry(int meta) {
         ItemStack i = new ItemStack(this, 1, meta);
         stacks.add(i);
+        return i;
     }
 
     public ItemStack createItemEntry(int meta, NBTTagCompound tag) {
