@@ -50,6 +50,26 @@ public class denLib {
             }
             return null;
         }
+
+        public static String findStringInNestedClass(Class first, String name) {
+            try {
+                for (Field f : first.getDeclaredFields()) {
+                    if (f.getName().equals(name)) {
+                        return f.get(null).toString();
+                    }
+                }
+                for (Class c : first.getDeclaredClasses()) {
+                    for (Field f : c.getDeclaredFields()) {
+                        if (f.getName().equals(name)) {
+                            return f.get(null).toString();
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return denLib.StringUtils.readError;
+        }
     }
 
     public static class NBTUtils {

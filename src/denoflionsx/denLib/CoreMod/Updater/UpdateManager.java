@@ -7,18 +7,13 @@ import denoflionsx.denLib.Lib.denLib;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class UpdateManager {
-
-    private ArrayList<IDenUpdate> validForUpdate = new ArrayList();
-    private List<IDenUpdate> threadSafe = new ArrayList();
-    private ArrayList<IDenUpdate> needsUpdated = new ArrayList();
-    private List<IDenUpdate> threadSafeUpdate = new ArrayList();
+    
+    private ArrayList<IDenUpdate> validforUpdate = new ArrayList();
 
     public void registerUpdate(IDenUpdate update) {
-        validForUpdate.add(update);
+        validforUpdate.add(update);
         denLibCore.print("Registered updater for " + update.getUpdaterName());
     }
 
@@ -40,9 +35,7 @@ public class UpdateManager {
     }
 
     public void startUpdaterThread() {
-        threadSafe = Collections.synchronizedList(validForUpdate);
-        threadSafeUpdate = Collections.synchronizedList(needsUpdated);
-        Thread updater = new ThreadedUpdater(threadSafe, threadSafeUpdate, denLibCore.check);
+        Thread updater = new ThreadedUpdater(validforUpdate, new ArrayList(), denLibCore.check);
         updater.start();
     }
 }
