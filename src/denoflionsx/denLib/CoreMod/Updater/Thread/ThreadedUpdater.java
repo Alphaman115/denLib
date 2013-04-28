@@ -9,7 +9,6 @@ import java.util.List;
 
 public class ThreadedUpdater extends Thread {
 
-    private boolean isRunning = false;
     private List<IDenUpdate> syncedList;
     private List<IDenUpdate> syncedListUpdate;
     private File outputFile;
@@ -23,14 +22,12 @@ public class ThreadedUpdater extends Thread {
     @Override
     public void run() {
         while (!this.isInterrupted()) {
-            if (!this.isRunning) {
-                this.runUpdateChecks();
-            }
+            this.runUpdateChecks();
+
         }
     }
 
     private void runUpdateChecks() {
-        this.isRunning = true;
         for (IDenUpdate i : syncedList) {
             String[] read2 = denLib.NetUtils.readFileFromURL(i.getUpdaterUrl());
             int versionLocal = Integer.valueOf(i.getBuildNumber());
@@ -52,7 +49,7 @@ public class ThreadedUpdater extends Thread {
                     saveMap.put(i.getUpdaterName(), info);
                 }
                 //-----
-                if (outputFile.exists()){
+                if (outputFile.exists()) {
                     outputFile.delete();
                 }
                 denLib.FileUtils.saveBiMapToFile(saveMap, outputFile);
