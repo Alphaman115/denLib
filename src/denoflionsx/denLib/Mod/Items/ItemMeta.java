@@ -1,5 +1,6 @@
 package denoflionsx.denLib.Mod.Items;
 
+import denoflionsx.denLib.Lib.denLib;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ public class ItemMeta extends Item {
 
     private ArrayList<ItemStack> stacks = new ArrayList();
     public HashMap<Integer, Icon> icons = new HashMap();
+    protected HashMap<Integer, String> names = new HashMap();
     public String[] textures;
 
     public ItemMeta(String[] textures, int par1) {
@@ -23,16 +25,18 @@ public class ItemMeta extends Item {
         this.textures = textures;
     }
 
-    public ItemStack createItemEntry(int meta) {
+    public ItemStack createItemEntry(int meta, String name) {
         ItemStack i = new ItemStack(this, 1, meta);
         stacks.add(i);
+        names.put(meta, name);
         return i;
     }
 
-    public ItemStack createItemEntry(int meta, NBTTagCompound tag) {
+    public ItemStack createItemEntry(int meta, String name, NBTTagCompound tag) {
         ItemStack i = new ItemStack(this, 1, meta);
         i.stackTagCompound = tag;
         stacks.add(i);
+        names.put(meta, name);
         return i;
     }
 
@@ -57,7 +61,7 @@ public class ItemMeta extends Item {
     }
 
     @Override
-    public void updateIcons(IconRegister par1IconRegister) {
+    public void registerIcons(IconRegister par1IconRegister) {
         for (int i = 0; i < stacks.size(); i++) {
             try {
                 icons.put(i, par1IconRegister.registerIcon(textures[i]));
@@ -74,21 +78,19 @@ public class ItemMeta extends Item {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        return this.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
-    }
-
-    public String getTextureFileForItemStack(ItemStack par1ItemStack) {
-        try {
-            return "textures/items/" + textures[par1ItemStack.getItemDamage()] + ".png";
-        } catch (Exception ex) {
-            // noise
+    public String getItemDisplayName(ItemStack par1ItemStack) {
+        if (par1ItemStack.stackTagCompound != null) {
+            if (par1ItemStack.stackTagCompound.hasKey("override")) {
+                NBTTagCompound tag = par1ItemStack.stackTagCompound.getCompoundTag("override");
+                return tag.getString("name");
+            }
+        } else {
+            return this.names.get(par1ItemStack.getItemDamage());
         }
-        return "textures/items/" + textures[0] + ".png";
+        return denLib.StringUtils.readError;
     }
 
-    public static String getTextureFileForItemStackShortcut(ItemStack par1ItemStack) {
-        ItemMeta meta = (ItemMeta) par1ItemStack.getItem();
-        return meta.getTextureFileForItemStack(par1ItemStack);
+    public String getBaseName() {
+        return names.get(0);
     }
 }

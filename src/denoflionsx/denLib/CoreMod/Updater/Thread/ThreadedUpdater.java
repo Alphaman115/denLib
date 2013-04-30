@@ -6,6 +6,7 @@ import denoflionsx.denLib.CoreMod.Updater.IDenUpdate;
 import denoflionsx.denLib.Lib.denLib;
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ThreadedUpdater extends Thread {
 
@@ -59,7 +60,7 @@ public class ThreadedUpdater extends Thread {
             ex.printStackTrace();
         }
         try {
-            Thread.sleep((10 * 60) * 1000);
+            TimeUnit.MINUTES.sleep(10);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

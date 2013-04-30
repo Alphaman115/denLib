@@ -33,7 +33,6 @@ public class denLibMod {
         Proxy.registerForgeSubscribe(this);
         tuning = new TunableManager();
         configFile = event.getSuggestedConfigurationFile();
-        Proxy.print("Localization code shamelessly lifted from powercrystals.");
         Proxy.print("Liquid Block code from powercrystalscore, originally from King_Lemming.");
     }
 
