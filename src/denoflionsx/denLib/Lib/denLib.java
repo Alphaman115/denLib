@@ -267,15 +267,24 @@ public class denLib {
             }
         }
 
-        private static Object readObjectFromFile(File f) {
+        public static Object readObjectFromByteArray(byte[] bytes) {
             try {
-                FileInputStream fis = new FileInputStream(f.getAbsolutePath());
-                byte[] b = ByteStreams.toByteArray(fis);
-                ByteArrayInputStream b2 = new ByteArrayInputStream(b);
+                ByteArrayInputStream b2 = new ByteArrayInputStream(bytes);
                 ObjectInputStream ois = new ObjectInputStream(b2);
                 Object o = ois.readObject();
                 ois.close();
                 return o;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return null;
+        }
+
+        private static Object readObjectFromFile(File f) {
+            try {
+                FileInputStream fis = new FileInputStream(f.getAbsolutePath());
+                byte[] b = ByteStreams.toByteArray(fis);
+                return readObjectFromByteArray(b);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
