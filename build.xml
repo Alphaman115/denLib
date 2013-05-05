@@ -20,12 +20,13 @@
 
 	<property name="mc.version" value="1.5.2"/>
 	<property name="forge.version" value="7.8.0.685"/>
-<!--	<property name="project.version" value="0.0.0"/>-->
+        <property name="project.version" value="3.0"/>
+        <buildnumber/>
 
 	<property name="forge.name" value="minecraftforge-src-${mc.version}-${forge.version}.zip"/>
 
 	<available property="forge-exists" file="${download.dir}/${forge.name}"/>
-	<available file="${src.dir}/.git" type="dir" property="git.present"/>
+	<available file=".git" type="dir" property="git.present"/>
 
 	<condition property="out-of-date">
 		<not>
