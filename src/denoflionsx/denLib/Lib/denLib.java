@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.liquids.LiquidStack;
@@ -255,16 +256,26 @@ public class denLib {
 
         private static void saveObjectToFile(Object o, File f) {
             try {
-                ByteArrayOutputStream b = new ByteArrayOutputStream();
-                ObjectOutputStream b1 = new ObjectOutputStream(b);
-                b1.writeObject(o);
-                byte[] array = b.toByteArray();
+                byte[] array = turnObjectToByteArray(o);
                 FileOutputStream fos = new FileOutputStream(f);
                 fos.write(array);
                 fos.close();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+
+        private static byte[] turnObjectToByteArray(Object o) {
+            try {
+                ByteArrayOutputStream b = new ByteArrayOutputStream();
+                ObjectOutputStream b1 = new ObjectOutputStream(b);
+                b1.writeObject(o);
+                byte[] array = b.toByteArray();
+                return array;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return null;
         }
 
         public static Object readObjectFromByteArray(byte[] bytes) {
@@ -290,5 +301,32 @@ public class denLib {
             }
             return null;
         }
+
+        public static byte[] createSha1(File file) throws Exception {
+            MessageDigest digest = MessageDigest.getInstance("SHA-1");
+            InputStream fis = new FileInputStream(file);
+            int n = 0;
+            byte[] buffer = new byte[8192];
+            while (n != -1) {
+                n = fis.read(buffer);
+                if (n > 0) {
+                    digest.update(buffer, 0, n);
+                }
+            }
+            fis.close();
+            return digest.digest();
+        }
+    }
+    
+    public static class RandomUtils{
+        
+        public static void throwCustomException(String why){
+            try{
+                throw new Exception(why);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        
     }
 }

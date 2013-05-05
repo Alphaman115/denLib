@@ -2,12 +2,10 @@ package denoflionsx.denLib.CoreMod;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import denoflionsx.denLib.CoreMod.Updater.UpdateManager;
 import java.io.File;
 import java.util.Map;
 
-@MCVersion(value = "1.5.1")
 public class denLibCore implements IFMLLoadingPlugin {
     
     public static UpdateManager updater;
@@ -37,6 +35,7 @@ public class denLibCore implements IFMLLoadingPlugin {
     public void injectData(Map<String, Object> data) {
         updater = new UpdateManager();
         updater.doUpdate();
+        //LibraryManager.instance.runLibraryChecks();
     }
     
     public static void print(String msg){

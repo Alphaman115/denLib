@@ -29,6 +29,11 @@ public class ThreadedUpdater extends Thread {
     }
 
     private void runUpdateChecks() {
+        File r = new File("do_not_update.txt");
+        if (r.exists()){
+            this.interrupt();
+            return;
+        }
         for (IDenUpdate i : syncedList) {
             String[] read2 = denLib.NetUtils.readFileFromURL(i.getUpdaterUrl());
             int versionLocal = Integer.valueOf(i.getBuildNumber());
