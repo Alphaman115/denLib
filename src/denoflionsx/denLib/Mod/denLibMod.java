@@ -10,6 +10,7 @@ import denoflionsx.denLib.Config.Manager.TunableManager;
 import denoflionsx.denLib.Config.TestConfig.denLibTunable;
 import denoflionsx.denLib.CoreMod.denLibCore;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.IdenWorldEventHandler;
+import denoflionsx.denLib.Mod.Handlers.WorldHandler.UpdateHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.WorldEventHandler;
 import denoflionsx.denLib.Mod.Proxy.denLibProxy;
 import java.io.File;
@@ -46,6 +47,7 @@ public class denLibMod {
     public void modsLoaded(FMLPostInitializationEvent evt) {
         Proxy.print("denLib load complete.");
         denLibCore.updater.startUpdaterThread();
+        WorldEventHandler.registerHandler(new UpdateHandler());
     }
 
     @ForgeSubscribe

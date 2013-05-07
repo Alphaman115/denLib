@@ -4,6 +4,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import denoflionsx.denLib.CoreMod.Updater.IDenUpdate;
 import denoflionsx.denLib.Lib.denLib;
+import denoflionsx.denLib.Mod.Handlers.TickHandler.UpdaterMessage;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -42,6 +43,8 @@ public class ThreadedUpdater extends Thread {
             if (versionRemote > versionLocal) {
                 this.print("Update Found for " + i.getUpdaterName());
                 this.print("This mod will be updated when you next launch Minecraft.");
+                UpdaterMessage.add("Update Found for " + i.getUpdaterName());
+                UpdaterMessage.add("This mod will be updated when you next launch Minecraft.");
                 this.syncedListUpdate.add(i);
             }
 

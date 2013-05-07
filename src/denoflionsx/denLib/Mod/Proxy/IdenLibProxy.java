@@ -8,4 +8,6 @@ public interface IdenLibProxy {
     
     public void registerForgeSubscribe(Object o);
     
+    public void sendMessageToPlayer(String msg);
+    
 }

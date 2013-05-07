@@ -7,10 +7,13 @@ import denoflionsx.denLib.Lib.denLib;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UpdateManager {
-    
+
     private ArrayList<IDenUpdate> validforUpdate = new ArrayList();
+    public static final Set<String> stuffToPrint = new HashSet();
 
     public void registerUpdate(IDenUpdate update) {
         validforUpdate.add(update);
@@ -26,10 +29,12 @@ public class UpdateManager {
                 URL internets = denLib.NetUtils.newUrlFromString(data[1]);
                 modFile.delete();
                 File wasSaved = denLib.NetUtils.readBinaryFromNet(internets, modFile);
-                if (wasSaved.exists()){
+                if (wasSaved.exists()) {
                     denLibCore.print("Mod updated!");
                 }
-                denLibCore.check.delete();
+                if (!denLibCore.check.delete()) {
+                    denLibCore.check.deleteOnExit();
+                }
             }
         }
     }

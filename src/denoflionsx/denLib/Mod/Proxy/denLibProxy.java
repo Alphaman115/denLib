@@ -20,4 +20,8 @@ public class denLibProxy implements IdenLibProxy {
         MinecraftForge.EVENT_BUS.register(o);
         this.print("Registered event handler.");
     }
+
+    @Override
+    public void sendMessageToPlayer(String msg) {
+    }
 }

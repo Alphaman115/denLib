@@ -10,6 +10,7 @@ public class denLibCore implements IFMLLoadingPlugin {
     
     public static UpdateManager updater;
     public static File check = new File("denLibUpdateCheck.bin");
+    public static final String build_number = "@BUILD_NUMBER@";
 
     @Override
     public String[] getASMTransformerClass() {
