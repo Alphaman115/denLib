@@ -3,6 +3,7 @@ package denoflionsx.denLib.CoreMod.Updater.Thread;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import denoflionsx.denLib.CoreMod.Updater.IDenUpdate;
+import denoflionsx.denLib.CoreMod.denLibCore;
 import denoflionsx.denLib.Lib.denLib;
 import denoflionsx.denLib.Mod.Handlers.TickHandler.UpdaterMessage;
 import java.io.File;
@@ -32,6 +33,7 @@ public class ThreadedUpdater extends Thread {
     private void runUpdateChecks() {
         File r = new File("do_not_update.txt");
         if (r.exists()){
+            denLibCore.print("Update check stopped.");
             this.interrupt();
             return;
         }
