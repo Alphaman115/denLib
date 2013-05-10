@@ -1,6 +1,7 @@
 package denoflionsx.denLib.Mod.Proxy;
 
 import cpw.mods.fml.common.FMLLog;
+import denoflionsx.denLib.Mod.Event.DenEventHandler;
 import net.minecraftforge.common.MinecraftForge;
 
 public class denLibProxy implements IdenLibProxy {
@@ -18,10 +19,14 @@ public class denLibProxy implements IdenLibProxy {
     @Override
     public void registerForgeSubscribe(Object o) {
         MinecraftForge.EVENT_BUS.register(o);
-        this.print("Registered event handler.");
     }
 
     @Override
     public void sendMessageToPlayer(String msg) {
+    }
+
+    @Override
+    public void registerDenListen(Object o) {
+        DenEventHandler.instance.register(o);
     }
 }

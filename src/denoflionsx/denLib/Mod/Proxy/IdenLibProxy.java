@@ -10,4 +10,6 @@ public interface IdenLibProxy {
     
     public void sendMessageToPlayer(String msg);
     
+    public void registerDenListen(Object o);
+    
 }
