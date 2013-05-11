@@ -1,8 +1,8 @@
 forge/
 nbproject/
-*.class
 build/
 bin/
+*.class
 /forge/fml/eclipse/.metadata/
 download/
 *.number

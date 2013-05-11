@@ -23,7 +23,6 @@
 	<property name="mc.version" value="1.5.2"/>
 	<property name="forge.version" value="7.8.0.685"/>
         <property name="project.version" value="3.0"/>
-        <buildnumber/>
 
 	<property name="forge.name" value="minecraftforge-src-${mc.version}-${forge.version}.zip"/>
 
@@ -57,7 +56,7 @@
 
 	<!-- Set unknown build number -->
 	<target name="version-not-provided" unless="env.BUILD_NUMBER">
-		<property name="build.number" value="unknown"/>
+                <buildnumber/>
 	</target>
 
 	<!-- Set build number from environment -->
@@ -86,6 +85,7 @@
 	<!-- Download forge (if it doesn't exist) -->
 	<target name="download-forge" unless="forge-exists">
 		<get src="http://files.minecraftforge.net/${forge.name}" dest="${download.dir}" usetimestamp="True"/>
+                <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/mcp7.51.zip" dest="${download.dir}" usetimestamp="True"/>
 	</target>
 
 	<!-- Setup mcp and forge -->
@@ -94,7 +94,7 @@
 		<delete dir="${forge.dir}" failonerror="false"/>
 
 		<unzip dest="${forge.dir}/.." src="${download.dir}/${forge.name}"/>
-
+                <unzip dest="${forge.dir}/mcp" src="${download.dir}/mcp7.51.zip"/>
 		<!-- Fix executable permissions -->
 		<chmod dir="${forge.dir}" perm="ugo+rx" includes="**.sh"/>
 
@@ -107,10 +107,7 @@
 			<arg value="install.sh"/>
 		</exec>
                 
-                <copy todir="${basedir}" overwrite="true">
-			<fileset dir="${override.dir}">
-			</fileset>
-		</copy>
+                <unzip dest="${basedir}" src="${override.dir}/build.zip"/>
 
 	</target>
 
@@ -120,7 +117,7 @@
 			<fileset dir="${src.dir}/denoflionsx/denLib"/>
 			<filterset>
 				<filter token="VERSION" value="${project.version.full}" />
-				<filter token="BUILD_NUMBER" value="${build.number}" />
+				<filter token="BUILD_NUMBER" value="${env.BUILD_NUMBER}" />
 			</filterset>
 		</copy>
                 <copy todir="${forgelib.dir}">
