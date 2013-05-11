@@ -117,7 +117,9 @@ public class denLib {
                 NBTTagCompound read = readNBTFromFile(file);
                 ByteArrayInputStream b2 = new ByteArrayInputStream(read.getByteArray("object"));
                 ObjectInputStream ois = new ObjectInputStream(b2);
-                return ois.readObject();
+                Object o = ois.readObject();
+                ois.close();
+                return o;
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -271,6 +273,8 @@ public class denLib {
                 ObjectOutputStream b1 = new ObjectOutputStream(b);
                 b1.writeObject(o);
                 byte[] array = b.toByteArray();
+                b.close();
+                b1.close();
                 return array;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -295,6 +299,7 @@ public class denLib {
             try {
                 FileInputStream fis = new FileInputStream(f.getAbsolutePath());
                 byte[] b = ByteStreams.toByteArray(fis);
+                fis.close();
                 return readObjectFromByteArray(b);
             } catch (Exception ex) {
                 ex.printStackTrace();

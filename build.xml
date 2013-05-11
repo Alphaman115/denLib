@@ -117,7 +117,7 @@
 			<fileset dir="${src.dir}/denoflionsx/denLib"/>
 			<filterset>
 				<filter token="VERSION" value="${project.version.full}" />
-				<filter token="BUILD_NUMBER" value="${env.BUILD_NUMBER}" />
+				<filter token="BUILD_NUMBER" value="${build.number}" />
 			</filterset>
 		</copy>
                 <copy todir="${forgelib.dir}">

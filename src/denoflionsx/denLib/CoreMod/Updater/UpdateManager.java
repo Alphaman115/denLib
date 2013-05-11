@@ -17,7 +17,6 @@ public class UpdateManager {
     private ArrayList<IDenUpdate> validforUpdate = new ArrayList();
     public static final Set<String> stuffToPrint = new HashSet();
     private static final File denLibUpdated = new File("denLibUpdated.BiMap");
-    private static final File DELETE = new File("YOU_WILL_DELETE.bin");
 
     /*
      * This turned into a clusterfuck really fast due to files getting locked.
@@ -28,11 +27,6 @@ public class UpdateManager {
     }
 
     public void doUpdate() {
-        if (DELETE.exists()) {
-            DELETE.delete();
-            denLibUpdated.delete();
-            denLibCore.check.delete();
-        }
         if (denLibCore.check.exists()) {
             denLibCore.print("Updating mods...");
             BiMap<String, String[]> mods = denLib.FileUtils.readBiMapFromFile(denLibCore.check);
@@ -46,14 +40,6 @@ public class UpdateManager {
                 File wasSaved = denLib.NetUtils.readBinaryFromNet(internets, modFile);
                 if (wasSaved.exists()) {
                     denLibCore.print("Mod updated!");
-                    BiMap<String, String> ensureDelete = HashBiMap.create();
-                    ensureDelete.put("asdf", String.valueOf(1234));
-                    denLib.FileUtils.saveBiMapToFile(ensureDelete, DELETE);
-                    if (DELETE.exists()) {
-                        denLibCore.print("Marked old files for delete.");
-                    }else{
-                        denLibCore.print("Something went wrong.");
-                    }
                 }
                 if (!denLibCore.check.delete()) {
                     denLibCore.check.deleteOnExit();
