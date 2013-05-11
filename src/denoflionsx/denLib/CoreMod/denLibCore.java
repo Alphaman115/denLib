@@ -1,13 +1,15 @@
 package denoflionsx.denLib.CoreMod;
 
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import denoflionsx.denLib.CoreMod.ASM.AT.DenAccessTransformer;
 import denoflionsx.denLib.CoreMod.Updater.IDenUpdate;
 import denoflionsx.denLib.CoreMod.Updater.UpdateManager;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.Map;
 
-@IFMLLoadingPlugin.MCVersion(value = "1.5.2")
 public class denLibCore implements IFMLLoadingPlugin, IDenUpdate {
 
     public static UpdateManager updater;
@@ -15,10 +17,20 @@ public class denLibCore implements IFMLLoadingPlugin, IDenUpdate {
     public static final String build_number = "@BUILD_NUMBER@";
     public static File location;
     private String updatedurl;
+    public static String mc = "No idea";
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[]{"denoflionsx.denLib.CoreMod.ASM.PfF.TransformerBucket"};
+        try {
+            Class c = FMLInjectionData.class;
+            Field f = c.getDeclaredField("mccversion");
+            f.setAccessible(true);
+            Object o = f.get(null);
+            mc = String.valueOf(o);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new String[]{DenAccessTransformer.class.getName()};
     }
 
     @Override

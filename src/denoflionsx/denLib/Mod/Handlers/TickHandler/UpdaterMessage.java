@@ -2,6 +2,7 @@ package denoflionsx.denLib.Mod.Handlers.TickHandler;
 
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
+import denoflionsx.denLib.CoreMod.Config.denLibTuning;
 import denoflionsx.denLib.Mod.denLibMod;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -24,8 +25,10 @@ public class UpdaterMessage implements ITickHandler {
         if (!printed) {
             count++;
             if (count > delay) {
-                for (String s : stuffToPrint) {
-                    denLibMod.Proxy.sendMessageToPlayer(s);
+                if (denLibTuning.updater.updater_alert.toLowerCase().equals("true")) {
+                    for (String s : stuffToPrint) {
+                        denLibMod.Proxy.sendMessageToPlayer(s);
+                    }
                 }
                 printed = true;
             }

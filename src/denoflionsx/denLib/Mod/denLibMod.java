@@ -7,7 +7,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import denoflionsx.denLib.Config.Manager.TunableManager;
-import denoflionsx.denLib.Config.TestConfig.denLibTunable;
+import denoflionsx.denLib.CoreMod.Config.denLibTuning;
 import denoflionsx.denLib.CoreMod.denLibCore;
 import denoflionsx.denLib.Mod.Event.DenEventHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.IdenWorldEventHandler;
@@ -37,12 +37,12 @@ public class denLibMod {
         configFile = event.getSuggestedConfigurationFile();
         Proxy.print("Liquid Block code from powercrystalscore, originally from King_Lemming.");
         DenEventHandler.create();
+        tuning.registerTunableClass(denLibTuning.class);
     }
 
     @Mod.Init
     public void load(FMLInitializationEvent event) {
         Proxy.print("denLib loading...");
-        tuning.registerTunableClass(denLibTunable.class);
     }
 
     @Mod.PostInit

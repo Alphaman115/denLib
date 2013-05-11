@@ -2,6 +2,7 @@ package denoflionsx.denLib.CoreMod.Updater.Thread;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import denoflionsx.denLib.CoreMod.Config.denLibTuning;
 import denoflionsx.denLib.CoreMod.Updater.IDenUpdate;
 import denoflionsx.denLib.CoreMod.denLibCore;
 import denoflionsx.denLib.Lib.denLib;
@@ -32,7 +33,7 @@ public class ThreadedUpdater extends Thread {
 
     private void runUpdateChecks() {
         File r = new File("do_not_update.txt");
-        if (r.exists()){
+        if (r.exists()) {
             denLibCore.print("Update check stopped.");
             this.interrupt();
             return;
@@ -44,26 +45,32 @@ public class ThreadedUpdater extends Thread {
             i.setUpdatedModFileUrl(denLib.StringUtils.removeSpaces(read2[1].replace("# URL:", "")));
             if (versionRemote > versionLocal) {
                 this.print("Update Found for " + i.getUpdaterName());
-                this.print("This mod will be updated when you next launch Minecraft.");
+                if (denLibTuning.updater.updater_enabled.toLowerCase().equals("true")) {
+                    this.print("This mod will be updated when you next launch Minecraft.");
+                }
                 UpdaterMessage.add("Update Found for " + i.getUpdaterName());
-                UpdaterMessage.add("This mod will be updated when you next launch Minecraft.");
+                if (denLibTuning.updater.updater_enabled.toLowerCase().equals("true")) {
+                    UpdaterMessage.add("This mod will be updated when you next launch Minecraft.");
+                }
                 this.syncedListUpdate.add(i);
             }
 
         }
         try {
             if (!this.syncedListUpdate.isEmpty()) {
-                // Create something that can be saved properly.
-                BiMap<String, String[]> saveMap = HashBiMap.create();
-                for (IDenUpdate i : this.syncedListUpdate) {
-                    String[] info = new String[]{i.getSourceFile().getAbsolutePath(), i.getUpdatedModFileUrl()};
-                    saveMap.put(i.getUpdaterName(), info);
+                if (denLibTuning.updater.updater_enabled.toLowerCase().equals("true")) {
+                    // Create something that can be saved properly.
+                    BiMap<String, String[]> saveMap = HashBiMap.create();
+                    for (IDenUpdate i : this.syncedListUpdate) {
+                        String[] info = new String[]{i.getSourceFile().getAbsolutePath(), i.getUpdatedModFileUrl()};
+                        saveMap.put(i.getUpdaterName(), info);
+                    }
+                    //-----
+                    if (outputFile.exists()) {
+                        outputFile.delete();
+                    }
+                    denLib.FileUtils.saveBiMapToFile(saveMap, outputFile);
                 }
-                //-----
-                if (outputFile.exists()) {
-                    outputFile.delete();
-                }
-                denLib.FileUtils.saveBiMapToFile(saveMap, outputFile);
                 this.syncedListUpdate.clear();
             }
         } catch (Exception ex) {

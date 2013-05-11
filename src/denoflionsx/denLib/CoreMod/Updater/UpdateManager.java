@@ -2,6 +2,7 @@ package denoflionsx.denLib.CoreMod.Updater;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import denoflionsx.denLib.CoreMod.Config.denLibTuning;
 import denoflionsx.denLib.CoreMod.Updater.Thread.ThreadedUpdater;
 import denoflionsx.denLib.CoreMod.denLibCore;
 import denoflionsx.denLib.Lib.denLib;
@@ -27,6 +28,9 @@ public class UpdateManager {
     }
 
     public void doUpdate() {
+        if (!denLibTuning.updater.updater_enabled.toLowerCase().equals("true")) {
+            return;
+        }
         if (denLibCore.check.exists()) {
             denLibCore.print("Updating mods...");
             BiMap<String, String[]> mods = denLib.FileUtils.readBiMapFromFile(denLibCore.check);
