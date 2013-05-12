@@ -3,7 +3,6 @@ package denoflionsx.denLib.Config.Manager;
 import denoflionsx.denLib.Config.Annotations.Comment;
 import denoflionsx.denLib.Config.Annotations.Config;
 import denoflionsx.denLib.Config.Annotations.Tunable;
-import denoflionsx.denLib.Mod.denLibMod;
 import denoflionsx.denLib.Lib.denLib;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -23,7 +22,6 @@ public class TunableManager implements ITunableManager {
     public void registerTunableClass(Class c) {
         Configuration config1 = null;
         tunableClasses.add(c);
-        denLibMod.Proxy.print("Registered tunable class: " + c.getName());
         Field[] f = c.getDeclaredFields();
         for (Field d : f) {
             Annotation[] annos = d.getDeclaredAnnotations();

@@ -28,7 +28,19 @@ public class UpdateManager {
     }
 
     public void doUpdate() {
-        if (!denLibTuning.updater.updater_enabled.toLowerCase().equals("true")) {
+        boolean does = false;
+        String[] r = denLib.StringUtils.readFileContentsAutomated(new File("config/denoflionsx/denLibCore"), "updater.cfg", this);
+        for (String s : r) {
+            if (s.contains("S:updater_enabled")) {
+                denLibCore.print("Found config file entry.");
+                s = denLib.StringUtils.removeSpaces(s);
+                String[] q = s.split("=");
+                if (q[1].toLowerCase().equals("true")) {
+                    does = true;
+                }
+            }
+        }
+        if (!does) {
             return;
         }
         if (denLibCore.check.exists()) {
