@@ -144,6 +144,34 @@ public class denLib {
             return s.hasNext() ? s.next() : "";
         }
 
+        public static String[] readFileContentsAutomated(File configDir, String name) {
+            ClassLoader c = Thread.currentThread().getContextClassLoader();
+            InputStream i = null;
+            if (configDir != null) {
+                File f1 = new File(configDir.getAbsolutePath() + "/" + name);
+                if (f1.exists()) {
+                    try {
+                        i = new FileInputStream(f1);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    try {
+                        i = c.getResourceAsStream(name);
+                    } catch (Exception ex) {
+                        denLibMod.Proxy.warning("Error reading file " + name + "!");
+                    }
+                }
+            }
+            if (i != null) {
+                String f = denLib.StringUtils.scanFileContents(i);
+                String[] p = denLib.StringUtils.splitByNewLine(f);
+                return p;
+            } else {
+                return new String[]{readError};
+            }
+        }
+
         public static String[] readFileContentsAutomated(File configDir, String name, Object instance) {
             InputStream i = null;
             if (configDir != null) {
@@ -322,16 +350,15 @@ public class denLib {
             return digest.digest();
         }
     }
-    
-    public static class RandomUtils{
-        
-        public static void throwCustomException(String why){
-            try{
+
+    public static class RandomUtils {
+
+        public static void throwCustomException(String why) {
+            try {
                 throw new Exception(why);
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
-        
     }
 }
