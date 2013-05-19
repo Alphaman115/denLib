@@ -74,7 +74,11 @@ public class ItemMeta extends Item {
 
     @Override
     public Icon getIconFromDamage(int par1) {
-        return icons.get(par1);
+        if (icons.get(par1) != null){
+            return icons.get(par1);
+        }else{
+            return icons.get(0);
+        }
     }
 
     @Override
@@ -85,7 +89,11 @@ public class ItemMeta extends Item {
                 return tag.getString("name");
             }
         } else {
-            return this.names.get(par1ItemStack.getItemDamage());
+            if (this.names.get(par1ItemStack.getItemDamage()) != null){
+                return this.names.get(par1ItemStack.getItemDamage());
+            }else{
+                return this.names.get(0);
+            }
         }
         return denLib.StringUtils.readError;
     }
