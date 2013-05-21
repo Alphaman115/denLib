@@ -7,7 +7,6 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -19,6 +18,8 @@ import net.minecraftforge.liquids.LiquidStack;
 
 public class denLib {
 
+    public static boolean debug = false;
+    
     public static class ReflectionHelper {
 
         public static Object getStaticField(Class c, String f) {
@@ -295,6 +296,9 @@ public class denLib {
                     // -6 because of .class
                     String className = je.getName().substring(0, je.getName().length() - 6);
                     className = className.replace('/', '.');
+                    if (debug){
+                        denLibMod.Proxy.print(className);
+                    }
                     Class c = Class.forName(className);
                     if (c.isInterface()) {
                         continue;
