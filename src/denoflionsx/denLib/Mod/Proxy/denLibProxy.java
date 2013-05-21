@@ -1,7 +1,8 @@
 package denoflionsx.denLib.Mod.Proxy;
 
 import cpw.mods.fml.common.FMLLog;
-import denoflionsx.denLib.Mod.Event.DenEventHandler;
+import denoflionsx.denLib.Mod.Changelog.ChangelogReader;
+import denoflionsx.denLib.Mod.Changelog.IChangeLogHandler;
 import net.minecraftforge.common.MinecraftForge;
 
 public class denLibProxy implements IdenLibProxy {
@@ -26,7 +27,9 @@ public class denLibProxy implements IdenLibProxy {
     }
 
     @Override
-    public void registerDenListen(Object o) {
-        DenEventHandler.instance.register(o);
+    public void registerChangelogHandler(Object o) {
+        ChangelogReader.handlers.add((IChangeLogHandler) o);
     }
+    
+    
 }

@@ -9,7 +9,6 @@ import cpw.mods.fml.common.network.NetworkMod;
 import denoflionsx.denLib.Config.Manager.TunableManager;
 import denoflionsx.denLib.CoreMod.Config.denLibTuning;
 import denoflionsx.denLib.CoreMod.denLibCore;
-import denoflionsx.denLib.Mod.Event.DenEventHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.IdenWorldEventHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.UpdateHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.WorldEventHandler;
@@ -37,7 +36,6 @@ public class denLibMod {
         Proxy.registerForgeSubscribe(this);
         configFile = event.getSuggestedConfigurationFile();
         Proxy.print("Liquid Block code from powercrystalscore, originally from King_Lemming.");
-        DenEventHandler.create();
     }
 
     @Mod.Init

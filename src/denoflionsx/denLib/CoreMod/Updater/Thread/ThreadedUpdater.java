@@ -9,7 +9,6 @@ import denoflionsx.denLib.Lib.denLib;
 import denoflionsx.denLib.Mod.Handlers.TickHandler.UpdaterMessage;
 import java.io.File;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class ThreadedUpdater extends Thread {
 
@@ -76,11 +75,7 @@ public class ThreadedUpdater extends Thread {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        try {
-            TimeUnit.MINUTES.sleep(10);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        this.interrupt();
     }
 
     public void print(String msg) {

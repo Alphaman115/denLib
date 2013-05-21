@@ -164,12 +164,16 @@ public class denLib {
                 }
             }
             if (i != null) {
-                String f = denLib.StringUtils.scanFileContents(i);
-                String[] p = denLib.StringUtils.splitByNewLine(f);
-                return p;
+                return readInputStream(i);
             } else {
                 return new String[]{readError};
             }
+        }
+
+        public static String[] readInputStream(InputStream stream) {
+            String f = denLib.StringUtils.scanFileContents(stream);
+            String[] p = denLib.StringUtils.splitByNewLine(f);
+            return p;
         }
 
         public static String[] readFileContentsAutomated(File configDir, String name, Object instance) {
@@ -191,9 +195,7 @@ public class denLib {
                 }
             }
             if (i != null) {
-                String f = denLib.StringUtils.scanFileContents(i);
-                String[] p = denLib.StringUtils.splitByNewLine(f);
-                return p;
+                return readInputStream(i);
             } else {
                 return new String[]{readError};
             }
