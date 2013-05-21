@@ -282,15 +282,11 @@ public class denLib {
 
     public static class FileUtils {
 
-        public static String[] getClassesInJar(File source, Class<?> target) {
-            ArrayList<String> classes = new ArrayList();
+        public static ArrayList<Object> getClassesInJar(File source, Class<?> target) {
+            ArrayList<Object> classes = new ArrayList();
             try {
                 JarFile jarFile = new JarFile(source);
                 Enumeration e = jarFile.entries();
-
-                URL[] urls = {new URL("jar:file:" + source + "!/")};
-                ClassLoader cl = URLClassLoader.newInstance(urls);
-
                 while (e.hasMoreElements()) {
                     JarEntry je = (JarEntry) e.nextElement();
                     if (je.isDirectory() || !je.getName().endsWith(".class")) {
@@ -299,20 +295,20 @@ public class denLib {
                     // -6 because of .class
                     String className = je.getName().substring(0, je.getName().length() - 6);
                     className = className.replace('/', '.');
-                    Class c = cl.loadClass(className);
+                    Class c = Class.forName(className);
                     if (c.isInterface()) {
                         continue;
                     }
                     for (Class<?> q : c.getInterfaces()) {
                         if (q.getName().equals(target.getName())) {
-                            classes.add(className);
+                            classes.add(c.newInstance());
                         }
                     }
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            return classes.toArray(new String[classes.size()]);
+            return classes;
         }
 
         public static void saveBiMapToFile(BiMap map, File f) {

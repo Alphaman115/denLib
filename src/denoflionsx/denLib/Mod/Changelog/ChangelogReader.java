@@ -26,7 +26,12 @@ public class ChangelogReader implements IScheduledTickHandler {
     public void tickStart(EnumSet<TickType> type, Object... tickData) {
         if (display) {
             for (IChangeLogHandler h : handlers) {
-                String[] log = denLib.StringUtils.readInputStream(h.getFileInput());
+                String[] log;
+                try {
+                    log = denLib.StringUtils.readInputStream(h.getFileInput());
+                } catch (Exception ex) {
+                    log = new String[0];
+                }
                 denLibMod.Proxy.sendMessageToPlayer("Changelog: " + h.getName());
                 for (String s : log) {
                     denLibMod.Proxy.sendMessageToPlayer(s);
