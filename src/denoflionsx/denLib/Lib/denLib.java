@@ -7,9 +7,13 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.liquids.LiquidStack;
 
@@ -277,6 +281,39 @@ public class denLib {
     }
 
     public static class FileUtils {
+
+        public static String[] getClassesInJar(File source, Class<?> target) {
+            ArrayList<String> classes = new ArrayList();
+            try {
+                JarFile jarFile = new JarFile(source);
+                Enumeration e = jarFile.entries();
+
+                URL[] urls = {new URL("jar:file:" + source + "!/")};
+                ClassLoader cl = URLClassLoader.newInstance(urls);
+
+                while (e.hasMoreElements()) {
+                    JarEntry je = (JarEntry) e.nextElement();
+                    if (je.isDirectory() || !je.getName().endsWith(".class")) {
+                        continue;
+                    }
+                    // -6 because of .class
+                    String className = je.getName().substring(0, je.getName().length() - 6);
+                    className = className.replace('/', '.');
+                    Class c = cl.loadClass(className);
+                    if (c.isInterface()) {
+                        continue;
+                    }
+                    for (Class<?> q : c.getInterfaces()) {
+                        if (q.getName().equals(target.getName())) {
+                            classes.add(className);
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return classes.toArray(new String[classes.size()]);
+        }
 
         public static void saveBiMapToFile(BiMap map, File f) {
             saveObjectToFile(map, f);
