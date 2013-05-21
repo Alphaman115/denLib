@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 public class ChangelogReader implements IScheduledTickHandler {
-    
+
     private boolean display = true;
     public static final ArrayList<IChangeLogHandler> handlers = new ArrayList();
-    
+
     @Override
     public int nextTickSpacing() {
         int delay = 400;
@@ -21,7 +21,7 @@ public class ChangelogReader implements IScheduledTickHandler {
             return delay;
         }
     }
-    
+
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData) {
         if (display) {
@@ -29,22 +29,22 @@ public class ChangelogReader implements IScheduledTickHandler {
                 String[] log = denLib.StringUtils.readInputStream(h.getFileInput());
                 denLibMod.Proxy.sendMessageToPlayer("Changelog: " + h.getName());
                 for (String s : log) {
-                    denLibMod.Proxy.print(s);
+                    denLibMod.Proxy.sendMessageToPlayer(s);
                 }
             }
         }
     }
-    
+
     @Override
     public void tickEnd(EnumSet<TickType> type, Object... tickData) {
         display = false;
     }
-    
+
     @Override
     public EnumSet<TickType> ticks() {
         return EnumSet.of(TickType.CLIENT);
     }
-    
+
     @Override
     public String getLabel() {
         return "denLib";

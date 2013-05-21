@@ -9,6 +9,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import denoflionsx.denLib.Config.Manager.TunableManager;
 import denoflionsx.denLib.CoreMod.Config.denLibTuning;
 import denoflionsx.denLib.CoreMod.denLibCore;
+import denoflionsx.denLib.Mod.Changelog.ChangeLogWorld;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.IdenWorldEventHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.UpdateHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.WorldEventHandler;
@@ -48,6 +49,7 @@ public class denLibMod {
         Proxy.print("denLib load complete.");
         denLibCore.updater.startUpdaterThread();
         WorldEventHandler.registerHandler(new UpdateHandler());
+        WorldEventHandler.registerHandler(new ChangeLogWorld());
         Proxy.print("This is denLib version " + "@VERSION@");
     }
 
