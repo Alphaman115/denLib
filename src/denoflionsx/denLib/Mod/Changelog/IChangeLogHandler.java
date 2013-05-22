@@ -8,4 +8,6 @@ public interface IChangeLogHandler {
     
     public String getName();
     
+    public int getBuildNumber();
+    
 }

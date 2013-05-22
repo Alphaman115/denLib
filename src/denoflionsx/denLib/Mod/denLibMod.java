@@ -15,6 +15,7 @@ import denoflionsx.denLib.Mod.Handlers.WorldHandler.UpdateHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.WorldEventHandler;
 import denoflionsx.denLib.Mod.Proxy.denLibProxy;
 import java.io.File;
+import net.minecraftforge.common.Configuration;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
 
@@ -29,6 +30,7 @@ public class denLibMod {
     public static denLibProxy Proxy;
     public static TunableManager tuning;
     public static File configFile;
+    public static Configuration config;
 
     @Mod.PreInit
     public void preLoad(FMLPreInitializationEvent event) {
@@ -36,6 +38,7 @@ public class denLibMod {
         tuning.registerTunableClass(denLibTuning.class);
         Proxy.registerForgeSubscribe(this);
         configFile = event.getSuggestedConfigurationFile();
+        config = new Configuration(configFile);
         Proxy.print("Liquid Block code from powercrystalscore, originally from King_Lemming.");
     }
 

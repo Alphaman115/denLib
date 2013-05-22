@@ -19,7 +19,7 @@ import net.minecraftforge.liquids.LiquidStack;
 public class denLib {
 
     public static boolean debug = false;
-    
+
     public static class ReflectionHelper {
 
         public static Object getStaticField(Class c, String f) {
@@ -205,6 +205,31 @@ public class denLib {
                 return new String[]{readError};
             }
         }
+
+        public static String Hash(String tag) {
+            byte[] bytes = tag.getBytes();
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                byte[] md5 = md.digest(bytes);
+                String hash = "";
+                for (byte b : md5) {
+                    hash = hash + String.valueOf(b);
+                }
+                hash = hash.replace("-", "");
+                tag = hash;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return tag;
+        }
+        
+        public static String Hash(String[] input){
+            String i = "";
+            for (String s : input){
+                i+=s;
+            }
+            return Hash(i);
+        }
     }
 
     public static class NetUtils {
@@ -296,7 +321,7 @@ public class denLib {
                     // -6 because of .class
                     String className = je.getName().substring(0, je.getName().length() - 6);
                     className = className.replace('/', '.');
-                    if (debug){
+                    if (debug) {
                         denLibMod.Proxy.print(className);
                     }
                     Class c = Class.forName(className);
@@ -375,8 +400,12 @@ public class denLib {
         }
 
         public static byte[] createSha1(File file) throws Exception {
-            MessageDigest digest = MessageDigest.getInstance("SHA-1");
             InputStream fis = new FileInputStream(file);
+            return createSha1(fis);
+        }
+
+        public static byte[] createSha1(InputStream fis) throws Exception {
+            MessageDigest digest = MessageDigest.getInstance("SHA-1");
             int n = 0;
             byte[] buffer = new byte[8192];
             while (n != -1) {
