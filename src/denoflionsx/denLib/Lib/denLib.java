@@ -222,11 +222,11 @@ public class denLib {
             }
             return tag;
         }
-        
-        public static String Hash(String[] input){
+
+        public static String Hash(String[] input) {
             String i = "";
-            for (String s : input){
-                i+=s;
+            for (String s : input) {
+                i += s;
             }
             return Hash(i);
         }
@@ -324,7 +324,13 @@ public class denLib {
                     if (debug) {
                         denLibMod.Proxy.print(className);
                     }
-                    Class c = Class.forName(className);
+                    Class c = null;
+                    try {
+                        c = Class.forName(className);
+                    } catch (ClassNotFoundException ex) {
+                        // This is needed for server side. Some client only classes won't exist.
+                        continue;
+                    }
                     if (c.isInterface()) {
                         continue;
                     }
