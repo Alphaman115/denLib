@@ -24,7 +24,6 @@ public class ItemMeta extends Item {
         super(par1);
     }
 
-    // Leaving this here for old code support.
     public ItemMeta(String[] textures, int par1) {
         super(par1);
         this.textures = textures;
@@ -65,7 +64,15 @@ public class ItemMeta extends Item {
 
     @Override
     public void registerIcons(IconRegister par1IconRegister) {
-        this.icons.put(0, par1IconRegister.registerIcon(this.textures[0]));
+        try {
+            if (textures != null) {
+                if (textures.length > 0) {
+                    this.icons.put(0, par1IconRegister.registerIcon(this.textures[0]));
+                }
+            }
+        } catch (Exception ex) {
+            // shaddup.
+        }
     }
 
     @Override
