@@ -15,11 +15,16 @@ import net.minecraft.util.Icon;
 
 public class ItemMeta extends Item {
 
-    private ArrayList<ItemStack> stacks = new ArrayList();
+    protected ArrayList<ItemStack> stacks = new ArrayList();
     public HashMap<Integer, Icon> icons = new HashMap();
     protected HashMap<Integer, String> names = new HashMap();
     public String[] textures;
 
+    public ItemMeta(int par1) {
+        super(par1);
+    }
+
+    // Leaving this here for old code support.
     public ItemMeta(String[] textures, int par1) {
         super(par1);
         this.textures = textures;
@@ -42,9 +47,7 @@ public class ItemMeta extends Item {
 
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
-        for (ItemStack i : stacks) {
-            par3List.add(i);
-        }
+        par3List.addAll(stacks);
     }
 
     @Override
@@ -62,21 +65,14 @@ public class ItemMeta extends Item {
 
     @Override
     public void registerIcons(IconRegister par1IconRegister) {
-        for (int i = 0; i < stacks.size(); i++) {
-            try {
-                icons.put(i, par1IconRegister.registerIcon(textures[i]));
-            } catch (Exception ex) {
-                // shh
-                icons.put(i, par1IconRegister.registerIcon(textures[0]));
-            }
-        }
+        this.icons.put(0, par1IconRegister.registerIcon(this.textures[0]));
     }
 
     @Override
     public Icon getIconFromDamage(int par1) {
-        if (icons.get(par1) != null){
+        if (icons.get(par1) != null) {
             return icons.get(par1);
-        }else{
+        } else {
             return icons.get(0);
         }
     }
@@ -89,9 +85,9 @@ public class ItemMeta extends Item {
                 return tag.getString("name");
             }
         } else {
-            if (this.names.get(par1ItemStack.getItemDamage()) != null){
+            if (this.names.get(par1ItemStack.getItemDamage()) != null) {
                 return this.names.get(par1ItemStack.getItemDamage());
-            }else{
+            } else {
                 return this.names.get(0);
             }
         }
