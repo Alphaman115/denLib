@@ -104,4 +104,9 @@ public class ItemMeta extends Item {
     public String getBaseName() {
         return names.get(0);
     }
+
+    @Override
+    public boolean getHasSubtypes() {
+        return true;
+    }
 }
