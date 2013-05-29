@@ -2,6 +2,7 @@ package denoflionsx.denLib.Mod.Items;
 
 import denoflionsx.denLib.Lib.denLib;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -18,7 +19,7 @@ public class ItemMeta extends Item {
     protected ArrayList<ItemStack> stacks = new ArrayList();
     public HashMap<Integer, Icon> icons = new HashMap();
     protected HashMap<Integer, String> names = new HashMap();
-    public String[] textures;
+    protected ArrayList<String> textures = new ArrayList();
 
     public ItemMeta(int par1) {
         super(par1);
@@ -26,13 +27,21 @@ public class ItemMeta extends Item {
 
     public ItemMeta(String[] textures, int par1) {
         super(par1);
-        this.textures = textures;
+        this.textures.addAll(Arrays.asList(textures));
     }
 
     public ItemStack createItemEntry(int meta, String name) {
         ItemStack i = new ItemStack(this, 1, meta);
         stacks.add(i);
         names.put(meta, name);
+        return i;
+    }
+
+    public ItemStack createItemEntry(int meta, String name, String texture) {
+        ItemStack i = new ItemStack(this, 1, meta);
+        stacks.add(i);
+        names.put(meta, name);
+        textures.add(meta, texture);
         return i;
     }
 
@@ -64,14 +73,8 @@ public class ItemMeta extends Item {
 
     @Override
     public void registerIcons(IconRegister par1IconRegister) {
-        try {
-            if (textures != null) {
-                if (textures.length > 0) {
-                    this.icons.put(0, par1IconRegister.registerIcon(this.textures[0]));
-                }
-            }
-        } catch (Exception ex) {
-            // shaddup.
+        for (String s : textures) {
+            this.icons.put(textures.indexOf(s), par1IconRegister.registerIcon(s));
         }
     }
 
