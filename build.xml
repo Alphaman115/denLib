@@ -1,95 +1,22 @@
+<!-- MAKE SURE TO RENAME THE PROJECT -->
 <project name="denLib" default="main">
     <property environment="env"/>
-    <!-- Properties -->
-
-    <property name="build.dir" value="build"/>
-    <property name="src.dir" value="src"/>
-    <property name="resources.dir" value="resources"/>
-
-    <property name="download.dir" value="download"/>
-
-    <property name="classes.dir" value="${build.dir}/classes"/>
-    <property name="jar.dir" value="bin"/>
-    <property name="lib.dir" value="lib"/>
-
-    <property name="forge.dir" value="${build.dir}/forge"/>
-    <property name="mcp.dir" value="${forge.dir}/mcp"/>
-
-    <property name="mcpsrc.dir" value="${mcp.dir}/src"/>
-    <property name="forgelib.dir" value="${mcp.dir}/lib"/>
-        
-    <property name="override.dir" value="override"/>
-
-    <property name="mc.version" value="1.5.2"/>
-    <property name="forge.version" value="7.8.0.685"/>
-    <property name="project.version" value="3.0"/>
-
-    <property name="forge.name" value="minecraftforge-src-${mc.version}-${forge.version}.zip"/>
-
-    <available property="forge-exists" file="${download.dir}/${forge.name}"/>
-    <available file=".git" type="dir" property="git.present"/>
-
-    <condition property="out-of-date">
-        <not>
-            <and>
-                <available file="${download.dir}/${forge.name}"/>
-                <available file="${mcpsrc.dir}"/>
-            </and>
-        </not>
-    </condition>
-
-    <mkdir dir="${download.dir}"/>
-
-    <!-- Targets -->
-
-    <!-- Clear build directory -->
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-        <delete dir="${download.dir}"/>
-        <mkdir dir="${download.dir}"/>
-    </target>
-
-    <!-- Set full version -->
-    <target name="initialize-version" depends="version-provided,version-not-provided,git.revision">
-        <property name="project.version.full" value="${project.version}.${build.number}"/>
-    </target>
-
-    <!-- Set unknown build number -->
-    <target name="version-not-provided" unless="env.BUILD_NUMBER">
-        <buildnumber/>
-    </target>
-
-    <!-- Set build number from environment -->
-    <target name="version-provided" if="env.BUILD_NUMBER">
-        <property name="build.number" value="${env.BUILD_NUMBER}"/>
-    </target>
+    <import file="scripts/universal.xml"/>
+    
+    <!-- Need to override a lot of the uni script for this one. -->
 	
-    <target name="git.revision" if="git.present">
-        <exec executable="git" dir="${src.dir}" outputproperty="git.revision" failifexecutionfails="false" errorproperty="">
-            <arg value="describe"/>
-            <arg value="--tags"/>
-            <arg value="--always"/>
-            <arg value="HEAD"/>
-        </exec>
-        <condition property="project.version" value="${git.revision}" else="0.0.0">
-            <and>
-                <isset property="git.revision"/>
-                <length string="${git.revision}" trim="yes" length="0" when="greater"/>
-            </and>
-        </condition>
-    </target>	
-
-    <!-- Download necessary files -->
-    <target name="download-files" depends="download-forge"/>
-
     <!-- Download forge (if it doesn't exist) -->
     <target name="download-forge" unless="forge-exists">
         <get src="http://files.minecraftforge.net/${forge.name}" dest="${download.dir}" usetimestamp="True"/>
+        <echo message="Sick of your shit MCP. Rehosting."/>
         <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/mcp7.51.zip" dest="${download.dir}" usetimestamp="True"/>
+        <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/APICollection.zip" dest="${download.dir}/APICollection.zip" usetimestamp="True"/>
+        <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/SpriteSheetConverter.jar" dest="${download.dir}/SpriteSheetConverter.jar"/>
+        <antcall target="-downloads"/>
     </target>
 
     <!-- Setup mcp and forge -->
-    <target name="setup" depends="download-files" if="out-of-date">
+    <target name="setup" depends="download-files,-preforge" if="out-of-date">
 
         <delete dir="${forge.dir}" failonerror="false"/>
 
@@ -100,9 +27,9 @@
 
         <mkdir dir="${forge.dir}/accesstransformers"/>
         <copy todir="${forge.dir}/accesstransformers">
-            <fileset file="${basedir}/denLib_at.cfg"/>
+            <fileset file="denLib_at.cfg"/>
         </copy>
-                
+
         <!-- Install forge -->
         <exec dir="${forge.dir}" executable="cmd" osfamily="windows">
             <arg line="/c install.cmd"/>
@@ -111,85 +38,42 @@
         <exec dir="${forge.dir}" executable="sh" osfamily="unix">
             <arg value="install.sh"/>
         </exec>
-                
-
+        <antcall target="-postforge"/>
     </target>
-
+    
     <target name="copy-src">
         <!-- Copy sources -->
-        <copy todir="${mcpsrc.dir}/minecraft/denoflionsx/denLib">
-            <fileset dir="${src.dir}/denoflionsx/denLib"/>
+        
+        <copy todir="${mcpsrc.dir}/minecraft">
+            <fileset dir="${src.dir}"/>
             <filterset>
+                <filter token="NAME" value="${ant.project.name}"/>
                 <filter token="VERSION" value="${project.version.full}" />
-                <filter token="BUILD_NUMBER" value="${build.number}" />
+                <filter token="BUILD" value="${build.number}" />
+                <filter token="DEPENDS" value="${depends.annotation}"/>
+                <filter token="PROXYCLIENT" value="${proxy.client}"/>
+                <filter token="PROXYSERVER" value="${proxy.common}"/>
             </filterset>
         </copy>
-        <copy todir="${forgelib.dir}">
-            <fileset dir="${lib.dir}"/>
-        </copy>
+        <echo message="Name set to ${ant.project.name}"/>
+        <echo message="Version set to ${project.version.full}"/>
+        <echo message="Depends set to ${depends.annotation}"/>
+        <echo message="ProxyClient set to ${proxy.client}"/>
+        <echo message="ProxyCommon set to ${proxy.common}"/>
+        
+        <unzip dest="${mcpsrc.dir}/minecraft" src="${download.dir}/APICollection.zip"/>
     </target>
-
-    <target name="compile" depends="initialize-version,setup,copy-src">
-
-        <delete dir="${classes.dir}"/>
-        <mkdir dir="${classes.dir}"/>
-
-        <!-- Recompile -->
-        <exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
-            <arg line="/c recompile.bat"/>
-        </exec>
-
-        <exec dir="${mcp.dir}" executable="sh" osfamily="unix">
-            <arg value="recompile.sh"/>
-        </exec>
-		
-        <!-- Check for failure -->
-        <fail message="MCP failed to build">
-            <condition>
-                <resourcecontains resource="${mcp.dir}/logs/client_compile.log" substring="error:"/>
-            </condition>
-        </fail>
-		
-        <!-- Reobfuscate -->
-        <exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
-            <arg line="/c reobfuscate_srg.bat"/>
-        </exec>
-
-        <exec dir="${mcp.dir}" executable="sh" osfamily="unix">
-            <arg value="reobfuscate_srg.sh"/>
-        </exec>
-
-        <!-- Copy classes -->
-        <copy todir="${classes.dir}">
-            <fileset dir="${mcp.dir}/reobf/minecraft"/>
-        </copy>
-
-        <!-- Copy resources -->
-        <copy todir="${classes.dir}">
-            <fileset dir="${resources.dir}">
-                <exclude name="build.xml"/>
-            </fileset>
-        </copy>
-
-        <!-- Reset src dir to post-forge-install state -->
-        <delete dir="${mcpsrc.dir}/minecraft/denoflionsx"/>
-
-    </target>
-
+	
     <!-- Package the compiled files -->
-    <target name="package" depends="compile">
-
+    <target name="package" depends="compile,-prepackage">
         <delete dir="${jar.dir}"/>
         <mkdir dir="${jar.dir}"/>
+        <antcall target="CoreMod"/>
+        <antcall target="Mod"/>
         <copy todir="${classes.dir}">
             <fileset file="${basedir}/denLib_at.cfg"/>
         </copy>
-        <jar manifest="${classes.dir}/META-INF/MANIFEST.MF" destfile="${jar.dir}/${ant.project.name}-${mc.version}-${project.version.full}.jar" basedir="${classes.dir}"/>
+        <jar manifest="MANIFEST.MF" destfile="${jar.dir}/${ant.project.name}-${mc.version}-${project.version.full}.jar" basedir="${classes.dir}"/>
     </target>
-
-    <!-- Default target to run -->
-    <target name="main" depends="package"/>
-        
-    <target name="jar" depends="main"/>
 
 </project>

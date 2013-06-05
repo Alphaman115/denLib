@@ -14,7 +14,7 @@ public class denLibCore implements IFMLLoadingPlugin, IDenUpdate {
 
     public static UpdateManager updater;
     public static File check = new File("denLibUpdateCheck.bin");
-    public static final String build_number = "@BUILD_NUMBER@";
+    public static final String build_number = "@BUILD@";
     public static File location;
     private String updatedurl;
     public static String mc = "No idea";

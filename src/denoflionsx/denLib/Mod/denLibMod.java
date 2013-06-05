@@ -19,14 +19,13 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
 
-@Mod(modid = "denLib", name = "denLib", version = "@VERSION@")
+@Mod(modid = "@NAME@", name = "@NAME@", version = "@VERSION@")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
 public class denLibMod {
 
-    @Mod.Instance("denLib")
+    @Mod.Instance("@NAME@")
     public static Object instance;
-    private static final String proxyPath = "denoflionsx.denLib.Mod.Proxy.";
-    @SidedProxy(clientSide = proxyPath + "denLibClientProxy", serverSide = proxyPath + "denLibCommonProxy")
+    @SidedProxy(clientSide = "@PROXYCLIENT@", serverSide = "@PROXYSERVER@")
     public static denLibProxy Proxy;
     public static TunableManager tuning;
     public static File configFile;
