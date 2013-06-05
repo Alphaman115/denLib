@@ -2,7 +2,6 @@ package denoflionsx.denLib.CoreMod.Updater;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import denoflionsx.denLib.CoreMod.Config.denLibTuning;
 import denoflionsx.denLib.CoreMod.Updater.Thread.ThreadedUpdater;
 import denoflionsx.denLib.CoreMod.denLibCore;
 import denoflionsx.denLib.Lib.denLib;

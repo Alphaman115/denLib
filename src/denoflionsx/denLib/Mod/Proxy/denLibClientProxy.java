@@ -6,6 +6,9 @@ public class denLibClientProxy extends denLibProxy {
 
     @Override
     public void sendMessageToPlayer(String msg) {
-        Minecraft.getMinecraft().thePlayer.sendChatToPlayer("[denLibCore]: " + msg);
+        try {
+            Minecraft.getMinecraft().thePlayer.sendChatToPlayer("[denLibCore]: " + msg);
+        } catch (Exception ex) {
+        }
     }
 }
