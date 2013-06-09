@@ -98,7 +98,7 @@
         <get src="http://files.minecraftforge.net/${forge.name}" dest="${download.dir}" usetimestamp="True"/>
         <echo message="Sick of your shit MCP. Rehosting."/>
         <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/mcp7.51.zip" dest="${download.dir}" usetimestamp="True"/>
-        <get src="https://github.com/denoflionsx/denLib/archive/3.X.zip" dest="${download.dir}/denLib-3.X.zip" usetimestamp="True"/>
+        <get src="https://github.com/denoflionsx/denLib/archive/master.zip" dest="${download.dir}/denLib-3.X.zip" usetimestamp="True"/>
         <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/APICollection.zip" dest="${download.dir}/APICollection.zip" usetimestamp="True"/>
         <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/SpriteSheetConverter.jar" dest="${download.dir}/SpriteSheetConverter.jar"/>
         <antcall target="-downloads"/>
@@ -117,7 +117,7 @@
 
         <mkdir dir="${forge.dir}/accesstransformers"/>
         <copy todir="${forge.dir}/accesstransformers">
-            <fileset file="${download.dir}/denLib-3.X/denLib_at.cfg"/>
+            <fileset file="${download.dir}/denLib-master/denLib_at.cfg"/>
         </copy>
 
         <!-- Install forge -->
@@ -153,7 +153,7 @@
         <echo message="ProxyCommon set to ${proxy.common}"/>
 
         <copy todir="${mcpsrc.dir}/minecraft">
-            <fileset dir="${download.dir}/denLib-3.X/src"/>
+            <fileset dir="${download.dir}/denLib-master/src"/>
         </copy>
         <unzip dest="${mcpsrc.dir}/minecraft" src="${download.dir}/APICollection.zip"/>
     </target>
@@ -224,6 +224,7 @@
         <delete dir="${classes.dir}/thermalexpansion"/>
         <delete dir="${classes.dir}/buildcraft"/>
         <delete dir="${classes.dir}/dan200"/>
+        <delete dir="${classes.dir}/com"/>
 
         <!-- Reset src dir to post-forge-install state -->
         <delete dir="${mcpsrc.dir}/minecraft/denoflionsx"/>
@@ -234,6 +235,7 @@
         <delete dir="${mcpsrc.dir}/minecraft/thermalexpansion"/>
         <delete dir="${mcpsrc.dir}/minecraft/buildcraft"/>
         <delete dir="${mcpsrc.dir}/dan200"/>
+        <delete dir="${mcpsrc.dir}/com"/>
 
     </target>
 
