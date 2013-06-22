@@ -330,7 +330,7 @@ public class denLib {
                     } catch (Exception ex) {
                         // This is needed for server side. Some client only classes won't exist.
                         continue;
-                    } catch(NoSuchFieldError ex){
+                    } catch (NoSuchFieldError ex) {
                         denLibMod.Proxy.print("Skipping " + className + " due to SideOnly = CLIENT.");
                         ex.printStackTrace();
                         continue;
