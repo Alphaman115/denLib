@@ -34,10 +34,10 @@ public class denLibMod {
     @Mod.PreInit
     public void preLoad(FMLPreInitializationEvent event) {
         denLibMod.tuning = new TunableManager();
-        tuning.registerTunableClass(denLibTuning.class);
         Proxy.registerForgeSubscribe(this);
         configFile = event.getSuggestedConfigurationFile();
         config = new Configuration(configFile);
+        tuning.registerTunableClass(denLibTuning.class);
         Proxy.print("Liquid Block code from powercrystalscore, originally from King_Lemming.");
     }
 
