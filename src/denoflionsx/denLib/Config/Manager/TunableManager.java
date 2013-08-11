@@ -76,9 +76,7 @@ public class TunableManager implements ITunableManager {
                     }
                 }
             }
-            if (config1 != null) {
-                config1.save();
-            }
+            config1.save();
         }
     }
 
