@@ -4,6 +4,7 @@ import denoflionsx.denLib.Config.Annotations.Comment;
 import denoflionsx.denLib.Config.Annotations.Config;
 import denoflionsx.denLib.Config.Annotations.Tunable;
 import denoflionsx.denLib.Lib.denLib;
+import denoflionsx.denLib.Mod.denLibMod;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -27,10 +28,22 @@ public class TunableManager implements ITunableManager {
             Annotation[] annos = d.getDeclaredAnnotations();
             for (Annotation e : annos) {
                 if (e instanceof Config) {
-                    Object o = denLib.ReflectionHelper.getStaticField(d);
+                    Object o = null;
+                    try {
+                        o = denLib.ReflectionHelper.getStaticField(d);
+                    } catch (Throwable t) {
+                        denLibMod.Proxy.warning("Something went wrong with the config handler.");
+                        denLibMod.Proxy.warning("Error occured when trying to scan: " + d.getName() + " in " + c.getName());
+                    }
+                    if (o == null) {
+                        config1 = null;
+                    }
                     config1 = (Configuration) o;
                 }
             }
+        }
+        if (config1 == null) {
+            return;
         }
         Class[] classes = c.getDeclaredClasses();
         for (Class a : classes) {
@@ -41,25 +54,23 @@ public class TunableManager implements ITunableManager {
                     String cat = t.category();
                     Field[] g = a.getDeclaredFields();
                     for (Field h : g) {
-                        if (config1 != null) {
-                            Property p;
-                            if (t.category().contains("items")) {
-                                p = config1.getItem(cat, h.getName(), Integer.valueOf(denLib.ReflectionHelper.getStaticField(h).toString()));
-                            } else {
-                                p = config1.get(cat, h.getName(), denLib.ReflectionHelper.getStaticField(h).toString());
-                            }
+                        Property p;
+                        if (t.category().contains("items")) {
+                            p = config1.getItem(cat, h.getName(), Integer.valueOf(denLib.ReflectionHelper.getStaticField(h).toString()));
+                        } else {
+                            p = config1.get(cat, h.getName(), denLib.ReflectionHelper.getStaticField(h).toString());
+                        }
 
-                            denLib.ReflectionHelper.setStaticField(h, p.getString());
-                            ConfigCategory a123 = config1.getCategory(cat);
-                            if (!t.comment().equals("Tunable Values")) {
-                                a123.setComment(t.comment());
-                            }
-                            Annotation[] fAnno = h.getDeclaredAnnotations();
-                            for (Annotation q : fAnno) {
-                                if (q instanceof Comment) {
-                                    Comment comment = (Comment) q;
-                                    p.comment = comment.comment();
-                                }
+                        denLib.ReflectionHelper.setStaticField(h, p.getString());
+                        ConfigCategory a123 = config1.getCategory(cat);
+                        if (!t.comment().equals("Tunable Values")) {
+                            a123.setComment(t.comment());
+                        }
+                        Annotation[] fAnno = h.getDeclaredAnnotations();
+                        for (Annotation q : fAnno) {
+                            if (q instanceof Comment) {
+                                Comment comment = (Comment) q;
+                                p.comment = comment.comment();
                             }
                         }
                     }
