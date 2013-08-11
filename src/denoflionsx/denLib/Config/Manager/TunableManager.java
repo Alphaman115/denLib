@@ -36,14 +36,11 @@ public class TunableManager implements ITunableManager {
                         denLibMod.Proxy.warning("Error occured when trying to scan: " + d.getName() + " in " + c.getName());
                     }
                     if (o == null) {
-                        config1 = null;
+                        return;
                     }
                     config1 = (Configuration) o;
                 }
             }
-        }
-        if (config1 == null) {
-            return;
         }
         Class[] classes = c.getDeclaredClasses();
         for (Class a : classes) {
