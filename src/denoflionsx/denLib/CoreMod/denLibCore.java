@@ -10,6 +10,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+@IFMLLoadingPlugin.MCVersion(value = "1.6.2")
 public class denLibCore implements IFMLLoadingPlugin, IDenUpdate {
 
     public static UpdateManager updater;

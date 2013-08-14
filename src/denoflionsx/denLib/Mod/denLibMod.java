@@ -1,6 +1,11 @@
 package denoflionsx.denLib.Mod;
 
+import com.google.common.eventbus.EventBus;
+import cpw.mods.fml.common.DummyModContainer;
+import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -15,38 +20,50 @@ import denoflionsx.denLib.Mod.Handlers.WorldHandler.UpdateHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.WorldEventHandler;
 import denoflionsx.denLib.Mod.Proxy.denLibProxy;
 import java.io.File;
+import java.util.Arrays;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
 
 @Mod(modid = "@NAME@", name = "@NAME@", version = "@VERSION@")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
-public class denLibMod {
+public class denLibMod extends DummyModContainer {
 
-    @Mod.Instance("@NAME@")
-    public static Object instance;
     @SidedProxy(clientSide = "@PROXYCLIENT@", serverSide = "@PROXYSERVER@")
     public static denLibProxy Proxy;
     public static TunableManager tuning;
     public static File configFile;
+    public static File coreConfig;
     public static Configuration config;
 
-    @Mod.PreInit
+    public denLibMod() {
+        super(new ModMetadata());
+        ModMetadata md = super.getMetadata();
+        md.modId = "@NAME@";
+        md.name = "@NAME@";
+        md.version = "@VERSION@";
+        md.authorList = Arrays.asList("denoflionsx");
+        md.url = "http://denoflionsx.info";
+        md.description = "den's Library";
+    }
+
+    @EventHandler
     public void preLoad(FMLPreInitializationEvent event) {
         denLibMod.tuning = new TunableManager();
         Proxy.registerForgeSubscribe(this);
         configFile = event.getSuggestedConfigurationFile();
         config = new Configuration(configFile);
+        coreConfig = new File(event.getModConfigurationDirectory() + File.pathSeparator + "denoflionsx" + File.pathSeparator + "denLibCore" + File.pathSeparator + "updater.cfg");
         tuning.registerTunableClass(denLibTuning.class);
-        Proxy.print("Liquid Block code from powercrystalscore, originally from King_Lemming.");
+        //Proxy.print("Liquid Block code from powercrystalscore, originally from King_Lemming.");
     }
 
-    @Mod.Init
+    @EventHandler
     public void load(FMLInitializationEvent event) {
         Proxy.print("denLib loading...");
     }
 
-    @Mod.PostInit
+    @EventHandler
     public void modsLoaded(FMLPostInitializationEvent evt) {
         Proxy.print("denLib load complete.");
         denLibCore.updater.startUpdaterThread();
@@ -73,5 +90,11 @@ public class denLibMod {
         WorldEventHandler.getHandlers().removeAll(WorldEventHandler.getRemoveQueue());
         WorldEventHandler.getHandlers().trimToSize();
         WorldEventHandler.getRemoveQueue().clear();
+    }
+
+    // Wtf is this shit? Didn't FML used to do this automatically?
+    @Override
+    public boolean registerBus(EventBus bus, LoadController controller) {
+        return true;
     }
 }

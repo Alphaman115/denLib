@@ -8,9 +8,6 @@
     <!-- Download forge (if it doesn't exist) -->
     <target name="download-forge" unless="forge-exists">
         <get src="http://files.minecraftforge.net/${forge.name}" dest="${download.dir}" usetimestamp="True"/>
-        <echo message="Sick of your shit MCP. Rehosting."/>
-        <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/mcp7.51.zip" dest="${download.dir}" usetimestamp="True"/>
-        <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/APICollection.zip" dest="${download.dir}/APICollection.zip" usetimestamp="True"/>
         <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/SpriteSheetConverter.jar" dest="${download.dir}/SpriteSheetConverter.jar"/>
         <antcall target="-downloads"/>
     </target>
@@ -21,7 +18,6 @@
         <delete dir="${forge.dir}" failonerror="false"/>
 
         <unzip dest="${forge.dir}/.." src="${download.dir}/${forge.name}"/>
-        <unzip dest="${forge.dir}/mcp" src="${download.dir}/mcp7.51.zip"/>
         <!-- Fix executable permissions -->
         <chmod dir="${forge.dir}" perm="ugo+rx" includes="**.sh"/>
 
@@ -61,7 +57,6 @@
         <echo message="ProxyClient set to ${proxy.client}"/>
         <echo message="ProxyCommon set to ${proxy.common}"/>
         
-        <unzip dest="${mcpsrc.dir}/minecraft" src="${download.dir}/APICollection.zip"/>
     </target>
 	
     <!-- Package the compiled files -->

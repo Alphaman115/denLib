@@ -12,7 +12,6 @@
     <property name="forge.dir" value="${build.dir}/forge"/>
     <property name="mcp.dir" value="${forge.dir}/mcp"/>
     <property name="mcpsrc.dir" value="${mcp.dir}/src"/>
-    <property name="coremod.srg" value="true"/>
     <!-- import from file -->
     <loadproperties srcFile="mod.properties"/>
     <property name="forge.name" value="minecraftforge-src-${mc.version}-${forge.version}.zip"/>
@@ -31,10 +30,6 @@
     
     <condition property="doessignjar">
         <available file="keystore.properties"/>
-    </condition>
-    
-    <condition property="isCoreMod">
-        <available file="coremod.properties"/>
     </condition>
 
     <mkdir dir="${download.dir}"/>
@@ -96,8 +91,6 @@
     <!-- Download forge (if it doesn't exist) -->
     <target name="download-forge" unless="forge-exists">
         <get src="http://files.minecraftforge.net/${forge.name}" dest="${download.dir}" usetimestamp="True"/>
-        <echo message="Sick of your shit MCP. Rehosting."/>
-        <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/mcp7.51.zip" dest="${download.dir}" usetimestamp="True"/>
         <get src="https://github.com/denoflionsx/denLib/archive/master.zip" dest="${download.dir}/denLib-3.X.zip" usetimestamp="True"/>
         <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/APICollection.zip" dest="${download.dir}/APICollection.zip" usetimestamp="True"/>
         <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/SpriteSheetConverter.jar" dest="${download.dir}/SpriteSheetConverter.jar"/>
@@ -110,7 +103,6 @@
         <delete dir="${forge.dir}" failonerror="false"/>
 
         <unzip dest="${forge.dir}/.." src="${download.dir}/${forge.name}"/>
-        <unzip dest="${forge.dir}/mcp" src="${download.dir}/mcp7.51.zip"/>
         <unzip dest="${download.dir}" src="${download.dir}/denLib-3.X.zip"/>
         <!-- Fix executable permissions -->
         <chmod dir="${forge.dir}" perm="ugo+rx" includes="**.sh"/>
@@ -158,7 +150,7 @@
         <unzip dest="${mcpsrc.dir}/minecraft" src="${download.dir}/APICollection.zip"/>
     </target>
     
-    <target name="reobf_srg" if="coremod.srg">
+    <target name="reobf_srg" unless="coremod.srg">
         <exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
             <arg line="/c reobfuscate_srg.bat"/>
         </exec>
@@ -168,7 +160,7 @@
         </exec>
     </target>
     
-    <target name="reobf" unless="coremod.srg">
+    <target name="reobf" if="coremod.srg">
         <exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
             <arg line="/c reobfuscate.bat"/>
         </exec>
@@ -221,10 +213,12 @@
         <delete dir="${classes.dir}/powercrystals"/>
         <delete dir="${classes.dir}/cofh"/>
         <delete dir="${classes.dir}/mods/Railcraft"/>
+        <delete dir="${classes.dir}/mods/tinker"/>
         <delete dir="${classes.dir}/thermalexpansion"/>
         <delete dir="${classes.dir}/buildcraft"/>
         <delete dir="${classes.dir}/dan200"/>
         <delete dir="${classes.dir}/com"/>
+        <delete dir="${classes.dir}/ic2"/>
 
         <!-- Reset src dir to post-forge-install state -->
         <delete dir="${mcpsrc.dir}/minecraft/denoflionsx"/>
@@ -236,7 +230,7 @@
         <delete dir="${mcpsrc.dir}/minecraft/buildcraft"/>
         <delete dir="${mcpsrc.dir}/dan200"/>
         <delete dir="${mcpsrc.dir}/com"/>
-
+        <delete dir="${mcpsrc.dir}/ic2"/>
     </target>
 
     <!-- Package the compiled files -->
@@ -254,14 +248,13 @@
         <signjar jar="${jar.dir}/${ant.project.name}-${mc.version}-${project.version.full}.jar" keystore="${keystore.file}" alias="${keystore.alias}" storepass="${keystore.password}" keypass="${keystore.password}" verbose="true"/>
     </target>
     
-    <target name="CoreMod" if="isCoreMod">
-        <loadproperties srcFile="coremod.properties"/>
+    <target name="CoreMod" if="coremod.isCoreMod">
         <manifest file="MANIFEST.MF">
             <attribute name="FMLCorePlugin" value="${coremod.plugin}"/>
         </manifest>
     </target>
     
-    <target name="Mod" unless="isCoreMod">
+    <target name="Mod" unless="coremod.isCoreMod">
         <manifest file="MANIFEST.MF">
             <attribute name="Mod" value="${ant.project.name}"/>
         </manifest>
