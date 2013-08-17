@@ -230,6 +230,14 @@ public class denLib {
             }
             return Hash(i);
         }
+
+        public static String getHash(byte[] bytes) {
+            String s = "";
+            for (byte b : bytes) {
+                s += String.valueOf(b);
+            }
+            return denLib.StringUtils.Hash(s);
+        }
     }
 
     public static class NetUtils {
