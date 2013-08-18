@@ -6,21 +6,21 @@ import java.lang.reflect.Method;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 public class ASMGeneric implements IClassTransformer {
-    
-    public InputStream s;
+
+    private InputStream s;
     private String name;
     private String dumpFile;
-    
+
     public ASMGeneric() {
-        this("", "");
+        this("", "", null);
     }
-    
-    public ASMGeneric(String name, String dumpFile) {
+
+    public ASMGeneric(String name, String dumpFile, InputStream s) {
+        this.s = s;
         this.name = name;
         this.dumpFile = dumpFile;
-        s = ASMGeneric.class.getResourceAsStream(name + ".hash");
     }
-    
+
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         if (name.equals(this.name)) {
