@@ -3,7 +3,6 @@ package denoflionsx.denLib.CoreMod;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import denoflionsx.denLib.CoreMod.ASM.AT.DenAccessTransformer;
 import denoflionsx.denLib.CoreMod.Updater.IDenUpdate;
 import denoflionsx.denLib.CoreMod.Updater.UpdateManager;
 import java.io.File;
@@ -65,7 +64,7 @@ public class denLibCore implements IFMLLoadingPlugin, IDenUpdate {
 
     @Override
     public String getUpdaterUrl() {
-        return "https://dl.dropboxusercontent.com/u/23892866/VersionCheck/PfF3x/denLibTest.txt";
+        return "https://dl.dropboxusercontent.com/u/23892866/VersionCheck/1.6/denLib.txt";
     }
 
     @Override
