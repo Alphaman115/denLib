@@ -31,7 +31,8 @@ public class denLibCore implements IFMLLoadingPlugin, IDenUpdate {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new String[]{DenAccessTransformer.class.getName()};
+//        return new String[]{DenAccessTransformer.class.getName()};
+        return null;
     }
 
     @Override
