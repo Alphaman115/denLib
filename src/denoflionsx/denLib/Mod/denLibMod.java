@@ -53,7 +53,7 @@ public class denLibMod extends DummyModContainer {
         Proxy.registerForgeSubscribe(this);
         configFile = event.getSuggestedConfigurationFile();
         config = new Configuration(configFile);
-        coreConfig = new File(event.getModConfigurationDirectory() + File.pathSeparator + "denoflionsx" + File.pathSeparator + "denLibCore" + File.pathSeparator + "updater.cfg");
+        coreConfig = new File(event.getModConfigurationDirectory() + File.separator + "denoflionsx" + File.separator + "denLibCore" + File.separator + "updater.cfg");
         tuning.registerTunableClass(denLibTuning.class);
         //Proxy.print("Liquid Block code from powercrystalscore, originally from King_Lemming.");
     }

@@ -1,74 +1,7 @@
 <!-- MAKE SURE TO RENAME THE PROJECT -->
 <project name="denLib" default="main">
     <property environment="env"/>
+    <!-- Universal has been modified to fit denLib -->
     <import file="scripts/universal.xml"/>
     
-    <!-- Need to override a lot of the uni script for this one. -->
-	
-    <!-- Download forge (if it doesn't exist) -->
-    <target name="download-forge" unless="forge-exists">
-        <get src="http://files.minecraftforge.net/${forge.name}" dest="${download.dir}" usetimestamp="True"/>
-        <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/SpriteSheetConverter.jar" dest="${download.dir}/SpriteSheetConverter.jar"/>
-        <antcall target="-downloads"/>
-    </target>
-
-    <!-- Setup mcp and forge -->
-    <target name="setup" depends="download-files,-preforge" if="out-of-date">
-
-        <delete dir="${forge.dir}" failonerror="false"/>
-
-        <unzip dest="${forge.dir}/.." src="${download.dir}/${forge.name}"/>
-        <!-- Fix executable permissions -->
-        <chmod dir="${forge.dir}" perm="ugo+rx" includes="**.sh"/>
-
-        <mkdir dir="${forge.dir}/accesstransformers"/>
-        <copy todir="${forge.dir}/accesstransformers">
-            <fileset file="denLib_at.cfg"/>
-        </copy>
-
-        <!-- Install forge -->
-        <exec dir="${forge.dir}" executable="cmd" osfamily="windows">
-            <arg line="/c install.cmd"/>
-        </exec>
-
-        <exec dir="${forge.dir}" executable="sh" osfamily="unix">
-            <arg value="install.sh"/>
-        </exec>
-        <antcall target="-postforge"/>
-    </target>
-    
-    <target name="copy-src">
-        <!-- Copy sources -->
-        
-        <copy todir="${mcpsrc.dir}/minecraft">
-            <fileset dir="${src.dir}"/>
-            <filterset>
-                <filter token="NAME" value="${ant.project.name}"/>
-                <filter token="VERSION" value="${project.version.full}" />
-                <filter token="BUILD" value="${build.number}" />
-                <filter token="DEPENDS" value="${depends.annotation}"/>
-                <filter token="PROXYCLIENT" value="${proxy.client}"/>
-                <filter token="PROXYSERVER" value="${proxy.common}"/>
-            </filterset>
-        </copy>
-        <echo message="Name set to ${ant.project.name}"/>
-        <echo message="Version set to ${project.version.full}"/>
-        <echo message="Depends set to ${depends.annotation}"/>
-        <echo message="ProxyClient set to ${proxy.client}"/>
-        <echo message="ProxyCommon set to ${proxy.common}"/>
-        
-    </target>
-	
-    <!-- Package the compiled files -->
-    <target name="package" depends="compile,-prepackage">
-        <delete dir="${jar.dir}"/>
-        <mkdir dir="${jar.dir}"/>
-        <antcall target="CoreMod"/>
-        <antcall target="Mod"/>
-        <copy todir="${classes.dir}">
-            <fileset file="${basedir}/denLib_at.cfg"/>
-        </copy>
-        <jar manifest="MANIFEST.MF" destfile="${jar.dir}/${ant.project.name}-${mc.version}-${project.version.full}.jar" basedir="${classes.dir}"/>
-    </target>
-
 </project>

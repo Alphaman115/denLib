@@ -31,6 +31,10 @@
     <condition property="doessignjar">
         <available file="keystore.properties"/>
     </condition>
+    
+    <condition property="doesfullforge">
+        <available file="build.zip"/>
+    </condition>
 
     <mkdir dir="${download.dir}"/>
 
@@ -85,31 +89,36 @@
         </condition>
     </target>	
 
-    <!-- Download necessary files -->
-    <target name="download-files" depends="download-forge"/>
-
-    <!-- Download forge (if it doesn't exist) -->
-    <target name="download-forge" unless="forge-exists">
-        <get src="http://files.minecraftforge.net/${forge.name}" dest="${download.dir}" usetimestamp="True"/>
-        <get src="https://github.com/denoflionsx/denLib/archive/master.zip" dest="${download.dir}/denLib-3.X.zip" usetimestamp="True"/>
-        <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/APICollection.zip" dest="${download.dir}/APICollection.zip" usetimestamp="True"/>
-        <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/SpriteSheetConverter.jar" dest="${download.dir}/SpriteSheetConverter.jar"/>
-        <antcall target="-downloads"/>
-    </target>
-
     <!-- Setup mcp and forge -->
-    <target name="setup" depends="download-files,-preforge" if="out-of-date">
+    <target name="setup" depends="-preforge" if="out-of-date">
+        
+        <antcall target="buildzip"/>
+        <antcall target="fullForge"/>
+    </target>
+    
+    <target name="buildzip" if="doesfullforge">
+        <!-- This is for my personal enviornment. build.zip contains everything required so I don't have to waste cpw's bandwidth while testing. -->
+        <echo message="build.zip detected. Skipping Forge setup."/>
+        <unzip dest="${build.dir}" src="build.zip"/>
+        <unzip dest="${download.dir}" src="download.zip"/>
+        <antcall target="-postforge"/>
+    </target>
+    
+    <target name="fullForge" unless="doesfullforge">
+        <get src="http://files.minecraftforge.net/${forge.name}" dest="${download.dir}" usetimestamp="True"/>
 
+        <get src="https://dl.dropboxusercontent.com/u/23892866/Downloads/SpriteSheetConverter.jar" dest="${download.dir}/SpriteSheetConverter.jar"/>
+        
+        <antcall target="-downloads"/>
         <delete dir="${forge.dir}" failonerror="false"/>
 
         <unzip dest="${forge.dir}/.." src="${download.dir}/${forge.name}"/>
-        <unzip dest="${download.dir}" src="${download.dir}/denLib-3.X.zip"/>
         <!-- Fix executable permissions -->
         <chmod dir="${forge.dir}" perm="ugo+rx" includes="**.sh"/>
 
         <mkdir dir="${forge.dir}/accesstransformers"/>
         <copy todir="${forge.dir}/accesstransformers">
-            <fileset file="${download.dir}/denLib-master/denLib_at.cfg"/>
+            <fileset file="./denLib_at.cfg"/>
         </copy>
 
         <!-- Install forge -->
@@ -120,6 +129,9 @@
         <exec dir="${forge.dir}" executable="sh" osfamily="unix">
             <arg value="install.sh"/>
         </exec>
+        <echo message="Backing up new forge build..."/>
+        <zip destfile="build.zip" basedir="build"/>
+        <zip destfile="download.zip" basedir="download"/>
         <antcall target="-postforge"/>
     </target>
 
@@ -144,10 +156,6 @@
         <echo message="ProxyClient set to ${proxy.client}"/>
         <echo message="ProxyCommon set to ${proxy.common}"/>
 
-        <copy todir="${mcpsrc.dir}/minecraft">
-            <fileset dir="${download.dir}/denLib-master/src"/>
-        </copy>
-        <unzip dest="${mcpsrc.dir}/minecraft" src="${download.dir}/APICollection.zip"/>
     </target>
     
     <target name="reobf_srg" unless="coremod.srg">
@@ -234,8 +242,9 @@
     </target>
 
     <!-- Package the compiled files -->
-    <target name="package" depends="compile,-prepackage">
-        <delete dir="${classes.dir}/denoflionsx/denLib"/>
+    <target name="package" depends="compile">
+        <antcall target="-prepackage"/>
+
         <delete dir="${jar.dir}"/>
         <mkdir dir="${jar.dir}"/>
         <antcall target="CoreMod"/>
