@@ -15,6 +15,7 @@ import denoflionsx.denLib.Config.Manager.TunableManager;
 import denoflionsx.denLib.CoreMod.Config.denLibTuning;
 import denoflionsx.denLib.CoreMod.denLibCore;
 import denoflionsx.denLib.Mod.Changelog.ChangeLogWorld;
+import denoflionsx.denLib.Mod.Handlers.DictionaryHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.IdenWorldEventHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.UpdateHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.WorldEventHandler;
@@ -35,6 +36,7 @@ public class denLibMod extends DummyModContainer {
     public static File configFile;
     public static File coreConfig;
     public static Configuration config;
+    public static DictionaryHandler h;
 
     public denLibMod() {
         super(new ModMetadata());
@@ -49,6 +51,7 @@ public class denLibMod extends DummyModContainer {
 
     @EventHandler
     public void preLoad(FMLPreInitializationEvent event) {
+        Proxy.setupLogger(event.getModConfigurationDirectory());
         denLibMod.tuning = new TunableManager();
         Proxy.registerForgeSubscribe(this);
         configFile = event.getSuggestedConfigurationFile();
