@@ -36,7 +36,7 @@ public class denLibMod extends DummyModContainer {
     public static File configFile;
     public static File coreConfig;
     public static Configuration config;
-    public static DictionaryHandler h;
+    public static DictionaryHandler DictionaryHandler;
 
     public denLibMod() {
         super(new ModMetadata());

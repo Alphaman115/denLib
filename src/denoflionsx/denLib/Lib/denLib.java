@@ -14,7 +14,11 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.liquids.LiquidStack;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.tree.ClassNode;
 
 public class denLib {
 
@@ -307,8 +311,8 @@ public class denLib {
 
     public static class LiquidStackUtils {
 
-        public static LiquidStack getNewStackCapacity(LiquidStack stack, int capacity) {
-            LiquidStack t = stack.copy();
+        public static FluidStack getNewStackCapacity(FluidStack stack, int capacity) {
+            FluidStack t = stack.copy();
             t.amount = capacity;
             return t;
         }
@@ -445,6 +449,37 @@ public class denLib {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public static class ASMHelper {
+
+        public static void dumpClass(File outDir, byte[] bytes, String name) {
+            try {
+                DataOutputStream out = new DataOutputStream(new FileOutputStream(new File(outDir, name)));
+                out.write(bytes);
+                out.flush();
+                out.close();
+            } catch (Throwable t) {
+            }
+        }
+
+        // These methods shamelessly stolen from CodeChicken. You rock at ASM dude.
+        public static ClassNode createClassNode(byte[] bytes) {
+            return createClassNode(bytes, 0);
+        }
+
+        public static ClassNode createClassNode(byte[] bytes, int flags) {
+            ClassNode cnode = new ClassNode();
+            ClassReader reader = new ClassReader(bytes);
+            reader.accept(cnode, flags);
+            return cnode;
+        }
+
+        public static byte[] createBytes(ClassNode cnode, int flags) {
+            ClassWriter cw = new ClassWriter(flags);
+            cnode.accept(cw);
+            return cw.toByteArray();
         }
     }
 }

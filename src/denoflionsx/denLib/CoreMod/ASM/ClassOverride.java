@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-@Deprecated
 public class ClassOverride {
 
     public static byte[] Override(String name, byte[] bytes, String ObfName, File location) {

@@ -43,7 +43,7 @@ public class denLibProxy implements IdenLibProxy {
     
     @Override
     public void setupLogger(File configDir) {
-        denLibMod.h = new DictionaryHandler(configDir.getAbsolutePath());
-        this.registerForgeSubscribe(denLibMod.h);
+        denLibMod.DictionaryHandler = new DictionaryHandler(configDir.getAbsolutePath());
+        this.registerForgeSubscribe(denLibMod.DictionaryHandler);
     }
 }
