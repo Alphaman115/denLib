@@ -41,7 +41,6 @@ public class ASMGeneric implements IClassTransformer {
                     throw new HashVerificationError(name, hash);
                 } catch (HashVerificationError e) {
                     e.printStackTrace();
-                    System.out.println(e.getMessage());
                 }
             }
         }

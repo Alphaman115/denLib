@@ -2,6 +2,7 @@ package denoflionsx.denLib.Lib;
 
 import com.google.common.collect.BiMap;
 import com.google.common.io.ByteStreams;
+import denoflionsx.denLib.CoreMod.denLibCore;
 import denoflionsx.denLib.Mod.denLibMod;
 import java.io.*;
 import java.lang.reflect.Field;
@@ -13,9 +14,10 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.liquids.LiquidStack;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
@@ -438,6 +440,27 @@ public class denLib {
             }
             fis.close();
             return digest.digest();
+        }
+
+        public static void unzip(File zip, File save) {
+            denLibCore.print("Unzipping " + zip.getName());
+            try {
+                OutputStream out = new FileOutputStream(save);
+                FileInputStream fin = new FileInputStream(zip);
+                BufferedInputStream bin = new BufferedInputStream(fin);
+                ZipInputStream zin = new ZipInputStream(bin);
+                ZipEntry ze = null;
+                while ((ze = zin.getNextEntry()) != null) {
+                    byte[] buffer = new byte[8192];
+                    int len;
+                    while ((len = zin.read(buffer)) != -1) {
+                        out.write(buffer, 0, len);
+                    }
+                    out.close();
+                    break;
+                }
+            } catch (Exception ex) {
+            }
         }
     }
 
