@@ -50,6 +50,7 @@ public class denLibMod extends DummyModContainer {
         } catch (Throwable t) {
             t.printStackTrace();
         }
+        config = new Configuration(event.getSuggestedConfigurationFile());
         Proxy.setupLogger(event.getModConfigurationDirectory());
         denLibMod.tuning = new TunableManager();
         Proxy.registerForgeSubscribe(this);
