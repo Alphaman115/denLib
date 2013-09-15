@@ -1,10 +1,6 @@
 package denoflionsx.denLib.Mod;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import cpw.mods.fml.common.DummyModContainer;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -24,7 +20,7 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
 
-public class denLibMod extends DummyModContainer {
+public class denLibMod extends DenModContainer {
 
     public static denLibProxy Proxy;
     public static TunableManager tuning;
@@ -44,12 +40,9 @@ public class denLibMod extends DummyModContainer {
     }
 
     @Subscribe
+    @Override
     public void preLoad(FMLPreInitializationEvent event) {
-        try {
-            Proxy = FMLCommonHandler.instance().getSide().isClient() ? (denLibProxy) Class.forName("@PROXYCLIENT@").newInstance() : (denLibProxy) Class.forName("@PROXYSERVER@").newInstance();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
+        this.setupProxy("@PROXYCLIENT@", "@PROXYSERVER@");
         config = new Configuration(event.getSuggestedConfigurationFile());
         Proxy.setupLogger(event.getModConfigurationDirectory());
         denLibMod.tuning = new TunableManager();
@@ -59,11 +52,13 @@ public class denLibMod extends DummyModContainer {
     }
 
     @Subscribe
+    @Override
     public void load(FMLInitializationEvent event) {
         Proxy.print("denLib loading...");
     }
 
     @Subscribe
+    @Override
     public void modsLoaded(FMLPostInitializationEvent evt) {
         Proxy.print("denLib load complete.");
         denLibCore.updater.startUpdaterThread();
@@ -90,12 +85,5 @@ public class denLibMod extends DummyModContainer {
         WorldEventHandler.getHandlers().removeAll(WorldEventHandler.getRemoveQueue());
         WorldEventHandler.getHandlers().trimToSize();
         WorldEventHandler.getRemoveQueue().clear();
-    }
-
-    // Wtf is this shit? Didn't FML used to do this automatically?
-    @Override
-    public boolean registerBus(EventBus bus, LoadController controller) {
-        bus.register(this);
-        return true;
     }
 }
