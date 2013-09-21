@@ -1,3 +1,4 @@
+29df667,Testing tags.
 584fef9,Updated Forge.
 3413c7a,Fix for MCP rename
 d2a632f,NPE in tick handler. Fixes #2
@@ -12,72 +13,3 @@ a9bd5c0,Fix the derped up updater.cfg
 e8a7155,Fix inputstream error.
 45ee524,Move ASMGeneric from HDSAC to denLib
 d20648e,Add method for byte array checking
-14b4eed,1.6.2
-054b076,Fixed the actual problem with the config error.
-9b0fa0e,Fix up the fix a little more.
-bd26377,Remove unneeded null check
-bc83317,Attempted fix for ExceptionInInitializerError
-7459c45,new update.
-6846827,updated scripts
-eab729c,Fix stupid buildscript error
-ff98299,Update Forge
-efde5e0,try/catch player messages.
-4355e87,Fixed GateCopy name issue.
-29870db,Fix texture issue with GateCopy
-6290702,Fixed a bug with the coke oven.
-de587ef,AT changes.
-ea85010,fixed a NPE
-5e0da5c,Small adjustment to ItemMeta
-2ebb0be,Fixed server-side crash during plugin load.
-b187e3a,Still fixing changelog reader
-3e9dc5e,AT for pipes mod.
-3eccd1a,Add debug flag.
-d955d9d,Refiddle plugin system to not have to get the class twice.
-71e2887,Move interface addon system to denLib so PfF can use it too.
-ee6da5e,More changelog fixes. add utility method for dirs
-2c291a4,Make changelog handler less retarded and broken.
-332d408,Stupid proof ItemMeta so AE doesn't crash.
-71724e9,Moving changelog system to denLib
-6891e9d,Prepping for moving some stuff into denLib
-c994d31,Fixed updater.
-ff6503d,Removed overrides. Going with an AT method. Added proper config.
-a0fc510,Fixed messed up streams causing non-deletable files. Removed a bunch of junk caused by the above.
-f9454f0,Another attempt at fixing script
-2cefe71,Fixed build script so patch will deploy.
-414db54,Override ItemBucket.class to make it fire an event on dumping. denLib can auto-update.
-4c050c8,Fixed the updater a bit.
-148c048,Need a dummy file so the script doesn't crap out.
-db4d423,jenkins
-0383506,1.5.2
-f0a7308,Stuff
-7f89da9,Removed PC's localization and rolled my own. Updated forge.
-7d97f2b,Changed updater a bit
-bf27506,Removed synced thread stuff. not needed.
-aa98022,Added unregister for world handler.
-13a2c29,Added individual comments
-473b9b3,removed old unused files.
-ceb40c1,Added auto-updater.
-0a98a6d,prepare 3.X branch.
-e083b42,Moved target file from LR.
-6d59dd2,1.4.6
-ac759b7,Catching up to development.
-48559db,denLib can now handle creating meta items for you. No need to write boilerplate code for it every time!
-e4e3bce,1.4.5 port.
-fa393a4,Forgot to turn debug flag off.
-8d0036a,1.4.4 port
-08ab5c0,Fixed issues with Class overrider.
-f806093,Removed dependency on CodeChickenCore by implementing my own ClassOverrider.
-5c2531a,Fixed startup message printing twice. Added some comments. Removed test drop.
-5b27508,Converted denLib to a CoreMod. Added Transformer for Leaves. Added API manager for adding drops to decaying leaves.
-bd35b12,1.4.2 Port
-3c14d30,Removed modloader stuff. It will never be used.
-f61d087,Added color enum for changing the color of strings in chat/tooltips.
-33a5d41,Updated Forge in MCP.
-171c2c3,Fixed potential crash bug.
-8068f29,More register wrappers.
-4d9e917,Fixed small category bug.
-c310f58,added module section to Forge config.
-4440803,Created Java Properties version of config system. Created Forge Properties version of config system.
-93c4ecf,1.0.4
-2fa35df,Initial commit
-75f2a36,Initial commit

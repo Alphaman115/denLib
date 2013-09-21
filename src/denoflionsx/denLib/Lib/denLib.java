@@ -141,6 +141,7 @@ public class denLib {
     public static class StringUtils {
 
         public static final String readError = "Error";
+        private static final String HEXES = "0123456789abcdef";
 
         public static String removeSpaces(String s) {
             return s.replaceAll("\\s", "");
@@ -243,6 +244,34 @@ public class denLib {
                 s += String.valueOf(b);
             }
             return denLib.StringUtils.Hash(s);
+        }
+
+        public static String hexify(byte[] chksum) {
+            final StringBuilder hex = new StringBuilder(2 * chksum.length);
+            for (final byte b : chksum) {
+                hex.append(HEXES.charAt((b & 0xF0) >> 4))
+                        .append(HEXES.charAt((b & 0x0F)));
+            }
+            return hex.toString();
+        }
+
+       public static byte[] createSha1(File file) throws Exception {
+            InputStream fis = new FileInputStream(file);
+            return createSha1(fis);
+        }
+
+        public static byte[] createSha1(InputStream fis) throws Exception {
+            MessageDigest digest = MessageDigest.getInstance("SHA-1");
+            int n = 0;
+            byte[] buffer = new byte[8192];
+            while (n != -1) {
+                n = fis.read(buffer);
+                if (n > 0) {
+                    digest.update(buffer, 0, n);
+                }
+            }
+            fis.close();
+            return digest.digest();
         }
     }
 
