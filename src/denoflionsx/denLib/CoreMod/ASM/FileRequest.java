@@ -24,7 +24,12 @@ public class FileRequest implements IClassTransformer {
             libDir.mkdirs();
         }
         File lib = new File(libDir, "/" + fileName);
-        File zippedLib = new File(lib.getAbsolutePath().replace(".jar", ".zip"));
+        String extension = "";
+        int i = fileName.lastIndexOf('.');
+        if (i > 0) {
+            extension = fileName.substring(i + 1);
+        }
+        File zippedLib = new File(lib.getAbsolutePath().replace(extension, ".zip"));
         if (!lib.exists()) {
             denLibCore.print("Downloading required files...");
             denLib.NetUtils.readBinaryFromNet(denLib.NetUtils.newUrlFromString(url), zippedLib);
