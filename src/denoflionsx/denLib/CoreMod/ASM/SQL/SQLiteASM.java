@@ -32,7 +32,7 @@ public class SQLiteASM implements IClassTransformer {
                 Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery("select * from " + targetClassDeobf);
                 String hash = "Nope";
-                denLibCore.print("Searcing database " + db.getName() + " for forge version " + String.valueOf(ForgeVersion.getBuildVersion()) + ". Target Class: " + this.targetClassDeobf);
+                denLibCore.print("Searching database " + db.getName() + " for forge version " + String.valueOf(ForgeVersion.getBuildVersion()) + ". Target Class: " + this.targetClassDeobf);
                 while (rs.next()) {
                     versions.add(rs.getString(1));
                     if (rs.getString(1).equals(String.valueOf(ForgeVersion.getBuildVersion()))) {
