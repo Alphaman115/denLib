@@ -39,23 +39,18 @@ public class FileRequest implements IClassTransformer {
             }
         }
         try {
-            this.loadFiles(libDir);
+            if (lib.getAbsolutePath().contains(".jar")) {
+                this.loadFiles(lib);
+            }
         } catch (Throwable t) {
             t.printStackTrace();
         }
     }
 
-    private void loadFiles(File dir) throws MalformedURLException {
+    private void loadFiles(File file) throws MalformedURLException {
         LaunchClassLoader classLoader = (LaunchClassLoader) this.getClass().getClassLoader();
-
-        for (File file : dir.listFiles()) {
-            if (!file.getAbsolutePath().contains(".jar")) {
-                continue;
-            }
-            classLoader.addURL(file.toURI().toURL());
-
-            denLibCore.print("Loaded library " + file.getName());
-        }
+        classLoader.addURL(file.toURI().toURL());
+        denLibCore.print("Loaded library " + file.getName());
     }
 
     @Override
