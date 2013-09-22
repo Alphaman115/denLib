@@ -29,7 +29,7 @@ public class FileRequest implements IClassTransformer {
         if (i > 0) {
             extension = fileName.substring(i + 1);
         }
-        File zippedLib = new File(lib.getAbsolutePath().replace(extension, ".zip"));
+        File zippedLib = new File(lib.getAbsolutePath().replace(extension, "zip"));
         if (!lib.exists()) {
             denLibCore.print("Downloading required files...");
             denLib.NetUtils.readBinaryFromNet(denLib.NetUtils.newUrlFromString(url), zippedLib);
