@@ -11,9 +11,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidRegistry.FluidRegisterEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
-// Will replace with something else just for fluids. I didn't know about ShapedOreRecipe.
-
-@Deprecated
 public class DictionaryHandler {
 
     private static final Logger LOG = Logger.getLogger(DictionaryHandler.class.getName());
