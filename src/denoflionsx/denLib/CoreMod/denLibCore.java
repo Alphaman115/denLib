@@ -30,7 +30,7 @@ public class denLibCore implements IFMLLoadingPlugin, IDenUpdate {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new String[]{"denoflionsx.denLib.CoreMod.ASM.SQL.SQLLibRequest"};
+        return new String[]{"denoflionsx.denLib.CoreMod.ASM.AT.DenAccessTransformer","denoflionsx.denLib.CoreMod.ASM.SQL.SQLLibRequest"};
     }
 
     @Override
