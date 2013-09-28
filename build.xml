@@ -4,8 +4,8 @@
     <!-- Universal has been modified to fit denLib -->
     <import file="scripts/universal.xml"/>
 	
-	<target name="-postbuild">
-		<echo message="${GIT_COMMIT}"/>
+	<target name="-prepackage">
+            <copy file="denLib_at.cfg" todir="${classes.dir}"/>
 	</target>
     
 </project>

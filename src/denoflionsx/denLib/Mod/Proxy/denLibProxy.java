@@ -3,8 +3,6 @@ package denoflionsx.denLib.Mod.Proxy;
 import cpw.mods.fml.common.FMLLog;
 import denoflionsx.denLib.Mod.Changelog.ChangelogReader;
 import denoflionsx.denLib.Mod.Changelog.IChangeLogHandler;
-import denoflionsx.denLib.Mod.Handlers.DictionaryHandler;
-import denoflionsx.denLib.Mod.denLibMod;
 import java.io.File;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -39,11 +37,5 @@ public class denLibProxy implements IdenLibProxy {
         if (!configDir.exists()) {
             configDir.mkdirs();
         }
-    }
-    
-    @Override
-    public void setupLogger(File configDir) {
-        denLibMod.DictionaryHandler = new DictionaryHandler(configDir.getAbsolutePath());
-        this.registerForgeSubscribe(denLibMod.DictionaryHandler);
     }
 }

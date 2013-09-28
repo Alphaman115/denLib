@@ -32,6 +32,7 @@ public class DenAccessTransformer extends AccessTransformer {
 
     private void readMapFile(String mapFile) {
         System.out.println("Adding Accesstransformer map: " + mapFile);
+        System.out.println("Ignore whatever the rule count says. It is wrong.");
         try {
             Method parentMapFile = AccessTransformer.class.getDeclaredMethod("readMapFile", String.class);
             parentMapFile.setAccessible(true);

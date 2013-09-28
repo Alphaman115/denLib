@@ -16,6 +16,4 @@ public interface IdenLibProxy {
     
     public void makeDirs(File configDir);
     
-    public void setupLogger(File configDir);
-    
 }

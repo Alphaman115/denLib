@@ -13,15 +13,20 @@ import denoflionsx.denLib.Mod.Handlers.DictionaryHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.IdenWorldEventHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.UpdateHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.WorldEventHandler;
+import denoflionsx.denLib.Mod.Logger.DenFormat;
 import denoflionsx.denLib.Mod.Proxy.denLibProxy;
 import java.io.File;
 import java.util.Arrays;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
 
 public class denLibMod extends DenModContainer {
 
+    private static final Logger LOG = Logger.getLogger(denLibMod.class.getName());
     public static denLibProxy Proxy;
     public static TunableManager tuning;
     public static File coreConfig;
@@ -39,13 +44,25 @@ public class denLibMod extends DenModContainer {
         md.description = "den's Library";
     }
 
+    public static void log(String msg) {
+        LOG.info(msg);
+    }
+
     @Subscribe
     @Override
     public void preLoad(FMLPreInitializationEvent event) {
         this.setupProxy("@PROXYCLIENT@", "@PROXYSERVER@");
-        config = new Configuration(event.getSuggestedConfigurationFile());
-        Proxy.setupLogger(event.getModConfigurationDirectory());
         denLibMod.tuning = new TunableManager();
+        config = new Configuration(event.getSuggestedConfigurationFile());
+        DictionaryHandler = new DictionaryHandler();
+        Proxy.registerForgeSubscribe(DictionaryHandler);
+        try {
+            DenFormat f = new DenFormat();
+            Handler handler = new FileHandler(event.getModConfigurationDirectory().getAbsolutePath() + "/denLib.log");
+            handler.setFormatter(f);
+            LOG.addHandler(handler);
+        } catch (Throwable t) {
+        }
         Proxy.registerForgeSubscribe(this);
         coreConfig = new File(event.getModConfigurationDirectory() + "/denoflionsx/denLibCore/updater.cfg");
         tuning.registerTunableClass(denLibTuning.class);
