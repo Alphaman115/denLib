@@ -11,6 +11,7 @@ import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 
+@Deprecated
 public class TunableManager implements ITunableManager {
 
     private ArrayList<Class> tunableClasses = new ArrayList();

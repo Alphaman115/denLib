@@ -5,6 +5,7 @@ import com.google.common.io.ByteStreams;
 import denoflionsx.denLib.CoreMod.denLibCore;
 import denoflionsx.denLib.Mod.denLibMod;
 import java.io.*;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -255,7 +256,7 @@ public class denLib {
             return hex.toString();
         }
 
-       public static byte[] createSha1(File file) throws Exception {
+        public static byte[] createSha1(File file) throws Exception {
             InputStream fis = new FileInputStream(file);
             return createSha1(fis);
         }
@@ -351,8 +352,8 @@ public class denLib {
 
     public static class FileUtils {
 
-        public static ArrayList<Object> getClassesInJar(File source, Class<?> target) {
-            ArrayList<Object> classes = new ArrayList();
+        public static ArrayList<String> getClassNamesInJar(File source) {
+            ArrayList<String> classes = new ArrayList();
             try {
                 JarFile jarFile = new JarFile(source);
                 Enumeration e = jarFile.entries();
@@ -367,6 +368,35 @@ public class denLib {
                     if (debug) {
                         denLibMod.Proxy.print(className);
                     }
+                    classes.add(className);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return classes;
+        }
+        
+        public static ArrayList<Field> findFieldsInJarWithAnnotation(File source, Class<? extends Annotation> annotation){
+            ArrayList<Field> fields = new ArrayList();
+            for (String s : denLib.FileUtils.getClassNamesInJar(source)){
+                try{
+                   Class c = Class.forName(s); 
+                   for (Field f : c.getDeclaredFields()){
+                       if (f.isAnnotationPresent(annotation)){
+                           fields.add(f);
+                       }
+                   }
+                }catch(Throwable t){
+                    continue;
+                }     
+            }
+            return fields;
+        }
+
+        public static ArrayList<Object> getClassesInJar(File source, Class<?> target) {
+            ArrayList<Object> classes = new ArrayList();
+            try {
+                for (String className : denLib.FileUtils.getClassNamesInJar(source)) {
                     Class c = null;
                     try {
                         c = Class.forName(className);
