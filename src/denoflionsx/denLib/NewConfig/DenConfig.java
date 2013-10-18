@@ -1,6 +1,7 @@
 package denoflionsx.denLib.NewConfig;
 
 import denoflionsx.denLib.Lib.denLib;
+import denoflionsx.denLib.Mod.denLibMod;
 import java.io.File;
 import java.lang.reflect.Field;
 import net.minecraftforge.common.Configuration;
@@ -13,6 +14,7 @@ public class DenConfig {
         for (Field f : denLib.FileUtils.findFieldsInJarWithAnnotation(origin, ConfigField.class)) {
             f.setAccessible(true);
             ConfigField anno = f.getAnnotation(ConfigField.class);
+            denLibMod.log("Found ConfigField " + f.getName());
             getAndSet(anno, f, config);
         }
         return config;

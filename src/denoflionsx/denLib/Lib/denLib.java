@@ -7,10 +7,14 @@ import denoflionsx.denLib.Mod.denLibMod;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
@@ -289,8 +293,17 @@ public class denLib {
                     l.add(str);
                 }
                 in.close();
-            } catch (MalformedURLException e) {
-            } catch (IOException e) {
+            } catch (Throwable t) {
+                return new String[]{"404"};
+            }
+            try {
+                if (URL.contains("dropbox")) {
+                    String t = l.get(0);
+                    if (denLib.StringUtils.removeSpaces(t).substring(0, 2).equals("PK")) {
+                        return new String[]{"404"};
+                    }
+                }
+            } catch (Throwable t) {
             }
             return l.toArray(new String[l.size()]);
         }
@@ -375,20 +388,20 @@ public class denLib {
             }
             return classes;
         }
-        
-        public static ArrayList<Field> findFieldsInJarWithAnnotation(File source, Class<? extends Annotation> annotation){
+
+        public static ArrayList<Field> findFieldsInJarWithAnnotation(File source, Class<? extends Annotation> annotation) {
             ArrayList<Field> fields = new ArrayList();
-            for (String s : denLib.FileUtils.getClassNamesInJar(source)){
-                try{
-                   Class c = Class.forName(s); 
-                   for (Field f : c.getDeclaredFields()){
-                       if (f.isAnnotationPresent(annotation)){
-                           fields.add(f);
-                       }
-                   }
-                }catch(Throwable t){
+            for (String s : denLib.FileUtils.getClassNamesInJar(source)) {
+                try {
+                    Class c = Class.forName(s);
+                    for (Field f : c.getDeclaredFields()) {
+                        if (f.isAnnotationPresent(annotation)) {
+                            fields.add(f);
+                        }
+                    }
+                } catch (Throwable t) {
                     continue;
-                }     
+                }
             }
             return fields;
         }
@@ -562,6 +575,121 @@ public class denLib {
             ClassWriter cw = new ClassWriter(flags);
             cnode.accept(cw);
             return cw.toByteArray();
+        }
+    }
+
+    public static class SQLHelper {
+
+        public static Connection createDB(String dbName) {
+            try {
+                return DriverManager.getConnection("jdbc:sqlite:" + dbName);
+            } catch (Throwable t) {
+            }
+            return null;
+        }
+
+        private static File dbFromTableInfo(String[] tableInfo) {
+            return new File(tableInfo[0]);
+        }
+
+        private static Statement makeConnection(String[] tableInfo) {
+            try {
+                File db = dbFromTableInfo(tableInfo);
+                Connection connection = createDB(db.getAbsolutePath());
+                Statement statement = connection.createStatement();
+                return statement;
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            return null;
+        }
+
+        private static Connection makeConnection2(String[] tableInfo) {
+            try {
+                File db = dbFromTableInfo(tableInfo);
+                Connection connection = createDB(db.getAbsolutePath());
+                return connection;
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            return null;
+        }
+
+        public static int getIntFromDB(String[] tableInfo, String targetFieldValue) {
+            try {
+                String table = tableInfo[1];
+                int rvalue = -1;
+                Statement statement = makeConnection(tableInfo);
+                ResultSet rs = statement.executeQuery("select * from " + table);
+                while (rs.next()) {
+                    if (rs.getString(1).equals(targetFieldValue)) {
+                        rvalue = rs.getInt(2);
+                    }
+                }
+                return rvalue;
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            return -1;
+        }
+
+        public static void putIntInDB(String[] tableInfo, Object[] input) {
+            try {
+                String table = tableInfo[1];
+                Connection connection = makeConnection2(tableInfo);
+                Statement statement = connection.createStatement();
+                statement.executeUpdate("create table if not exists " + table + " (KEY string, VALUE integer);");
+                PreparedStatement prep = connection.prepareStatement(
+                        "insert into " + table + " values (?, ?);");
+                prep.setString(1, input[0].toString());
+                prep.setInt(2, Integer.valueOf(input[1].toString()));
+                prep.addBatch();
+                connection.setAutoCommit(false);
+                prep.executeBatch();
+                connection.setAutoCommit(true);
+                connection.close();
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
+
+        public static void putStringInDB(String[] tableInfo, Object[] input) {
+            try {
+                String table = tableInfo[1];
+                Connection connection = makeConnection2(tableInfo);
+                Statement statement = connection.createStatement();
+                statement.executeUpdate("create table if not exists " + table + " (KEY string, VALUE string);");
+                PreparedStatement prep = connection.prepareStatement(
+                        "insert into " + table + " values (?, ?);");
+                prep.setString(1, input[0].toString());
+                prep.setString(2, input[1].toString());
+                prep.addBatch();
+                connection.setAutoCommit(false);
+                prep.executeBatch();
+                connection.setAutoCommit(true);
+                connection.close();
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
+
+        public static String getStringInDB(String[] tableInfo, String targetFieldValue) {
+            try {
+                String rvalue = null;
+                Connection connection = makeConnection2(tableInfo);
+                Statement statement = connection.createStatement();
+                String table = tableInfo[1];
+                ResultSet rs = statement.executeQuery("select * from " + table);
+                while (rs.next()) {
+                    if (rs.getString(1).equals(targetFieldValue)) {
+                        rvalue = rs.getString(2);
+                    }
+                }
+                return rvalue;
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            return null;
         }
     }
 }

@@ -1,9 +1,9 @@
 package denoflionsx.denLib.CoreMod.ASM.SQL;
 
 import denoflionsx.denLib.CoreMod.denLibCore;
+import denoflionsx.denLib.Lib.denLib;
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -12,13 +12,18 @@ import net.minecraftforge.common.ForgeVersion;
 
 public class SQLiteASM implements IClassTransformer {
 
-    private String targetClass;
     private String targetClassDeobf;
     private File db;
     private final ArrayList<String> versions;
 
-    public SQLiteASM(String targetClass, String targetClassDeobf, File db) {
-        this.targetClass = targetClass;
+    public SQLiteASM(String targetClassDeobf, File db) {
+        this.targetClassDeobf = targetClassDeobf;
+        this.db = db;
+        versions = new ArrayList();
+    }
+
+    // For continued 1.6.2 compat.
+    public SQLiteASM(String bullshit, String targetClassDeobf, File db) {
         this.targetClassDeobf = targetClassDeobf;
         this.db = db;
         versions = new ArrayList();
@@ -26,9 +31,9 @@ public class SQLiteASM implements IClassTransformer {
 
     @Override
     public byte[] transform(String string, String string1, byte[] bytes) {
-        if (string.equals(targetClass)) {
+        if (string1.equals(targetClassDeobf)) {
             try {
-                Connection connection = createDB(db.getAbsolutePath());
+                Connection connection = denLib.SQLHelper.createDB(db.getAbsolutePath());
                 Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery("select * from " + targetClassDeobf);
                 String hash = "Nope";
@@ -56,7 +61,7 @@ public class SQLiteASM implements IClassTransformer {
                     denLibCore.print("No patch data found for Forge " + String.valueOf(ForgeVersion.getBuildVersion()) + "! Go politely ask den to run the db updater!");
                     String supported = "";
                     denLibCore.print("This db supports the following versions of Forge:");
-                    for (String s : versions){
+                    for (String s : versions) {
                         supported += (s + ",");
                     }
                     supported = supported.substring(0, supported.lastIndexOf(",") - 1);
@@ -66,18 +71,10 @@ public class SQLiteASM implements IClassTransformer {
                     connection.close();
                 }
             } catch (Throwable t) {
-                denLibCore.print("Something went wrong when trying to patch " + targetClass + "!");
+                denLibCore.print("Something went wrong when trying to patch " + targetClassDeobf + "!");
                 t.printStackTrace();
             }
         }
         return bytes;
-    }
-
-    private Connection createDB(String dbName) {
-        try {
-            return DriverManager.getConnection("jdbc:sqlite:" + dbName);
-        } catch (Throwable t) {
-        }
-        return null;
     }
 }
