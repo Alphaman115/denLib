@@ -31,7 +31,7 @@ public class SQLiteASM implements IClassTransformer {
 
     @Override
     public byte[] transform(String string, String string1, byte[] bytes) {
-        if (string1.equals(targetClassDeobf)) {
+        if (string1.contains(targetClassDeobf)) {
             try {
                 Connection connection = denLib.SQLHelper.createDB(db.getAbsolutePath());
                 Statement statement = connection.createStatement();
