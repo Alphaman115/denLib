@@ -11,27 +11,30 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.common.ForgeVersion;
 
 public class SQLiteASM implements IClassTransformer {
-
+    
     private String targetClassDeobf;
     private File db;
-    private final ArrayList<String> versions;
-
+    
     public SQLiteASM(String targetClassDeobf, File db) {
         this.targetClassDeobf = targetClassDeobf;
         this.db = db;
-        versions = new ArrayList();
     }
 
     // For continued 1.6.2 compat.
     public SQLiteASM(String bullshit, String targetClassDeobf, File db) {
         this.targetClassDeobf = targetClassDeobf;
         this.db = db;
-        versions = new ArrayList();
     }
-
+    
     @Override
     public byte[] transform(String string, String string1, byte[] bytes) {
-        if (string1.contains(targetClassDeobf)) {
+        // Lock to vanilla classes.
+        if (!string1.toLowerCase().contains("net.minecraft")) {
+            return bytes;
+        }
+        String[] a = string1.split("\\.");
+        if (a[a.length - 1].equals(targetClassDeobf)) {
+            ArrayList<String> versions = new ArrayList();
             try {
                 Connection connection = denLib.SQLHelper.createDB(db.getAbsolutePath());
                 Statement statement = connection.createStatement();
