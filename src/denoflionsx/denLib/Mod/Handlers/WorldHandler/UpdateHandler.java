@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import denoflionsx.denLib.Mod.Handlers.TickHandler.UpdaterMessage;
 
+@Deprecated
 public class UpdateHandler implements IdenWorldEventHandler {
 
     @Override

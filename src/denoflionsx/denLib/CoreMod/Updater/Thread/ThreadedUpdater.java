@@ -10,6 +10,7 @@ import denoflionsx.denLib.Mod.Handlers.TickHandler.UpdaterMessage;
 import java.io.File;
 import java.util.List;
 
+@Deprecated
 public class ThreadedUpdater extends Thread {
 
     private List<IDenUpdate> syncedList;

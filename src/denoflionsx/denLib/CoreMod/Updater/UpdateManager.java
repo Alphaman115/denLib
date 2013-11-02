@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+@Deprecated
 public class UpdateManager {
 
     private ArrayList<IDenUpdate> validforUpdate = new ArrayList();

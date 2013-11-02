@@ -2,6 +2,7 @@ package denoflionsx.denLib.Mod.Handlers.WorldHandler;
 
 import java.util.ArrayList;
 
+@Deprecated
 public class WorldEventHandler {
     
     private static ArrayList<IdenWorldEventHandler> handlers = new ArrayList();

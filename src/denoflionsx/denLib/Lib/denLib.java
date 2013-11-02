@@ -441,7 +441,7 @@ public class denLib {
             return (BiMap) readObjectFromFile(f);
         }
 
-        private static void saveObjectToFile(Object o, File f) {
+        public static void saveObjectToFile(Object o, File f) {
             try {
                 byte[] array = turnObjectToByteArray(o);
                 FileOutputStream fos = new FileOutputStream(f);
@@ -452,7 +452,7 @@ public class denLib {
             }
         }
 
-        private static byte[] turnObjectToByteArray(Object o) {
+        public static byte[] turnObjectToByteArray(Object o) {
             try {
                 ByteArrayOutputStream b = new ByteArrayOutputStream();
                 ObjectOutputStream b1 = new ObjectOutputStream(b);

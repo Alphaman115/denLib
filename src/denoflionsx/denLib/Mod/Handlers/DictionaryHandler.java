@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidRegistry.FluidRegisterEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
+@Deprecated
 public class DictionaryHandler {
 
     private static final HashMap<Short, ArrayList<IDictionaryListener>> listeners = new HashMap();

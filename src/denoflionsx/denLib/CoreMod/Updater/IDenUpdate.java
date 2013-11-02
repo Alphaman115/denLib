@@ -2,6 +2,7 @@ package denoflionsx.denLib.CoreMod.Updater;
 
 import java.io.File;
 
+@Deprecated
 public interface IDenUpdate {
     
     public String getUpdaterUrl();

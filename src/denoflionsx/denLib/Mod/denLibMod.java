@@ -13,6 +13,7 @@ import denoflionsx.denLib.Mod.Changelog.ChangeLogWorld;
 import denoflionsx.denLib.Mod.Commands.denLibCommand;
 import denoflionsx.denLib.Mod.Handlers.ChunkHandler;
 import denoflionsx.denLib.Mod.Handlers.DictionaryHandler;
+import denoflionsx.denLib.Mod.Handlers.NewWorldHandler.DenWorldHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.IdenWorldEventHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.UpdateHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.WorldEventHandler;
@@ -39,6 +40,7 @@ public class denLibMod extends DenModContainer {
     public static Configuration config;
     public static DictionaryHandler DictionaryHandler;
     public static ChunkHandler TERemover;
+    public static DenWorldHandler worldHandler;
 
     public denLibMod() {
         super(new ModMetadata());
@@ -77,6 +79,7 @@ public class denLibMod extends DenModContainer {
         Proxy.reloadConfig();
         TERemover = new ChunkHandler();
         Proxy.registerForgeSubscribe(TERemover);
+        worldHandler = new DenWorldHandler();
     }
     
     @Subscribe
