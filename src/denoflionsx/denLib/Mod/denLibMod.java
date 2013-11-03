@@ -56,6 +56,10 @@ public class denLibMod extends DenModContainer {
     public static void log(String msg) {
         LOG.info(msg);
     }
+    
+    public static void error(String clazz, String method, Throwable ex){
+        LOG.throwing(clazz, method, ex);
+    }
 
     @Subscribe
     @Override

@@ -416,6 +416,7 @@ public class denLib {
                     } catch (Throwable ex) {
                         // This is needed for server side. Some client only classes won't exist.
                         denLibMod.Proxy.print("Skipping " + className + " due to SideOnly = CLIENT.");
+                        denLibMod.error(denLib.class.getName(), "getClassesInJar", ex);
                         continue;
                     }
                     if (c.isInterface()) {
