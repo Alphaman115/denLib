@@ -13,6 +13,8 @@ import denoflionsx.denLib.Mod.Changelog.ChangeLogWorld;
 import denoflionsx.denLib.Mod.Commands.denLibCommand;
 import denoflionsx.denLib.Mod.Handlers.ChunkHandler;
 import denoflionsx.denLib.Mod.Handlers.DictionaryHandler;
+import denoflionsx.denLib.Mod.Handlers.NewDictHandler.DenLibDictionaryHandler;
+import denoflionsx.denLib.Mod.Handlers.NewFluidHandler.DenLibFluidHandler;
 import denoflionsx.denLib.Mod.Handlers.NewWorldHandler.DenWorldHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.IdenWorldEventHandler;
 import denoflionsx.denLib.Mod.Handlers.WorldHandler.UpdateHandler;
@@ -39,6 +41,8 @@ public class denLibMod extends DenModContainer {
     public static File coreConfig;
     public static Configuration config;
     public static DictionaryHandler DictionaryHandler;
+    public static DenLibDictionaryHandler dict;
+    public static DenLibFluidHandler fluids;
     public static ChunkHandler TERemover;
     public static DenWorldHandler worldHandler;
 
@@ -69,6 +73,8 @@ public class denLibMod extends DenModContainer {
         configManager = new DenConfig();
         config = new Configuration(event.getSuggestedConfigurationFile());
         DictionaryHandler = new DictionaryHandler();
+        fluids =  new DenLibFluidHandler();
+        dict = new DenLibDictionaryHandler();
         Proxy.registerForgeSubscribe(DictionaryHandler);
         try {
             DenFormat f = new DenFormat();
