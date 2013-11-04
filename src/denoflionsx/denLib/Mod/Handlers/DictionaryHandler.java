@@ -1,6 +1,5 @@
 package denoflionsx.denLib.Mod.Handlers;
 
-import denoflionsx.denLib.Mod.denLibMod;
 import java.util.ArrayList;
 import java.util.HashMap;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -23,21 +22,21 @@ public class DictionaryHandler {
     public void registerListener(IDictionaryListener o, short channel) {
         if (listeners.get(channel) == null) {
             listeners.put(channel, new ArrayList());
-            denLibMod.log("Created listener list on channel ".concat(String.valueOf(channel)));
+
         }
         listeners.get(channel).add(o);
-        denLibMod.log("Registered Listener: ".concat(o.getClass().getName()));
+
         // Post backlog events to late listeners.
         if (channel == channels.FLUID) {
             if (!fluidEvents.isEmpty()) {
-                denLibMod.log("Sending ".concat(String.valueOf(fluidEvents.size()) + " cached events to ".concat(o.getClass().getName())));
+
                 for (FluidRegistry.FluidRegisterEvent e : fluidEvents) {
                     o.onEvent(e.fluidName, channel, FluidRegistry.getFluid(e.fluidName));
                 }
             }
         } else if (channel == channels.ORE) {
             if (!oreEvents.isEmpty()) {
-                denLibMod.log("Sending ".concat(String.valueOf(oreEvents.size()) + " cached events to ".concat(o.getClass().getName())));
+
                 for (OreRegisterEvent e : oreEvents) {
                     o.onEvent(e.Name, channel, e.Ore);
                 }
@@ -57,14 +56,14 @@ public class DictionaryHandler {
 
     @ForgeSubscribe
     public void onEvent(OreRegisterEvent e) {
-        denLibMod.log("OreDictionary: ".concat(e.Name));
+
         this.postEvent(e.Name, channels.ORE, e.Ore);
         oreEvents.add(e);
     }
 
     @ForgeSubscribe
     public void onFluidEvent(FluidRegistry.FluidRegisterEvent e) {
-        denLibMod.log("FluidDictionary: ".concat(e.fluidName));
+
         this.postEvent(e.fluidName, channels.FLUID, FluidRegistry.getFluid(e.fluidName));
         fluidEvents.add(e);
     }

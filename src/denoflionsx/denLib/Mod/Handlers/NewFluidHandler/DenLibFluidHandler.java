@@ -9,20 +9,20 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class DenLibFluidHandler {
-
+    
     private HashMap<String, ArrayList<IDenLibFluidHandler>> handlerList = new HashMap();
     private HashMap<String, FluidStack> cache = new HashMap();
-
+    
     public DenLibFluidHandler() {
         this.register();
     }
-
+    
     private void register() {
         denLibMod.Proxy.registerForgeSubscribe(this);
         cache.put("water", FluidRegistry.getFluidStack("water", FluidContainerRegistry.BUCKET_VOLUME));
         cache.put("lava", FluidRegistry.getFluidStack("lava", FluidContainerRegistry.BUCKET_VOLUME));
     }
-
+    
     public void register(IDenLibFluidHandler handler) {
         if (handler.lookingForFluid() == null) {
             addToList("null", handler);
@@ -36,16 +36,17 @@ public class DenLibFluidHandler {
             }
         }
     }
-
+    
     private void addToList(String s, IDenLibFluidHandler handler) {
         if (!handlerList.containsKey(s)) {
             handlerList.put(s, new ArrayList());
         }
         handlerList.get(s).add(handler);
     }
-
+    
     @ForgeSubscribe
     public void onEvent(FluidRegistry.FluidRegisterEvent e) {
+        denLibMod.log("Fluid: " + e.fluidName);
         FluidStack f = new FluidStack(e.fluidID, FluidContainerRegistry.BUCKET_VOLUME);
         cache.put(f.getFluid().getName(), f);
         if (handlerList.containsKey(e.fluidName)) {
@@ -53,8 +54,10 @@ public class DenLibFluidHandler {
                 h.onEvent(f);
             }
         }
-        for (IDenLibFluidHandler h : handlerList.get("null")) {
-            h.onEvent(f);
+        if (handlerList.containsKey("null")) {
+            for (IDenLibFluidHandler h : handlerList.get("null")) {
+                h.onEvent(f);
+            }
         }
     }
 }

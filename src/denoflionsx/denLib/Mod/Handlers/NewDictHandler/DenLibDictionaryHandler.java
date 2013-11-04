@@ -24,6 +24,7 @@ public class DenLibDictionaryHandler {
     }
 
     private void setup() {
+        // Copied these from Forge. There is no way to catch these as events since they are in the static init.
         addToCache("logWood", new ItemStack(Block.wood, 1, OreDictionary.WILDCARD_VALUE));
         addToCache("plankWood", new ItemStack(Block.planks, 1, OreDictionary.WILDCARD_VALUE));
         addToCache("slabWood", new ItemStack(Block.woodSingleSlab, 1, OreDictionary.WILDCARD_VALUE));
@@ -110,7 +111,7 @@ public class DenLibDictionaryHandler {
     }
 
     private boolean hasWildcard(String s) {
-        return s.contains("\\*");
+        return s.contains("*");
     }
 
     @ForgeSubscribe
@@ -135,8 +136,10 @@ public class DenLibDictionaryHandler {
     }
 
     private void doEvent(String Name, ItemStack Ore) {
+        denLibMod.log("Ore: " + Name);
         for (String s : lists.keySet()) {
             if (hasWildcard(s)) {
+                denLibMod.log(s + " has wildcard.");
                 if (doesMatchWildcard(s, Name)) {
                     for (IDenLibDictionaryHandler h : lists.get(s)) {
                         h.onEvent(Ore);
