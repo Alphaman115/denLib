@@ -3,9 +3,11 @@ package denoflionsx.denLib.CoreMod;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import denoflionsx.denLib.CoreMod.ASM.ASMLogger;
 import denoflionsx.denLib.CoreMod.Updater.UpdateManager;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class denLibCore implements IFMLLoadingPlugin {
@@ -28,7 +30,12 @@ public class denLibCore implements IFMLLoadingPlugin {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new String[]{"denoflionsx.denLib.CoreMod.ASM.SQL.SQLLibRequest", "denoflionsx.denLib.CoreMod.ASM.ASMLogger"};
+        ArrayList<String> trans = new ArrayList();
+        if (ASMLogger.doLog) {
+            trans.add("denoflionsx.denLib.CoreMod.ASM.ASMLogger");
+        }
+        trans.add("denoflionsx.denLib.CoreMod.ASM.SQL.SQLLibRequest");
+        return trans.toArray(new String[trans.size()]);
     }
 
     @Override

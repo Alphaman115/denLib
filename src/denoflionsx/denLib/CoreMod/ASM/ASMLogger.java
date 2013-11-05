@@ -9,15 +9,17 @@ import net.minecraft.launchwrapper.IClassTransformer;
 public class ASMLogger implements IClassTransformer {
 
     private static final Logger LOG = Logger.getLogger(ASMLogger.class.getName());
-    public static final boolean doLog = true;
+    public static final boolean doLog = false;
 
-    static {
-        try {
-            DenFormat f = new DenFormat();
-            Handler handler = new FileHandler("denLib_obfData.log");
-            handler.setFormatter(f);
-            LOG.addHandler(handler);
-        } catch (Throwable t) {
+    public ASMLogger() {
+        if (doLog) {
+            try {
+                DenFormat f = new DenFormat();
+                Handler handler = new FileHandler("denLib_obfData.log");
+                handler.setFormatter(f);
+                LOG.addHandler(handler);
+            } catch (Throwable t) {
+            }
         }
     }
 
