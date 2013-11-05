@@ -8,13 +8,14 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-public class denLibCore implements IFMLLoadingPlugin{
+public class denLibCore implements IFMLLoadingPlugin {
 
     public static UpdateManager updater;
     public static File check = new File("denLibUpdateCheck.bin");
     public static final String build_number = "@BUILD@";
     public static File location;
     public static String mc = "No idea";
+    public static boolean isBukkit = false;
 
     @Override
     public String[] getASMTransformerClass() {
@@ -49,6 +50,12 @@ public class denLibCore implements IFMLLoadingPlugin{
     public void injectData(Map<String, Object> data) {
         location = (File) data.get("coremodLocation");
         updater = new UpdateManager();
+        try {
+            if (Class.forName("org.bukkit.craftbukkit.Main", false, getClass().getClassLoader()) != null) {
+                isBukkit = true;
+            }
+        } catch (Throwable t) {
+        }
     }
 
     public static void print(String msg) {

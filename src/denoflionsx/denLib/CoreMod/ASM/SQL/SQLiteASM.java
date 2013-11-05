@@ -11,10 +11,10 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.common.ForgeVersion;
 
 public class SQLiteASM implements IClassTransformer {
-    
+
     private String targetClassDeobf;
     private File db;
-    
+
     public SQLiteASM(String targetClassDeobf, File db) {
         this.targetClassDeobf = targetClassDeobf;
         this.db = db;
@@ -25,9 +25,13 @@ public class SQLiteASM implements IClassTransformer {
         this.targetClassDeobf = targetClassDeobf;
         this.db = db;
     }
-    
+
     @Override
     public byte[] transform(String string, String string1, byte[] bytes) {
+        // Do not run transformers on bukkit.
+        if (denLibCore.isBukkit) {
+            return bytes;
+        }
         // Lock to vanilla classes.
         if (!string1.toLowerCase().contains("net.minecraft")) {
             return bytes;
