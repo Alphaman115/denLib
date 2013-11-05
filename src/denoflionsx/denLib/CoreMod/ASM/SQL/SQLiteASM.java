@@ -28,10 +28,6 @@ public class SQLiteASM implements IClassTransformer {
 
     @Override
     public byte[] transform(String string, String string1, byte[] bytes) {
-        // Do not run transformers on bukkit.
-        if (denLibCore.isBukkit) {
-            return bytes;
-        }
         // Lock to vanilla classes.
         if (!string1.toLowerCase().contains("net.minecraft")) {
             return bytes;

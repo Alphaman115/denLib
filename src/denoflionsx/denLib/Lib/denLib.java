@@ -31,6 +31,17 @@ public class denLib {
 
     public static boolean debug = false;
 
+    public static class BukkitHelper {
+
+        public static boolean isBukkit() {
+            try {
+                return Class.forName("org.bukkit.WorldType") != null;
+            } catch (Throwable t) {
+            }
+            return false;
+        }
+    }
+
     public static class ReflectionHelper {
 
         public static Object getStaticField(Class c, String f) {
