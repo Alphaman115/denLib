@@ -10,7 +10,6 @@ import denoflionsx.denLib.Config.Manager.TunableManager;
 import denoflionsx.denLib.CoreMod.Config.denLibTuning;
 import denoflionsx.denLib.CoreMod.denLibCore;
 import denoflionsx.denLib.Mod.Changelog.ChangeLogWorld;
-import denoflionsx.denLib.Mod.Commands.denLibCommand;
 import denoflionsx.denLib.Mod.Handlers.ChunkHandler;
 import denoflionsx.denLib.Mod.Handlers.DictionaryHandler;
 import denoflionsx.denLib.Mod.Handlers.NewDictHandler.DenLibDictionaryHandler;
@@ -27,7 +26,6 @@ import java.util.Arrays;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
-import net.minecraft.command.CommandHandler;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
@@ -94,8 +92,6 @@ public class denLibMod extends DenModContainer {
     
     @Subscribe
     public void onServerStarting(FMLServerStartingEvent event){
-        CommandHandler commandManager = (CommandHandler) event.getServer().getCommandManager();
-        commandManager.registerCommand(new denLibCommand());
     }
 
     @Subscribe
