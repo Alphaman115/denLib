@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -395,9 +396,30 @@ public class denLib {
                     classes.add(className);
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                return new ArrayList();
             }
             return classes;
+        }
+
+        public static File findMeInMods(File folder, String modName) {
+            File[] files = folder.listFiles(new DenFileFilter(modName));
+            if (files.length > 1) {
+                denLibCore.print("Ambiguous mod search results! Be more specific! Target was: " + modName + " and has " + files.length + " results.");
+            }
+            try {
+                return files[0];
+            } catch (Throwable t) {
+                // This stuff is for when I'm working in NetBeans.
+                try{
+                    File a = new File(new File(folder.getAbsolutePath().replace("\\mods", "")), "dist");
+                    denLibCore.print("Cannot find in mods. Looking in " + a.getAbsolutePath());
+                    return findMeInMods(a, modName);
+                }catch(Throwable t2){
+                    File b = new File(new File(folder.getAbsolutePath().replace("\\mods", "")), "dist/lib");
+                    denLibCore.print("Cannot find in dist. We might be in a project dependant on @NAME@. Looking in " + b.getAbsolutePath());
+                    return findMeInMods(b, modName);
+                }
+            }
         }
 
         public static ArrayList<Field> findFieldsInJarWithAnnotation(File source, Class<? extends Annotation> annotation) {
@@ -413,6 +435,22 @@ public class denLib {
                 } catch (Throwable t) {
                     continue;
                 }
+            }
+            return fields;
+        }
+
+        public static ArrayList<Field> findFieldsInSet(Set<Class<? extends Object>> set, Class<? extends Annotation> annotation) {
+            ArrayList<Field> fields = new ArrayList();
+            try {
+                for (Class c : set) {
+                    denLibCore.print(c.getName());
+                    for (Field f : c.getDeclaredFields()) {
+                        if (f.isAnnotationPresent(annotation)) {
+                            fields.add(f);
+                        }
+                    }
+                }
+            } catch (Throwable t) {
             }
             return fields;
         }
@@ -700,5 +738,20 @@ public class denLib {
             }
             return null;
         }
+    }
+
+    public static class DenFileFilter implements FilenameFilter {
+
+        private final String target;
+
+        public DenFileFilter(String target) {
+            this.target = target;
+        }
+
+        @Override
+        public boolean accept(File dir, String name) {
+            return name.contains(target) && !(new File(dir, name).isDirectory());
+        }
+
     }
 }

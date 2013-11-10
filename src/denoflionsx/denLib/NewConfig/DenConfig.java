@@ -4,22 +4,31 @@ import denoflionsx.denLib.Lib.denLib;
 import denoflionsx.denLib.Mod.denLibMod;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 
 public class DenConfig {
-    
+
     public Configuration setup(File origin, File configFile) {
+        return setup(origin, configFile, null);
+    }
+
+    public Configuration setup(File origin, File configFile, String modID) {
         Configuration config = new Configuration(configFile);
-        for (Field f : denLib.FileUtils.findFieldsInJarWithAnnotation(origin, ConfigField.class)) {
-            f.setAccessible(true);
-            ConfigField anno = f.getAnnotation(ConfigField.class);
-            denLibMod.log("Found ConfigField " + f.getName());
-            getAndSet(anno, f, config);
+        try {
+            ArrayList<Field> fields = denLib.FileUtils.findFieldsInJarWithAnnotation(origin, ConfigField.class);
+            for (Field f : fields) {
+                f.setAccessible(true);
+                ConfigField anno = f.getAnnotation(ConfigField.class);
+                denLibMod.log("Found ConfigField " + f.getName());
+                getAndSet(anno, f, config);
+            }
+        } catch (Throwable t) {
         }
         return config;
     }
-    
+
     private void getAndSet(ConfigField annotation, Field f, Configuration config) {
         Object o = null;
         Property p = null;

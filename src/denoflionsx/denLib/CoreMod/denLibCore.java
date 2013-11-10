@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import denoflionsx.denLib.CoreMod.ASM.ASMLogger;
 import denoflionsx.denLib.CoreMod.Updater.UpdateManager;
+import denoflionsx.denLib.Lib.denLib;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -55,6 +56,15 @@ public class denLibCore implements IFMLLoadingPlugin {
     @Override
     public void injectData(Map<String, Object> data) {
         location = (File) data.get("coremodLocation");
+        if (location == null) {
+            // Probably a deobf'd env. Check it.
+            boolean obf = (Boolean) data.get("runtimeDeobfuscationEnabled");
+            if (!obf) {
+                print("Development env detected. Trying to figure out where the coremod is. Please stand by...");
+                // This can fail depending on your env setup. There is another fallback later on.
+                location = denLib.FileUtils.findMeInMods(new File(((File) data.get("mcLocation")), "mods"), "@NAME@");
+            }
+        }
         updater = new UpdateManager();
     }
 
