@@ -47,8 +47,8 @@ public class denLibMod extends DenModContainer {
     public denLibMod() {
         super(new ModMetadata());
         ModMetadata md = super.getMetadata();
-        md.modId = "@NAME@";
-        md.name = "@NAME@";
+        md.modId = "denLib";
+        md.name = "denLib";
         md.version = "@VERSION@";
         md.authorList = Arrays.asList("denoflionsx");
         md.url = "http://denoflionsx.info";
@@ -66,7 +66,8 @@ public class denLibMod extends DenModContainer {
     @Subscribe
     @Override
     public void preLoad(FMLPreInitializationEvent event) {
-        this.setupProxy("@PROXYCLIENT@", "@PROXYSERVER@");
+        String proxyPath = "denoflionsx.denLib.Mod.Proxy";
+        this.setupProxy(proxyPath + ".denLibClientProxy", proxyPath + ".denLibCommonProxy");
         denLibMod.tuning = new TunableManager();
         configManager = new DenConfig();
         config = new Configuration(event.getSuggestedConfigurationFile());

@@ -403,22 +403,24 @@ public class denLib {
 
         public static File findMeInMods(File folder, String modName) {
             File[] files = folder.listFiles(new DenFileFilter(modName));
-            if (files.length > 1) {
-                denLibCore.print("Ambiguous mod search results! Be more specific! Target was: " + modName + " and has " + files.length + " results.");
+            if (files.length == 0) {
+                File a = new File(new File(folder.getAbsolutePath().replace("\\mods", "")), "dist");
+                denLibCore.print("Cannot find " + modName + " in mods. Looking in " + a.getAbsolutePath());
+                files = a.listFiles(new DenFileFilter(modName));
+            }
+            if (files.length == 0) {
+                File b = new File(new File(folder.getAbsolutePath().replace("\\mods", "")), "dist/lib");
+                denLibCore.print("Cannot find " + modName + " in dist. We might be in a project dependant on denLib. Looking in " + b.getAbsolutePath());
+                files = b.listFiles(new DenFileFilter(modName));
             }
             try {
+                if (files.length > 1) {
+                    denLibCore.print("Ambiguous mod search results! Be more specific! Target was: " + modName + " and has " + files.length + " results.");
+                }
                 return files[0];
             } catch (Throwable t) {
-                // This stuff is for when I'm working in NetBeans.
-                try{
-                    File a = new File(new File(folder.getAbsolutePath().replace("\\mods", "")), "dist");
-                    denLibCore.print("Cannot find in mods. Looking in " + a.getAbsolutePath());
-                    return findMeInMods(a, modName);
-                }catch(Throwable t2){
-                    File b = new File(new File(folder.getAbsolutePath().replace("\\mods", "")), "dist/lib");
-                    denLibCore.print("Cannot find in dist. We might be in a project dependant on @NAME@. Looking in " + b.getAbsolutePath());
-                    return findMeInMods(b, modName);
-                }
+                t.printStackTrace();
+                return null;
             }
         }
 

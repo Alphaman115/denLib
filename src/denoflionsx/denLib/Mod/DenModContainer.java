@@ -12,33 +12,33 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 
 public abstract class DenModContainer extends DummyModContainer {
-    
+
     public DenModContainer() {
         super(new ModMetadata());
         ModMetadata md = super.getMetadata();
-        md.modId = "@NAME@";
-        md.name = "@NAME@";
+        md.modId = "denLib";
+        md.name = "denLib";
         md.version = "@VERSION@";
         md.authorList = Arrays.asList("denoflionsx");
         md.url = "http://denoflionsx.info";
-        md.description = "@DESC@";
+        md.description = "";
     }
-    
+
     public DenModContainer(ModMetadata md) {
         super(md);
     }
-    
+
     public abstract void preLoad(FMLPreInitializationEvent event);
-    
+
     public abstract void load(FMLInitializationEvent event);
-    
+
     public abstract void modsLoaded(FMLPostInitializationEvent evt);
-    
+
     public final void setupProxy(String client, String server) {
         try {
             for (Field f : this.getClass().getDeclaredFields()) {
                 if (f.getName().toLowerCase().equals("proxy")) {
-                    Object o = FMLCommonHandler.instance().getSide().isClient() ? Class.forName("@PROXYCLIENT@").newInstance() : Class.forName("@PROXYSERVER@").newInstance();
+                    Object o = FMLCommonHandler.instance().getSide().isClient() ? Class.forName(client).newInstance() : Class.forName(server).newInstance();
                     f.set(this, o);
                 }
             }
@@ -46,7 +46,7 @@ public abstract class DenModContainer extends DummyModContainer {
             t.printStackTrace();
         }
     }
-    
+
     @Override
     public boolean registerBus(EventBus bus, LoadController controller) {
         bus.register(this);

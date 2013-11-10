@@ -61,8 +61,7 @@ public class denLibCore implements IFMLLoadingPlugin {
             boolean obf = (Boolean) data.get("runtimeDeobfuscationEnabled");
             if (!obf) {
                 print("Development env detected. Trying to figure out where the coremod is. Please stand by...");
-                // This can fail depending on your env setup. There is another fallback later on.
-                location = denLib.FileUtils.findMeInMods(new File(((File) data.get("mcLocation")), "mods"), "@NAME@");
+                location = denLib.FileUtils.findMeInMods(new File(((File) data.get("mcLocation")), "mods"), "denLib");
             }
         }
         updater = new UpdateManager();

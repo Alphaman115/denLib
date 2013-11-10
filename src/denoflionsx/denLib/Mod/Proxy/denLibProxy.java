@@ -46,7 +46,7 @@ public class denLibProxy implements IdenLibProxy {
 
     @Override
     public void reloadConfig() {
-        configManager.setup(denLibCore.location, coreConfig, "@NAME@");
+        configManager.setup(denLibCore.location, coreConfig, "denLib");
     }
 
     @Override

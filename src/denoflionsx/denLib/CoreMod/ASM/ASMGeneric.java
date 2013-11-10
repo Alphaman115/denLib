@@ -35,7 +35,7 @@ public class ASMGeneric implements IClassTransformer {
                 } catch (Throwable t) {
                 }
                 bytes = b2;
-                System.out.println("[@NAME@]: Class " + this.name + " patched and verified!");
+                System.out.println("[denLib]: Class " + this.name + " patched and verified!");
             } else {
                 try {
                     throw new HashVerificationError(name, hash);
@@ -59,7 +59,7 @@ public class ASMGeneric implements IClassTransformer {
         
         @Override
         public String getMessage() {
-            return "[@NAME@]: Failed to verify class: " + this.c + "! Found hash: " + this.hash;
+            return "[denLib]: Failed to verify class: " + this.c + "! Found hash: " + this.hash;
         }
     }
 }
