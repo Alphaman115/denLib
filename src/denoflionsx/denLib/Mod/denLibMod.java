@@ -88,6 +88,7 @@ public class denLibMod extends DenModContainer {
         TERemover = new ChunkHandler();
         Proxy.registerForgeSubscribe(TERemover);
         worldHandler = new DenWorldHandler();
+        // dummy commit to test jenkins
     }
     
     @Subscribe
