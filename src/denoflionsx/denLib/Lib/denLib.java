@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -379,26 +380,60 @@ public class denLib {
 
         public static ArrayList<String> getClassNamesInJar(File source) {
             ArrayList<String> classes = new ArrayList();
+            // -6 because of .class
+            for (String s : getFileNamesInJar(source, ".class")) {
+                String className = s.substring(0, s.length() - 6);
+                className = className.replace('/', '.');
+                classes.add(className);
+            }
+            return classes;
+        }
+
+        public static ArrayList<String> getFileNamesInJar(File source, String extension) {
+            ArrayList<String> list = new ArrayList();
             try {
                 JarFile jarFile = new JarFile(source);
                 Enumeration e = jarFile.entries();
                 while (e.hasMoreElements()) {
                     JarEntry je = (JarEntry) e.nextElement();
-                    if (je.isDirectory() || !je.getName().endsWith(".class")) {
+                    if (je.isDirectory() || !je.getName().endsWith(extension)) {
                         continue;
                     }
-                    // -6 because of .class
-                    String className = je.getName().substring(0, je.getName().length() - 6);
-                    className = className.replace('/', '.');
-                    if (debug) {
-                        denLibMod.Proxy.print(className);
-                    }
-                    classes.add(className);
+                    list.add(je.getName());
                 }
-            } catch (Exception ex) {
-                return new ArrayList();
+            } catch (Throwable t) {
+                t.printStackTrace();
             }
-            return classes;
+            return list;
+        }
+
+        public static File extractFileFromJar(File source, String fileName, File output) {
+            try {
+                ZipFile zf = new ZipFile(source);
+                Enumeration e = zf.entries();
+                while (e.hasMoreElements()) {
+                    ZipEntry ze = (ZipEntry) e.nextElement();
+                    if (ze.getName().equals(fileName)) {
+                        long size = ze.getSize();
+                        long compressedSize = ze.getCompressedSize();
+                        System.out.printf("name: %-20s | size: %6d | compressed size: %6d\n", fileName, size, compressedSize);
+                        File file = new File(fileName);
+                        InputStream is = zf.getInputStream(ze);
+                        FileOutputStream fos = new FileOutputStream(output);
+                        byte[] bytes = new byte[1024];
+                        int length;
+                        while ((length = is.read(bytes)) >= 0) {
+                            fos.write(bytes, 0, length);
+                        }
+                        is.close();
+                        fos.close();
+                        return file;
+                    }
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            return null;
         }
 
         public static File findMeInMods(File folder, String modName) {
