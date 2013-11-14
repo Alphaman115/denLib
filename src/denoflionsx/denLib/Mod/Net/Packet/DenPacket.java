@@ -5,15 +5,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class DenPacket extends Packet250CustomPayload {
-
-    public DenPacket(NBTTagCompound payload) {
+    
+    public DenPacket(int packetID, NBTTagCompound payload) {
         try {
-            this.data = CompressedStreamTools.compress(payload);
+            NBTTagCompound t = (NBTTagCompound) payload.copy();
+            t.setInteger("id", packetID);
+            this.data = CompressedStreamTools.compress(t);
         } catch (Throwable t) {
             t.printStackTrace();
         }
     }
-
+    
     public NBTTagCompound getPayload() {
         try {
             return CompressedStreamTools.decompress(this.data);
@@ -22,5 +24,5 @@ public class DenPacket extends Packet250CustomPayload {
         }
         return new NBTTagCompound();
     }
-
+    
 }
