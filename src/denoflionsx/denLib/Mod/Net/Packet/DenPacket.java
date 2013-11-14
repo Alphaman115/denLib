@@ -1,0 +1,26 @@
+package denoflionsx.denLib.Mod.Net.Packet;
+
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet250CustomPayload;
+
+public class DenPacket extends Packet250CustomPayload {
+
+    public DenPacket(NBTTagCompound payload) {
+        try {
+            this.data = CompressedStreamTools.compress(payload);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+
+    public NBTTagCompound getPayload() {
+        try {
+            return CompressedStreamTools.decompress(this.data);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return new NBTTagCompound();
+    }
+
+}
