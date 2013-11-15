@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Set;
 import java.util.jar.JarEntry;
@@ -788,6 +789,27 @@ public class denLib {
         @Override
         public boolean accept(File dir, String name) {
             return name.contains(target) && !(new File(dir, name).isDirectory());
+        }
+
+    }
+
+    public static class MathUtils {
+
+        public static int getLastID(BiMap<Integer, String> map) {
+            int ids[] = new int[map.size()];
+            int temp = 0;
+            for (Object o : map.keySet()) {
+                Integer i = (Integer) o;
+                ids[temp] = i;
+                temp++;
+            }
+            Arrays.sort(ids);
+            int f = 0;
+            if (ids.length != 0) {
+                f = ids[ids.length - 1];
+            }
+            f++;
+            return f;
         }
 
     }
