@@ -4,6 +4,7 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import denoflionsx.denLib.CoreMod.ASM.ASMLogger;
+import denoflionsx.denLib.CoreMod.ASM.DepScanRequest;
 import denoflionsx.denLib.CoreMod.Updater.UpdateManager;
 import denoflionsx.denLib.Lib.denLib;
 import java.io.File;
@@ -17,6 +18,7 @@ public class denLibCore implements IFMLLoadingPlugin {
     public static File check = new File("denLibUpdateCheck.bin");
     public static final String build_number = "@BUILD@";
     public static File location;
+    public static File mods;
     public static String mc = "No idea";
 
     @Override
@@ -31,6 +33,7 @@ public class denLibCore implements IFMLLoadingPlugin {
             ex.printStackTrace();
         }
         ArrayList<String> trans = new ArrayList();
+        trans.add(DepScanRequest.class.getName());
         if (ASMLogger.doLog) {
             trans.add("denoflionsx.denLib.CoreMod.ASM.ASMLogger");
         }
@@ -56,12 +59,13 @@ public class denLibCore implements IFMLLoadingPlugin {
     @Override
     public void injectData(Map<String, Object> data) {
         location = (File) data.get("coremodLocation");
+        mods = new File((File) data.get("mcLocation"), "/mods");
         if (location == null) {
             // Probably a deobf'd env. Check it.
             boolean obf = (Boolean) data.get("runtimeDeobfuscationEnabled");
             if (!obf) {
                 print("Development env detected. Trying to figure out where the coremod is. Please stand by...");
-                location = denLib.FileUtils.findMeInMods(new File(((File) data.get("mcLocation")), "mods"), "denLib");
+                location = denLib.FileUtils.findMeInMods(mods, "denLib");
             }
         }
         updater = new UpdateManager();

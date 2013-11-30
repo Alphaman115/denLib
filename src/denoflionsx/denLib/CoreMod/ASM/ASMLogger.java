@@ -9,7 +9,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 public class ASMLogger implements IClassTransformer {
 
     private static final Logger LOG = Logger.getLogger(ASMLogger.class.getName());
-    public static final boolean doLog = false;
+    public static final boolean doLog = true;
 
     public ASMLogger() {
         if (doLog) {

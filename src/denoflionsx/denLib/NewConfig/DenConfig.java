@@ -32,10 +32,15 @@ public class DenConfig {
     private void getAndSet(ConfigField annotation, Field f, Configuration config) {
         Object o = null;
         Property p = null;
+        boolean isBlock = annotation.category().contains("block.");
         try {
             o = f.get(null);
             if (f.getType().equals(int.class)) {
-                p = config.get(annotation.category(), f.getName(), (Integer) o);
+                if (isBlock) {
+                    p = config.getBlock(annotation.category(), f.getName(), (Integer) o);
+                } else {
+                    p = config.get(annotation.category(), f.getName(), (Integer) o);
+                }
                 f.set(null, p.getInt());
             } else if (f.getType().equals(String.class)) {
                 p = config.get(annotation.category(), f.getName(), (String) o);

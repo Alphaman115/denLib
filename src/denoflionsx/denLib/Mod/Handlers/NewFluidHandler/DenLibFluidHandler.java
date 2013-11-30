@@ -3,6 +3,7 @@ package denoflionsx.denLib.Mod.Handlers.NewFluidHandler;
 import denoflionsx.denLib.Mod.denLibMod;
 import java.util.ArrayList;
 import java.util.HashMap;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -21,6 +22,7 @@ public class DenLibFluidHandler {
         denLibMod.Proxy.registerForgeSubscribe(this);
         cache.put("water", FluidRegistry.getFluidStack("water", FluidContainerRegistry.BUCKET_VOLUME));
         cache.put("lava", FluidRegistry.getFluidStack("lava", FluidContainerRegistry.BUCKET_VOLUME));
+        MinecraftForge.EVENT_BUS.post(new DenFluidHandlerEvents.Ready());
     }
     
     public void register(IDenLibFluidHandler handler) {

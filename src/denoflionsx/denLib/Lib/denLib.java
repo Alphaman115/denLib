@@ -31,11 +31,11 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 
 public class denLib {
-
+    
     public static boolean debug = false;
-
+    
     public static class BukkitHelper {
-
+        
         public static boolean isBukkit() {
             try {
                 return Class.forName("org.bukkit.WorldType") != null;
@@ -44,9 +44,9 @@ public class denLib {
             return false;
         }
     }
-
+    
     public static class ReflectionHelper {
-
+        
         public static Object getStaticField(Class c, String f) {
             try {
                 return c.getDeclaredField(f).get(null);
@@ -55,7 +55,7 @@ public class denLib {
             }
             return null;
         }
-
+        
         public static Object getStaticField(Field f) {
             try {
                 return f.get(null);
@@ -64,7 +64,7 @@ public class denLib {
             }
             return null;
         }
-
+        
         public static void setStaticField(Field f, Object value) {
             try {
                 f.set(null, value);
@@ -72,7 +72,7 @@ public class denLib {
                 ex.printStackTrace();
             }
         }
-
+        
         public static Field getStaticField(String c, String f) {
             try {
                 return Class.forName(c).getField(f);
@@ -81,7 +81,7 @@ public class denLib {
             }
             return null;
         }
-
+        
         public static String findStringInNestedClass(Class first, String name) {
             try {
                 for (Field f : first.getDeclaredFields()) {
@@ -102,9 +102,9 @@ public class denLib {
             return denLib.StringUtils.readError;
         }
     }
-
+    
     public static class NBTUtils {
-
+        
         public static void writeNBTToFile(File file, NBTTagCompound tag) {
             try {
                 FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
@@ -115,7 +115,7 @@ public class denLib {
                 ex.printStackTrace();
             }
         }
-
+        
         public static NBTTagCompound readNBTFromFile(File file) {
             try {
                 FileInputStream fis = new FileInputStream(file.getAbsolutePath());
@@ -127,7 +127,7 @@ public class denLib {
             }
             return null;
         }
-
+        
         public static void saveObjectToNBTFile(File file, Object o) {
             try {
                 ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -141,7 +141,7 @@ public class denLib {
                 ex.printStackTrace();
             }
         }
-
+        
         public static Object restoreObjectFromNBTFile(File file) {
             try {
                 NBTTagCompound read = readNBTFromFile(file);
@@ -156,25 +156,25 @@ public class denLib {
             return null;
         }
     }
-
+    
     public static class StringUtils {
-
+        
         public static final String readError = "Error";
         private static final String HEXES = "0123456789abcdef";
-
+        
         public static String removeSpaces(String s) {
             return s.replaceAll("\\s", "");
         }
-
+        
         public static String[] splitByNewLine(String s) {
             return s.split("[\r\n]+");
         }
-
+        
         public static String scanFileContents(InputStream stream) {
             java.util.Scanner s = new java.util.Scanner(stream).useDelimiter("\\A");
             return s.hasNext() ? s.next() : "";
         }
-
+        
         public static String[] readFileContentsAutomated(File configDir, String name) {
             ClassLoader c = Thread.currentThread().getContextClassLoader();
             InputStream i = null;
@@ -200,13 +200,13 @@ public class denLib {
                 return new String[]{readError};
             }
         }
-
+        
         public static String[] readInputStream(InputStream stream) {
             String f = denLib.StringUtils.scanFileContents(stream);
             String[] p = denLib.StringUtils.splitByNewLine(f);
             return p;
         }
-
+        
         public static String[] readFileContentsAutomated(File configDir, String name, Object instance) {
             InputStream i = null;
             if (configDir != null) {
@@ -231,7 +231,7 @@ public class denLib {
                 return new String[]{readError};
             }
         }
-
+        
         public static String Hash(String tag) {
             byte[] bytes = tag.getBytes();
             try {
@@ -248,7 +248,7 @@ public class denLib {
             }
             return tag;
         }
-
+        
         public static String Hash(String[] input) {
             String i = "";
             for (String s : input) {
@@ -256,7 +256,7 @@ public class denLib {
             }
             return Hash(i);
         }
-
+        
         public static String getHash(byte[] bytes) {
             String s = "";
             for (byte b : bytes) {
@@ -264,7 +264,7 @@ public class denLib {
             }
             return denLib.StringUtils.Hash(s);
         }
-
+        
         public static String hexify(byte[] chksum) {
             final StringBuilder hex = new StringBuilder(2 * chksum.length);
             for (final byte b : chksum) {
@@ -273,12 +273,12 @@ public class denLib {
             }
             return hex.toString();
         }
-
+        
         public static byte[] createSha1(File file) throws Exception {
             InputStream fis = new FileInputStream(file);
             return createSha1(fis);
         }
-
+        
         public static byte[] createSha1(InputStream fis) throws Exception {
             MessageDigest digest = MessageDigest.getInstance("SHA-1");
             int n = 0;
@@ -293,9 +293,9 @@ public class denLib {
             return digest.digest();
         }
     }
-
+    
     public static class NetUtils {
-
+        
         public static String[] readFileFromURL(String URL) {
             ArrayList<String> l = new ArrayList();
             try {
@@ -321,7 +321,7 @@ public class denLib {
             }
             return l.toArray(new String[l.size()]);
         }
-
+        
         public static URL newUrlFromString(String s) {
             try {
                 return new URL(s);
@@ -330,7 +330,7 @@ public class denLib {
             }
             return null;
         }
-
+        
         public static File readBinaryFromNet(URL u, File saveTo) {
             try {
                 URLConnection uc = u.openConnection();
@@ -352,7 +352,7 @@ public class denLib {
                     offset += bytesRead;
                 }
                 in.close();
-
+                
                 if (offset != contentLength) {
                     throw new IOException("Only read " + offset + " bytes; Expected " + contentLength + " bytes");
                 }
@@ -367,18 +367,18 @@ public class denLib {
             return null;
         }
     }
-
+    
     public static class LiquidStackUtils {
-
+        
         public static FluidStack getNewStackCapacity(FluidStack stack, int capacity) {
             FluidStack t = stack.copy();
             t.amount = capacity;
             return t;
         }
     }
-
+    
     public static class FileUtils {
-
+        
         public static ArrayList<String> getClassNamesInJar(File source) {
             ArrayList<String> classes = new ArrayList();
             // -6 because of .class
@@ -389,7 +389,7 @@ public class denLib {
             }
             return classes;
         }
-
+        
         public static ArrayList<String> getFileNamesInJar(File source, String extension) {
             ArrayList<String> list = new ArrayList();
             try {
@@ -407,7 +407,7 @@ public class denLib {
             }
             return list;
         }
-
+        
         public static File extractFileFromJar(File source, String fileName, File output) {
             try {
                 ZipFile zf = new ZipFile(source);
@@ -436,7 +436,7 @@ public class denLib {
             }
             return null;
         }
-
+        
         public static File findMeInMods(File folder, String modName) {
             File[] files = folder.listFiles(new DenFileFilter(modName));
             if (files.length == 0) {
@@ -453,13 +453,14 @@ public class denLib {
                 if (files.length > 1) {
                     denLibCore.print("Ambiguous mod search results! Be more specific! Target was: " + modName + " and has " + files.length + " results.");
                 }
+                denLibCore.print("Returning location: " + files[0].getName());
                 return files[0];
             } catch (Throwable t) {
                 t.printStackTrace();
                 return null;
             }
         }
-
+        
         public static ArrayList<Field> findFieldsInJarWithAnnotation(File source, Class<? extends Annotation> annotation) {
             ArrayList<Field> fields = new ArrayList();
             for (String s : denLib.FileUtils.getClassNamesInJar(source)) {
@@ -476,7 +477,7 @@ public class denLib {
             }
             return fields;
         }
-
+        
         public static ArrayList<Field> findFieldsInSet(Set<Class<? extends Object>> set, Class<? extends Annotation> annotation) {
             ArrayList<Field> fields = new ArrayList();
             try {
@@ -492,7 +493,7 @@ public class denLib {
             }
             return fields;
         }
-
+        
         public static ArrayList<Object> getClassesInJar(File source, Class<?> target) {
             ArrayList<Object> classes = new ArrayList();
             try {
@@ -520,15 +521,15 @@ public class denLib {
             }
             return classes;
         }
-
+        
         public static void saveBiMapToFile(BiMap map, File f) {
             saveObjectToFile(map, f);
         }
-
+        
         public static BiMap readBiMapFromFile(File f) {
             return (BiMap) readObjectFromFile(f);
         }
-
+        
         public static void saveObjectToFile(Object o, File f) {
             try {
                 byte[] array = turnObjectToByteArray(o);
@@ -539,7 +540,7 @@ public class denLib {
                 ex.printStackTrace();
             }
         }
-
+        
         public static byte[] turnObjectToByteArray(Object o) {
             try {
                 ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -554,7 +555,7 @@ public class denLib {
             }
             return null;
         }
-
+        
         public static Object readObjectFromByteArray(byte[] bytes) {
             try {
                 ByteArrayInputStream b2 = new ByteArrayInputStream(bytes);
@@ -567,7 +568,7 @@ public class denLib {
             }
             return null;
         }
-
+        
         private static Object readObjectFromFile(File f) {
             try {
                 FileInputStream fis = new FileInputStream(f.getAbsolutePath());
@@ -579,12 +580,12 @@ public class denLib {
             }
             return null;
         }
-
+        
         public static byte[] createSha1(File file) throws Exception {
             InputStream fis = new FileInputStream(file);
             return createSha1(fis);
         }
-
+        
         public static byte[] createSha1(InputStream fis) throws Exception {
             MessageDigest digest = MessageDigest.getInstance("SHA-1");
             int n = 0;
@@ -598,7 +599,7 @@ public class denLib {
             fis.close();
             return digest.digest();
         }
-
+        
         public static void unzip(File zip, File save) {
             denLibCore.print("Unzipping " + zip.getName());
             try {
@@ -620,9 +621,9 @@ public class denLib {
             }
         }
     }
-
+    
     public static class RandomUtils {
-
+        
         public static void throwCustomException(String why) {
             try {
                 throw new Exception(why);
@@ -631,9 +632,9 @@ public class denLib {
             }
         }
     }
-
+    
     public static class ASMHelper {
-
+        
         public static void dumpClass(File outDir, byte[] bytes, String name) {
             try {
                 DataOutputStream out = new DataOutputStream(new FileOutputStream(new File(outDir, name)));
@@ -648,23 +649,23 @@ public class denLib {
         public static ClassNode createClassNode(byte[] bytes) {
             return createClassNode(bytes, 0);
         }
-
+        
         public static ClassNode createClassNode(byte[] bytes, int flags) {
             ClassNode cnode = new ClassNode();
             ClassReader reader = new ClassReader(bytes);
             reader.accept(cnode, flags);
             return cnode;
         }
-
+        
         public static byte[] createBytes(ClassNode cnode, int flags) {
             ClassWriter cw = new ClassWriter(flags);
             cnode.accept(cw);
             return cw.toByteArray();
         }
     }
-
+    
     public static class SQLHelper {
-
+        
         public static Connection createDB(String dbName) {
             try {
                 return DriverManager.getConnection("jdbc:sqlite:" + dbName);
@@ -672,11 +673,11 @@ public class denLib {
             }
             return null;
         }
-
+        
         private static File dbFromTableInfo(String[] tableInfo) {
             return new File(tableInfo[0]);
         }
-
+        
         private static Statement makeConnection(String[] tableInfo) {
             try {
                 File db = dbFromTableInfo(tableInfo);
@@ -688,7 +689,7 @@ public class denLib {
             }
             return null;
         }
-
+        
         private static Connection makeConnection2(String[] tableInfo) {
             try {
                 File db = dbFromTableInfo(tableInfo);
@@ -699,7 +700,7 @@ public class denLib {
             }
             return null;
         }
-
+        
         public static int getIntFromDB(String[] tableInfo, String targetFieldValue) {
             try {
                 String table = tableInfo[1];
@@ -717,7 +718,7 @@ public class denLib {
             }
             return -1;
         }
-
+        
         public static void putIntInDB(String[] tableInfo, Object[] input) {
             try {
                 String table = tableInfo[1];
@@ -737,7 +738,7 @@ public class denLib {
                 t.printStackTrace();
             }
         }
-
+        
         public static void putStringInDB(String[] tableInfo, Object[] input) {
             try {
                 String table = tableInfo[1];
@@ -757,7 +758,7 @@ public class denLib {
                 t.printStackTrace();
             }
         }
-
+        
         public static String getStringInDB(String[] tableInfo, String targetFieldValue) {
             try {
                 String rvalue = null;
@@ -777,24 +778,24 @@ public class denLib {
             return null;
         }
     }
-
+    
     public static class DenFileFilter implements FilenameFilter {
-
+        
         private final String target;
-
+        
         public DenFileFilter(String target) {
             this.target = target;
         }
-
+        
         @Override
         public boolean accept(File dir, String name) {
             return name.contains(target) && !(new File(dir, name).isDirectory());
         }
-
+        
     }
-
+    
     public static class MathUtils {
-
+        
         public static int getLastID(BiMap<Integer, String> map) {
             int ids[] = new int[map.size()];
             int temp = 0;
@@ -811,6 +812,6 @@ public class denLib {
             f++;
             return f;
         }
-
+        
     }
 }
