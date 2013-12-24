@@ -9,6 +9,6 @@ public class SQLLibRequest extends FileRequest {
     }
 
     public SQLLibRequest() {
-        this("sqlite-jdbc-3.7.15-M1.jar", "http://www.denoflionsx.info/downloads/sqlite-jdbc-3.7.15-M1.zip");
+        this("sqlite-jdbc-3.7.15-M1.jar", "https://github.com/denoflionsx/denLib/blob/NetBeans-Testing/lib/sqlite-jdbc-3.7.15-M1.zip");
     }
 }
