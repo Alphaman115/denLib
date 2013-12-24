@@ -24,7 +24,7 @@ out/
 *.log
 *.ipr
 *.iws
-config/
+config/*.cfg
 mods/
 *.gradle
 *.lck
