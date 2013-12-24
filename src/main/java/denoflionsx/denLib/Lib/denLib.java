@@ -437,12 +437,12 @@ public class denLib {
         public static File findMeInMods(File folder, String modName) {
             File[] files = folder.listFiles(new DenFileFilter(modName));
             if (files.length == 0) {
-                File a = new File(new File(folder.getAbsolutePath().replace("\\mods", "")), "dist");
+                File a = new File(new File(folder.getAbsolutePath().replace("\\mods", "")), "bin");
                 denLibCore.print("Cannot find " + modName + " in mods. Looking in " + a.getAbsolutePath());
                 files = a.listFiles(new DenFileFilter(modName));
             }
             if (files.length == 0) {
-                File b = new File(new File(folder.getAbsolutePath().replace("\\mods", "")), "dist/lib");
+                File b = new File(new File(folder.getAbsolutePath().replace("\\mods", "")), "lib");
                 denLibCore.print("Cannot find " + modName + " in dist. We might be in a project dependant on denLib. Looking in " + b.getAbsolutePath());
                 files = b.listFiles(new DenFileFilter(modName));
             }
