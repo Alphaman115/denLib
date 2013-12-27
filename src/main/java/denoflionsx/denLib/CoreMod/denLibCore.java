@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import denoflionsx.denLib.CoreMod.ASM.ASMLogger;
 import denoflionsx.denLib.CoreMod.ASM.DenEventsLib;
-import denoflionsx.denLib.CoreMod.ASM.DepScanRequest;
 import denoflionsx.denLib.CoreMod.Updater.UpdateManager;
 import denoflionsx.denLib.Lib.denLib;
 
@@ -36,16 +35,16 @@ public class denLibCore implements IFMLLoadingPlugin {
             ex.printStackTrace();
         }
         ArrayList<String> trans = new ArrayList();
-        trans.add(DepScanRequest.class.getName());
+        //trans.add(DepScanRequest.class.getName());
         if (ASMLogger.doLog) {
             trans.add("denoflionsx.denLib.CoreMod.ASM.ASMLogger");
         }
         trans.add("denoflionsx.denLib.CoreMod.ASM.SQL.SQLLibRequest");
         // Jumpstart DenEvents.
         try {
-            DenEventsLib.class.newInstance().doLib();
-            String[] a = (String[]) Class.forName("denoflionsx.DenEvents.DenEvents").getDeclaredMethod("getASMTransformerClass").invoke(Class.forName("denoflionsx.DenEvents.DenEvents").newInstance(), new Object[]{});
-            trans.addAll(Arrays.asList(a));
+            Object e = DenEventsLib.class.newInstance();
+            IFMLLoadingPlugin a = (IFMLLoadingPlugin) Class.forName("denoflionsx.DenEvents.DenEvents").newInstance();
+            trans.addAll(Arrays.asList(a.getASMTransformerClass()));
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
