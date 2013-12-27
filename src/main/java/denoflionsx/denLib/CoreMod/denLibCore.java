@@ -4,6 +4,7 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import denoflionsx.denLib.CoreMod.ASM.ASMLogger;
+import denoflionsx.denLib.CoreMod.ASM.DenEventsLib;
 import denoflionsx.denLib.CoreMod.ASM.DepScanRequest;
 import denoflionsx.denLib.CoreMod.Updater.UpdateManager;
 import denoflionsx.denLib.Lib.denLib;
@@ -11,6 +12,7 @@ import denoflionsx.denLib.Lib.denLib;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 public class denLibCore implements IFMLLoadingPlugin {
@@ -39,6 +41,14 @@ public class denLibCore implements IFMLLoadingPlugin {
             trans.add("denoflionsx.denLib.CoreMod.ASM.ASMLogger");
         }
         trans.add("denoflionsx.denLib.CoreMod.ASM.SQL.SQLLibRequest");
+        // Jumpstart DenEvents.
+        try {
+            DenEventsLib.class.newInstance().doLib();
+            String[] a = (String[]) Class.forName("denoflionsx.DenEvents.DenEvents").getDeclaredMethod("getASMTransformerClass").invoke(null, new Object[]{});
+            trans.addAll(Arrays.asList(a));
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
         return trans.toArray(new String[trans.size()]);
     }
 
