@@ -333,9 +333,9 @@ public class denLib {
                 URLConnection uc = u.openConnection();
                 String contentType = uc.getContentType();
                 int contentLength = uc.getContentLength();
-                if (contentType.startsWith("text/") || contentLength == -1) {
+/*                if (contentType.startsWith("text/") || contentLength == -1) {
                     throw new IOException("This is not a binary file.");
-                }
+                }*/
                 InputStream raw = uc.getInputStream();
                 InputStream in = new BufferedInputStream(raw);
                 byte[] data = new byte[contentLength];

@@ -44,7 +44,7 @@ public class denLibCore implements IFMLLoadingPlugin {
         // Jumpstart DenEvents.
         try {
             DenEventsLib.class.newInstance().doLib();
-            String[] a = (String[]) Class.forName("denoflionsx.DenEvents.DenEvents").getDeclaredMethod("getASMTransformerClass").invoke(null, new Object[]{});
+            String[] a = (String[]) Class.forName("denoflionsx.DenEvents.DenEvents").getDeclaredMethod("getASMTransformerClass").invoke(Class.forName("denoflionsx.DenEvents.DenEvents").newInstance(), new Object[]{});
             trans.addAll(Arrays.asList(a));
         } catch (Throwable ex) {
             ex.printStackTrace();
