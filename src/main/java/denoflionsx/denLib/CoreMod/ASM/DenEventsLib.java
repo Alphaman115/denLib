@@ -6,6 +6,6 @@ package denoflionsx.denLib.CoreMod.ASM;
 public class DenEventsLib extends FileRequest {
 
     public DenEventsLib() {
-        super("DenEvents.jar", "https://github.com/denoflionsx/denLib/blob/NetBeans-Testing/lib/DenEvents.zip");
+        super("DenEvents.jar", "https://github.com/denoflionsx/denLib/raw/NetBeans-Testing/lib/DenEvents.zip");
     }
 }
