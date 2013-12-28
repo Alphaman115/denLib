@@ -43,6 +43,9 @@ public class denLibCore implements IFMLLoadingPlugin {
         // Jumpstart DenEvents.
         try {
             Object e = DenEventsLib.class.newInstance();
+            if (denLib.BukkitHelper.isBukkit()){
+                throw new Exception("Bukkit detected. Bail out of DenEvents transformer!");
+            }
             IFMLLoadingPlugin a = (IFMLLoadingPlugin) Class.forName("denoflionsx.DenEvents.DenEvents").newInstance();
             trans.addAll(Arrays.asList(a.getASMTransformerClass()));
         } catch (Throwable ex) {
