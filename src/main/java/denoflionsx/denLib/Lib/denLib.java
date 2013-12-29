@@ -4,6 +4,9 @@ import com.google.common.collect.BiMap;
 import com.google.common.io.ByteStreams;
 import denoflionsx.denLib.CoreMod.denLibCore;
 import denoflionsx.denLib.Mod.denLibMod;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import org.objectweb.asm.ClassReader;
@@ -13,6 +16,7 @@ import org.objectweb.asm.tree.ClassNode;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
@@ -517,6 +521,46 @@ public class denLib {
                 ex.printStackTrace();
             }
             return classes;
+        }
+
+        public static ArrayList<Field> getStaticFields(File source, Class<?> target) {
+            ArrayList<Field> fields = new ArrayList();
+            for (String s : getClassNamesInJar(source)) {
+                try {
+                    Class c = Class.forName(s);
+                    for (Field f : c.getDeclaredFields()) {
+                        if (f.getType().getName().equals(target.getName())) {
+                            if (Modifier.isStatic(f.getModifiers())) {
+                                fields.add(f);
+                            }
+                        }
+                    }
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }
+            return fields;
+        }
+
+        public static ArrayList<ItemStack> getAllItemsAndBlocksForMod(File source) {
+            ArrayList<Field> f = new ArrayList();
+            ArrayList<ItemStack> i = new ArrayList();
+            f.addAll(getStaticFields(source, Item.class));
+            f.addAll(getStaticFields(source, Block.class));
+            for (Field f1 : f) {
+                try {
+                    if (f1.getType().getName().equals(Item.class.getName())) {
+                        Item item = (Item) f1.get(null);
+                        i.add(new ItemStack(item));
+                    } else if (f1.getType().getName().equals(Block.class.getName())) {
+                        Block block = (Block) f1.get(null);
+                        i.add(new ItemStack(block));
+                    }
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }
+            return i;
         }
 
         public static void saveBiMapToFile(BiMap map, File f) {
