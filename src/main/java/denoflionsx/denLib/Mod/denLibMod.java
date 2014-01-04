@@ -9,6 +9,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import denoflionsx.denLib.Config.Manager.TunableManager;
 import denoflionsx.denLib.CoreMod.Config.denLibTuning;
 import denoflionsx.denLib.CoreMod.denLibCore;
+import denoflionsx.denLib.Lib.denLib;
 import denoflionsx.denLib.Mod.Changelog.ChangeLogWorld;
 import denoflionsx.denLib.Mod.Handlers.ChunkHandler;
 import denoflionsx.denLib.Mod.Handlers.DictionaryHandler;

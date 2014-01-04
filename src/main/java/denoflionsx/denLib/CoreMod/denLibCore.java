@@ -22,6 +22,7 @@ public class denLibCore implements IFMLLoadingPlugin {
     public static File location;
     public static File mods;
     public static String mc = "No idea";
+    public static IFMLLoadingPlugin DenEvents;
 
     @Override
     public String[] getASMTransformerClass() {
@@ -46,8 +47,8 @@ public class denLibCore implements IFMLLoadingPlugin {
             if (denLib.BukkitHelper.isBukkit()){
                 throw new Exception("Bukkit detected. Bail out of DenEvents transformer!");
             }
-            IFMLLoadingPlugin a = (IFMLLoadingPlugin) Class.forName("denoflionsx.DenEvents.DenEvents").newInstance();
-            trans.addAll(Arrays.asList(a.getASMTransformerClass()));
+            DenEvents = (IFMLLoadingPlugin) Class.forName("denoflionsx.DenEvents.DenEvents").newInstance();
+            trans.addAll(Arrays.asList(DenEvents.getASMTransformerClass()));
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -81,6 +82,7 @@ public class denLibCore implements IFMLLoadingPlugin {
             }
         }
         updater = new UpdateManager();
+        DenEvents.injectData(data);
     }
 
     public static void print(String msg) {
