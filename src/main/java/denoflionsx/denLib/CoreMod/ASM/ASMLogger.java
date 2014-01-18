@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 public class ASMLogger implements IClassTransformer {
 
     private static final Logger LOG = Logger.getLogger(ASMLogger.class.getName());
-    public static final boolean doLog = true;
+    public static final boolean doLog = false;
 
     public ASMLogger() {
         if (doLog) {
