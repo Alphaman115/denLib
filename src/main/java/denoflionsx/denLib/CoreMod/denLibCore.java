@@ -22,7 +22,7 @@ public class denLibCore implements IFMLLoadingPlugin {
     public static File location;
     public static File mods;
     public static String mc = "No idea";
-    public static IFMLLoadingPlugin DenEvents;
+    public static IFMLLoadingPlugin DenEvents = null;
 
     @Override
     public String[] getASMTransformerClass() {
@@ -82,7 +82,9 @@ public class denLibCore implements IFMLLoadingPlugin {
             }
         }
         updater = new UpdateManager();
-        DenEvents.injectData(data);
+        if (DenEvents != null) {
+            DenEvents.injectData(data);
+        }
     }
 
     public static void print(String msg) {
