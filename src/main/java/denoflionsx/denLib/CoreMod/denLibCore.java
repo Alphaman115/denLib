@@ -23,6 +23,7 @@ public class denLibCore implements IFMLLoadingPlugin {
     public static File mods;
     public static String mc = "No idea";
     public static IFMLLoadingPlugin DenEvents = null;
+    public static boolean testing = false;
 
     @Override
     public String[] getASMTransformerClass() {
@@ -43,6 +44,9 @@ public class denLibCore implements IFMLLoadingPlugin {
         trans.add("denoflionsx.denLib.CoreMod.ASM.SQL.SQLLibRequest");
         // Jumpstart DenEvents.
         try {
+            if (new File("denlib-donotupdate.txt").exists()){
+                testing = true;
+            }
             Object e = DenEventsLib.class.newInstance();
             if (denLib.BukkitHelper.isBukkit()){
                 throw new Exception("Bukkit detected. Bail out of DenEvents transformer!");

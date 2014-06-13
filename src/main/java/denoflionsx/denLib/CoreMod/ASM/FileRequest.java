@@ -40,13 +40,15 @@ public class FileRequest implements IClassTransformer {
             extension = fileName.substring(i + 1);
         }
         File zippedLib = new File(lib.getAbsolutePath().replace(extension, "zip"));
-        if (isUpdateRequired(lib, ".zip")) {
-            denLibCore.print("Downloading required files...");
-            denLibCore.print(url);
-            denLib.NetUtils.readBinaryFromNet(denLib.NetUtils.newUrlFromString(url), zippedLib);
-            denLib.FileUtils.unzip(zippedLib, lib);
-            if (!zippedLib.delete()) {
-                zippedLib.deleteOnExit();
+        if (!denLibCore.testing){
+            if (isUpdateRequired(lib, ".zip")) {
+                denLibCore.print("Downloading required files...");
+                denLibCore.print(url);
+                denLib.NetUtils.readBinaryFromNet(denLib.NetUtils.newUrlFromString(url), zippedLib);
+                denLib.FileUtils.unzip(zippedLib, lib);
+                if (!zippedLib.delete()) {
+                    zippedLib.deleteOnExit();
+                }
             }
         }
         try {
